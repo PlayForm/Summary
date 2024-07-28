@@ -1,6 +1,33 @@
-[package]
+[[bin]]
+name = "PSummary"
+path = "Source/Library.rs"
+
+[[bin]]
 name = "Summary"
-version = "0.1.0"
-edition = "2021"
+path = "Source/Library.rs"
 
 [dependencies]
+git2 = { version = "0.19.0" }
+tokio = "1.39.2"
+
+[build-dependencies]
+serde = { version = "1.0.204", features = ["derive"] }
+toml = "0.8.16"
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+name = "Library"
+path = "Source/Library.rs"
+
+[package]
+autobenches = false
+autobins = false
+autoexamples = false
+autotests = false
+default-run = "Summary"
+description = "🗣️ Summary —"
+license = "MIT"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.0.1"
+edition = "2021"
