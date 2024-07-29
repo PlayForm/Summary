@@ -1,5 +1,8 @@
+/// Represents the main command structure for the Summary application.
 pub struct Struct {
+	/// The path separator character.
 	pub Separator: Option::Separator,
+	/// A boxed function that returns a pinned future.
 	pub Fn: Box<dyn Fn() -> Pin<Box<dyn Future<Output = ()> + Send + 'static>> + Send + 'static>,
 }
 
@@ -25,10 +28,10 @@ impl Struct {
 	}
 }
 
-pub mod Entry;
-pub mod Option;
-
 use crate::Fn::Binary::Command::{Parallel, Sequential};
 
 use futures::Future;
 use std::pin::Pin;
+
+pub mod Entry;
+pub mod Option;
