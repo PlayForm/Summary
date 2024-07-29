@@ -29,22 +29,19 @@ pub async fn Fn(Option { Entry, Separator, Pattern, .. }: Option) {
 			})
 			.collect::<Vec<String>>(),
 	)
-	.map(|Entry| {
-		tokio::spawn(async move {
-			match crate::Fn::Summary::Fn(&Entry).await {
-				Ok(summary) => Ok(summary),
-				Err(e) => Err(format!("Error generating summary for {}: {}", Entry, e)),
-			}
-		})
+	.map(|Entry| async move {
+		match crate::Fn::Summary::Fn(&Entry).await {
+			Ok(summary) => Ok(summary),
+			Err(e) => Err(format!("Error generating summary for {}: {}", Entry, e)),
+		}
 	})
 	.buffer_unordered(num_cpus::get())
 	.collect()
 	.await;
 
 	Queue.par_iter().for_each(|Output| match Output {
-		Ok(Ok(Summary)) => println!("Summary: {:?}", Summary),
-		Ok(Err(Error)) => eprintln!("Error: {}", Error),
-		Err(Panic) => eprintln!("Panic: {}", Panic),
+		Ok(Summary) => println!("Summary: {:?}", Summary),
+		Err(Error) => eprintln!("Error: {}", Error),
 	});
 }
 
