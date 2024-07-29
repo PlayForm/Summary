@@ -52,6 +52,10 @@ Exclude certain files or directories (defailt is
 
 Specify a custom pattern for matching (defailt is `.git`)
 
+#### --Separator:
+
+Define a custom separator
+
 ## Dependencies
 
 `Summary` relies on several Rust crates to provide its functionality:

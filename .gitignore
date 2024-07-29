@@ -5,5 +5,5 @@
 
 !/Target/release/*.deb
 !/Target/release/*.exe
-!/Target/release/PRun
-!/Target/release/Run
+!/Target/release/PSummary
+!/Target/release/Summary
