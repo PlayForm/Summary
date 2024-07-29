@@ -17,8 +17,8 @@
 /// };
 /// Fn(option).await;
 /// ```
-pub async fn Fn(Option { Entry, Separator, Pattern, .. }: Option) {
-	let Queue: Vec<_> = stream::iter(
+pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+	stream::iter(
 		Entry
 			.into_par_iter()
 			.filter_map(|Entry| {
@@ -29,20 +29,21 @@ pub async fn Fn(Option { Entry, Separator, Pattern, .. }: Option) {
 			})
 			.collect::<Vec<String>>(),
 	)
-	.map(|Entry| async move {
-		match crate::Fn::Summary::Fn(&Entry).await {
-			Ok(summary) => Ok(summary),
-			Err(e) => Err(format!("Error generating summary for {}: {}", Entry, e)),
+	.map(|Entry| {
+		let Omit = Omit.clone();
+
+		async move {
+			match crate::Fn::Summary::Fn(&Entry, &crate::Fn::Summary::Difference::Option { Omit })
+				.await
+			{
+				Ok(Summary) => Ok(Summary),
+				Err(_Error) => Err(format!("Error generating summary for {}: {}", Entry, _Error)),
+			}
 		}
 	})
 	.buffer_unordered(num_cpus::get())
-	.collect()
+	.collect::<Vec<_>>()
 	.await;
-
-	Queue.par_iter().for_each(|Output| match Output {
-		Ok(Summary) => println!("Summary: {:?}", Summary),
-		Err(Error) => eprintln!("Error: {}", Error),
-	});
 }
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;

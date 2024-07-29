@@ -16,29 +16,28 @@
 /// };
 /// let summary = Fn(&option);
 /// ```
-pub async fn Fn(Entry: &str) -> Result<(), Box<dyn std::error::Error>> {
-	let Repository = Repository::open(Entry)?;
+pub async fn Fn(
+	Entry: &str,
+	Option: &crate::Fn::Summary::Difference::Option,
+) -> Result<(), Box<dyn std::error::Error>> {
+	match Repository::open(Entry) {
+		Ok(Repository) => {
+			let Tag = Repository.tag_names(None)?;
 
-	let Tag = Repository.tag_names(None)?;
-	let mut Start = None;
+			let Tags: Vec<_> = Tag.iter().filter_map(|Tag| Tag).collect();
 
-	let Summary = "Summary";
-	fs::create_dir_all(Summary)?;
+			for (Index, &Current) in Tags.iter().enumerate() {
+				for (_, &Next) in Tags.iter().enumerate().skip(Index + 1) {
+					let Difference =
+						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?;
 
-	for i in 0..Tag.len() {
-		if let Some(Tag) = Tag.get(i) {
-			if let Some(Start) = Start {
-				let Difference = crate::Fn::Summary::Difference::Fn(&Repository, Start, Tag)?;
-
-				File::create(&format!("{}/Difference_{}_{}.txt", Summary, Start, Tag))?.write_all(
-					crate::Fn::Summary::Difference::Fn(&Repository, Start, Tag)?.as_bytes(),
-				)?;
-
-				File::create(&format!("{}/Release_{}_{}.txt", Summary, Start, Tag))?
-					.write_all(crate::Fn::Summary::Release::Fn(&Difference).as_bytes())?;
+					println!("{}", Difference);
+				}
 			}
-
-			Start = Some(Tag);
+		}
+		Err(_Error) => {
+			println!("Failed to open repository: {}", _Error);
+			return Err(_Error.into());
 		}
 	}
 
@@ -46,10 +45,5 @@ pub async fn Fn(Entry: &str) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 use git2::Repository;
-use std::{
-	fs::{self, File},
-	io::Write,
-};
 
 pub mod Difference;
-pub mod Release;

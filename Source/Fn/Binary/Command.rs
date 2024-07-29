@@ -17,26 +17,6 @@ pub fn Fn() -> ArgMatches {
 		.author("🖋️ Source — 👐🏻 Open — <Source/Open@PlayForm.Cloud>")
 		.about("🗣️ Summary —")
 		.arg(
-			Arg::new("Parallel")
-				.short('P')
-				.long("Parallel")
-				.action(SetTrue)
-				.display_order(2)
-				.value_name("PARALLEL")
-				.required(false)
-				.help("⏩ Parallel —"),
-		)
-		.arg(
-			Arg::new("Root")
-				.short('R')
-				.long("Root")
-				.display_order(3)
-				.value_name("ROOT")
-				.required(false)
-				.help("📂 Root —")
-				.default_value("."),
-		)
-		.arg(
 			Arg::new("Exclude")
 				.short('E')
 				.long("Exclude")
@@ -47,12 +27,44 @@ pub fn Fn() -> ArgMatches {
 				.default_value("node_modules"),
 		)
 		.arg(
+			Arg::new("Omit")
+				.short('O')
+				.long("Omit")
+				.display_order(6)
+				.value_name("OMIT")
+				.required(false)
+				.help("🚫 Omit —")
+				.action(clap::ArgAction::Append)
+				.default_value("Documentation"),
+		)
+		.arg(
+			Arg::new("Parallel")
+				.short('P')
+				.long("Parallel")
+				.action(SetTrue)
+				.display_order(2)
+				.value_name("PARALLEL")
+				.required(false)
+				.help("⏩ Parallel —"),
+		)
+		.arg(
 			Arg::new("Pattern")
+				.long("Pattern")
 				.display_order(5)
 				.value_name("PATTERN")
 				.required(false)
 				.help("🔍 Pattern —")
 				.default_value(".git"),
+		)
+		.arg(
+			Arg::new("Root")
+				.short('R')
+				.long("Root")
+				.display_order(3)
+				.value_name("ROOT")
+				.required(false)
+				.help("📂 Root —")
+				.default_value("."),
 		)
 		.get_matches()
 }
