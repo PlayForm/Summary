@@ -21,7 +21,7 @@ pub fn Fn() -> ArgMatches {
 				.short('P')
 				.long("Parallel")
 				.action(SetTrue)
-				.display_order(3)
+				.display_order(2)
 				.value_name("PARALLEL")
 				.required(false)
 				.help("⏩ Parallel —"),
@@ -30,7 +30,7 @@ pub fn Fn() -> ArgMatches {
 			Arg::new("Root")
 				.short('R')
 				.long("Root")
-				.display_order(4)
+				.display_order(3)
 				.value_name("ROOT")
 				.required(false)
 				.help("📂 Root —")
@@ -40,7 +40,7 @@ pub fn Fn() -> ArgMatches {
 			Arg::new("Exclude")
 				.short('E')
 				.long("Exclude")
-				.display_order(5)
+				.display_order(4)
 				.value_name("EXCLUDE")
 				.required(false)
 				.help("🚫 Exclude —")
@@ -48,9 +48,9 @@ pub fn Fn() -> ArgMatches {
 		)
 		.arg(
 			Arg::new("Pattern")
-				.display_order(6)
+				.display_order(5)
 				.value_name("PATTERN")
-				.required(true)
+				.required(false)
 				.help("🔍 Pattern —")
 				.default_value(".git"),
 		)
