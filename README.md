@@ -85,14 +85,10 @@ Default is:
 
 ```sh
 Summary \
-	--Omit "Target" \
-	--Omit "target" \
-	--Omit "Documentation" \
-	--Omit "documentation" \
-	--Omit "SUMMARY.md" \
-	--Omit "CHANGELOG.md" \
-	--Omit "summary.md" \
-	--Omit "changelog.md"
+	--Omit "(?i)documentation" \
+	--Omit "(?i)target" \
+	--Omit "(?i)changelog\.md$" \
+	--Omit "(?i)summary\.md$" \
 ```
 
 #### --Parallel or -P:
