@@ -39,8 +39,19 @@ cargo install psummary
 
 The Summary tool can be used with various options:
 
-```sh
-Summary [OPTIONS]
+```
+🗣️ Summary —
+
+Usage: Summary [OPTIONS]
+
+Options:
+  -P, --Parallel           ⏩ Parallel —
+  -R, --Root <ROOT>        📂 Root — [default: .]
+  -E, --Exclude <EXCLUDE>  🚫 Exclude — [default: node_modules]
+      --Pattern <PATTERN>  🔍 Pattern — [default: .git]
+  -O, --Omit <OMIT>        🚫 Omit — [default: Documentation]
+  -h, --help               Print help
+  -V, --version            Print version
 ```
 
 This command will generate summaries for all the Git tags inside the specified
@@ -50,30 +61,26 @@ repository.
 
 The `Summary` tool can be used with various options:
 
-#### --Root or -R:
-
-Set the current working directory to a different folder (default is `.`):
-
-#### --Parallel or -P:
-
-Run processing in parallel (default is `sequential`):
-
-#### --Exclude:
+#### --Exclude or -E:
 
 Exclude certain files or directories (defailt is `node_modules`).
-
-#### --Pattern:
-
-Specify a custom pattern for matching (defailt is `.git`).
-
-#### --Separator:
-
-Define a custom separator (default is system path separator).
 
 #### --Omit or -O:
 
 Specify regex patterns to omit files from processing (default is
 "Documentation").
+
+#### --Parallel or -P:
+
+Run processing in parallel (default is `sequential`):
+
+#### --Pattern:
+
+Specify a custom pattern for matching (defailt is `.git`).
+
+#### --Root or -R:
+
+Set the current working directory to a different folder (default is `.`):
 
 For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
 flags and configuration options. [Pieces OS]
