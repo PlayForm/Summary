@@ -86,18 +86,20 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		}
 	}
 
-	Output.into_iter().for_each(|(Message, Difference)| {
+	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(|(Message, Difference)| {
 		println!("{}", Message);
 
-		for Difference in Difference {
-			println!("{}", Difference);
-		}
+		Difference
+			.into_iter()
+			.sorted_by_key(|Difference| Reverse(Difference.len()))
+			.for_each(|Difference| println!("{}", Difference));
 	});
 }
 
 use dashmap::DashMap;
 use futures::stream::{FuturesUnordered, StreamExt};
+use itertools::Itertools;
 use rayon::prelude::*;
-use std::collections::HashSet;
+use std::{cmp::Reverse, collections::HashSet};
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
