@@ -1,18 +1,20 @@
 # 🗣️ [Summary] —
 
-`Summary` is a powerful command-line tool designed for efficient file processing
-and summarization. It offers both sequential and parallel processing
+`Summary` is a powerful command-line tool designed for efficient Git repository
+analysis and summarization. It offers both sequential and parallel processing
 capabilities, along with flexible file filtering options.
 
 [Summary]: HTTPS://crates.io/crates/psummary
 
-## Feature
+## Features
 
--   Directory traversal and file filtering
--   Parallel and sequential processing modes
 -   Customizable file pattern matching
+-   Diff generation between `Git` tags
+-   Directory traversal and file filtering
 -   Exclusion of specified files or directories
+-   `Git` repository analysis
 -   Integration with [Pieces OS] for enhanced functionality
+-   Parallel and sequential processing modes
 
 ## [Pieces OS] Integration
 
@@ -35,23 +37,57 @@ cargo install psummary
 
 ## Usage
 
+The Summary tool can be used with various options:
+
+```sh
+Summary [OPTIONS]
+```
+
+This command will generate summaries for all the Git tags inside the specified
+repository.
+
+## Options
+
 The `Summary` tool can be used with various options:
 
--   `--Root` or `-R`: Set the current working directory
--   `--Parallel` or `-P`: Run commands in parallel
--   `--Exclude`: Exclude certain files or directories
--   `--Pattern`: Specify a custom pattern for matching
--   `--Separator`: Define a custom separator
+-   `--Root` or `-R`: Set the root directory to analyze (default is current
+    directory)
+-   `--Parallel` or `-P`: Run processing in parallel (default is sequential)
+-   `--Exclude` or `-E`: Exclude certain files or directories (default is
+    "node_modules")
+-   `--Pattern`: Specify a custom pattern for matching (default is ".git")
+-   `--Omit` or `-O`: Specify regex patterns to omit files from processing
+    (default is "Documentation")
+-   `--Separator`: Define a custom separator (default is system path separator)
 
 For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
 flags and configuration options. [Pieces OS]
+
+## Examples
+
+Analyze the current directory:
 
 ```sh
 Summary
 ```
 
-This command will generate summaries for all the `.git` tags inside the current
-repository.
+Analyze a specific directory in parallel:
+
+```sh
+Summary -P -R D:\Developer
+```
+
+Exclude additional directories:
+
+```sh
+Summary -E "node_modules target dist vendor"
+```
+
+Omit specific file patterns:
+
+```sh
+Summary -O "\.md$" -O "\.txt$"
+```
 
 ## Options
 
