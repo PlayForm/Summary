@@ -78,13 +78,13 @@ pub async fn Fn(
 					Insert::Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?,
-						format!("🗣️ Summary from first commit to latest {}", Latest),
+						format!("🗣️ Summary from first commit to {}", Latest),
 					);
 
 					Insert::Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
-						format!("🗣️ Summary from latest {} to last commit", Latest),
+						format!("🗣️ Summary from {} to last commit", Latest),
 					);
 				}
 			}
