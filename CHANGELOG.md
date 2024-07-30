@@ -1,21 +1,25 @@
 ## 0.0.7
 
-### Changes
+### Changed
 
 -   Updated version number in Cargo.toml from 0.0.6 to 0.0.7
 
-### Improvements
+### Improved
 
--   Enhanced output formatting in `Summary.rs`:
-    -   Added newline characters before and after summary content for better
-        readability
-    -   Standardized output formatting across different summary types (first
-        commit to last commit, between tags, first commit to latest tag, and
-        latest tag to last commit)
+-   Enhanced output formatting in `Source/Fn/Summary.rs`:
+    -   Changed println! format from "`\n{}\n`" to "{}" for cleaner output
+    -   This change affects multiple sections of the summary output, including:
+        -   Summary from first commit to last commit
+        -   Summary between specified tags
+        -   Summary from first commit to latest tag
+        -   Summary from latest tag to last commit
 
 ### Developer Notes
 
--   Minor code refactoring in `Summary.rs` for consistent output formatting
+-   These changes improve the readability of the summary output by removing
+    unnecessary backticks and adjusting newline placement.
+-   The core functionality remains the same, with only cosmetic improvements to
+    the output format.
 
 ## 0.0.6
 
