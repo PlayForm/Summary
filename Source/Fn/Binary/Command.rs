@@ -39,6 +39,8 @@ pub fn Fn() -> ArgMatches {
 					"documentation",
 					"SUMMARY.md",
 					"CHANGELOG.md",
+					"summary.md",
+					"changelog.md",
 				]),
 		)
 		.arg(

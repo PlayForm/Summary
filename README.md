@@ -7,7 +7,7 @@ processing capabilities, along with flexible file filtering options.
 [Summary]: HTTPS://crates.io/crates/psummary
 
 ```sh
-Summary -P -O Target -O target -O SUMMARY.md -O CHANGELOG.md > SUMMARY.md
+Summary -P > SUMMARY.md
 ```
 
 [Summary] will now generate the following [SUMMARY.md](./SUMMARY.md) for all the
@@ -69,24 +69,61 @@ The [Summary] tool can be used with various options:
 
 #### --Exclude or -E:
 
-Exclude certain files or directories (defailt is `node_modules`).
+Exclude certain files or directories.
+
+Default is:
+
+```sh
+Summary -E node_modules
+```
 
 #### --Omit or -O:
 
-Specify regex patterns to omit files from processing (default is
-`Documentation`).
+Specify regex patterns to omit files from processing.
+
+Default is:
+
+```sh
+Summary \
+	--Omit "Target" \
+	--Omit "target" \
+	--Omit "Documentation" \
+	--Omit "documentation" \
+	--Omit "SUMMARY.md" \
+	--Omit "CHANGELOG.md" \
+	--Omit "summary.md" \
+	--Omit "changelog.md"
+```
 
 #### --Parallel or -P:
 
-Run processing in parallel (default is `sequential`):
+Run processing in parallel.
+
+Default is:
+
+```sh
+Summary
+```
 
 #### --Pattern:
 
-Specify a custom pattern for matching (defailt is `.git`).
+Specify a custom pattern for matching.
+
+Default is:
+
+```sh
+Summary --Pattern .git
+```
 
 #### --Root or -R:
 
-Set the current working directory to a different folder (default is `.`):
+Set the current working directory to a different folder.
+
+Default is:
+
+```sh
+Summary --Root .
+```
 
 For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
 flags and configuration options. [Pieces OS]
