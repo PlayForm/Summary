@@ -61,11 +61,11 @@ pub async fn Fn(
 						format!("🗣️ Summary from first commit to latest tag: {}:", Latest),
 					);
 
-					Insert::Fn(
-						&Summary,
-						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
-						format!("🗣️ Summary from latest tag: {} to last commit:", Latest),
-					);
+					// Insert::Fn(
+					// 	&Summary,
+					// 	crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
+					// 	format!("🗣️ Summary from latest tag: {} to last commit:", Latest),
+					// );
 				}
 			}
 		}

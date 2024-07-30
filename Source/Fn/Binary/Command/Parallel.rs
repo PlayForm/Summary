@@ -54,13 +54,26 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		drop(Approval);
 	});
 
+	// let Output = DashMap::new();
+
 	while let Some((Entry, Summary)) = Receipt.recv().await {
-		println!("Entry: \n {}", Entry);
-		println!("Summary: \n {:?}", Summary);
+		println!("Entry: {}", Entry);
+
+		for (Hash, (Difference, Message)) in Summary.into_iter() {
+			println!("{}", Hash);
+			println!("{}", Message);
+			println!("{}", Difference);
+
+			// Output
+			//     .entry(message.clone())
+			//     .or_insert_with(Vec::new)
+			//     .push(format!("{}: {}", Entry, content));
+		}
 	}
 }
 
+use dashmap::DashMap;
 use futures::stream::{FuturesUnordered, StreamExt};
-use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+use rayon::prelude::*;
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
