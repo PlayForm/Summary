@@ -1,3 +1,18 @@
+//! This module contains functions for parallel command execution in a binary context.
+
+/// Executes a sequence of operations asynchronously in parallel based on the provided options.
+///
+/// # Arguments
+///
+/// * `Option` - A struct containing various options for execution, including:
+///   - `Entry`: A collection of entries to process
+///   - `Separator`: A separator used for joining entry parts
+///   - `Pattern`: A pattern to match against the last element of each entry
+///   - `Omit`: A collection of items to omit from processing
+///
+/// # Async
+///
+/// This function is asynchronous and returns a future.
 pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 	futures::stream::iter(
 		Entry

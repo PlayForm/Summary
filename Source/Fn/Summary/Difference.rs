@@ -1,3 +1,18 @@
+//! This module provides functionality for generating difference summaries between git commits.
+
+/// Generates a difference summary between two git commits.
+///
+/// # Arguments
+///
+/// * `Repository` - A reference to the git Repository.
+/// * `Start` - The starting commit or reference.
+/// * `End` - The ending commit or reference.
+/// * `Option` - A reference to a struct containing difference options.
+///
+/// # Returns
+///
+/// Returns a Result containing a String with the difference summary if successful,
+/// or a boxed dynamic error if an error occurs.
 pub fn Fn(
 	Repository: &git2::Repository,
 	Start: &str,

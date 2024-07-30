@@ -1,3 +1,14 @@
+//! This module provides functionality for processing binary command entries.
+
+/// Processes entries based on the provided options.
+///
+/// # Arguments
+///
+/// * `Option` - A reference to an Option struct containing processing parameters.
+///
+/// # Returns
+///
+/// Returns a vector of processed entries.
 pub fn Fn(Option { Exclude, Pattern, Root, Separator, .. }: &Option) -> Return {
 	WalkDir::new(Root)
 		.follow_links(false)

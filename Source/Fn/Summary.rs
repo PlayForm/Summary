@@ -1,3 +1,20 @@
+//! This module provides functionality for generating summaries of git repositories.
+
+/// Generates a summary for a given git repository entry.
+///
+/// # Arguments
+///
+/// * `Entry` - A string representing the repository path.
+/// * `Option` - A reference to a struct containing summary options.
+///
+/// # Returns
+///
+/// Returns a Result containing () if successful, or a boxed dynamic error if an error occurs.
+///
+/// # Errors
+///
+/// This function will return an error if the repository cannot be opened or if there are issues
+/// generating the summary.
 pub async fn Fn(
 	Entry: &str,
 	Option: &crate::Struct::Summary::Difference::Struct,

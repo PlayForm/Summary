@@ -1,3 +1,14 @@
+//! This module contains functions for sequential command execution in a binary context.
+
+/// Executes a sequence of operations asynchronously based on the provided options.
+///
+/// # Arguments
+///
+/// * `Option` - A struct containing various options for execution.
+///
+/// # Async
+///
+/// This function is asynchronous and returns a future.
 pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 	futures::future::join_all(
 		Entry

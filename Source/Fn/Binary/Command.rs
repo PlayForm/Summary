@@ -1,3 +1,13 @@
+//! This module defines the command-line interface for the Summary application.
+
+/// Configures and returns the command-line argument matches for the Summary application.
+///
+/// This function sets up the command-line interface using the clap crate, defining
+/// various arguments and their properties.
+///
+/// # Returns
+///
+/// Returns an `ArgMatches` struct containing the parsed command-line arguments.
 pub fn Fn() -> ArgMatches {
 	Command::new("Summary")
 		.version(env!("CARGO_PKG_VERSION"))

@@ -1,3 +1,6 @@
+//! This module defines structures and functions related to binary command options.
+
+/// Represents the structure for binary command options.
 pub struct Struct {
 	pub Exclude: Vec<String>,
 
@@ -13,6 +16,15 @@ pub struct Struct {
 }
 
 impl Struct {
+	/// Creates a new Struct instance from the given options.
+	///
+	/// # Arguments
+	///
+	/// * `Option` - An Option struct containing initialization parameters.
+	///
+	/// # Returns
+	///
+	/// Returns a new instance of Struct.
 	pub fn Fn(Option { Separator, .. }: Option) -> Self {
 		Self {
 			Exclude: Command()
