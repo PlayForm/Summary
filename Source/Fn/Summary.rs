@@ -28,62 +28,51 @@ pub async fn Fn(
 
 			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
 
-			let Count = Tag.len();
-
 			let Head = Repository.head()?;
 
 			let First = Repository.find_commit(First::Fn(&Repository)?)?.id().to_string();
 
 			let Last = Head.peel_to_commit()?.id().to_string();
 
-			match Count {
-				0 => {
-					println!("Summary from {} to {}:", First, Last);
+			if Tag.is_empty() {
+				println!("🗣️ Summary from first commit: {} to last commit: {}:", First, Last);
+
+				println!(
+					"{}",
+					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
+				);
+			} else {
+				for Window in Tag.windows(2) {
+					let Start = Window[0];
+					let End = Window[1];
+
+					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
 
 					println!(
 						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
+						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
 					);
 				}
-				1 => {
-					let Latest = Tag.get(0).unwrap();
 
-					println!("Summary from {} to {}:", First, Latest);
+				if let Some(Latest) = Tag.last() {
+					println!("🗣️ Summary from first commit: {} to latest tag: {}:", First, Latest);
 
 					println!(
 						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option,)?
+						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
 					);
 
-					println!("Summary from {} to {}:", Latest, Last);
+					println!("🗣️ Summary from latest tag: {} to last commit: {}:", Latest, Last);
 
 					println!(
 						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option,)?
-					);
-				}
-				_ => {
-					let Latest = Tag.get(Count - 1).unwrap();
-					let Previous = Tag.get(Count - 2).unwrap();
-
-					println!("Summary from {} to {}:", Previous, Latest);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Previous, Latest, Option,)?
-					);
-
-					println!("Summary from {} to {}:", Previous, Last);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Previous, &Last, Option,)?
+						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
 					);
 				}
 			}
 		}
 		Err(_Error) => {
-			println!("Failed to open repository: {}", _Error);
+			println!("Cannot Repository: {}", _Error);
 
 			return Err(_Error.into());
 		}
