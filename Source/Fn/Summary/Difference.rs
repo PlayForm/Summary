@@ -25,16 +25,6 @@ pub fn Fn(
 	let mut Difference = String::new();
 	let mut Options = git2::DiffOptions::new();
 
-	// Options.pathspec(
-	// 	std::ffi::CString::new(
-	// 		std::iter::once("*".to_string())
-	// 			.chain(Option.Omit.iter().map(|Omit| format!("{}", Omit)))
-	// 			.collect::<Vec<String>>()
-	// 			.join("\0"),
-	// 	)
-	// 	.expect("Cannot create CString"),
-	// );
-
 	Options.indent_heuristic(true);
 	Options.minimal(true);
 	Options.force_text(true);
