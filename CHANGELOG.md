@@ -2,7 +2,6 @@
 
 ### Changed
 
--   Updated license in Cargo.toml from "MIT" to "SEE LICENSE IN LICENSE"
 -   Updated version number in Cargo.toml from 0.0.7 to 0.0.8
 
 ### Added
