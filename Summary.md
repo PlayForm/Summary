@@ -2998,6 +2998,48 @@ include = [
 ]
 
 🗣️ Summary from Summary/v0.0.9 to last commit in .
+diff --git a/Cargo.toml b/Cargo.toml
+index 0f0c9c7..1919b93 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -16,6 +16,7 @@ git2 = { version = "0.19.0" }
+num_cpus = "1.16.0"
+regex = "1.10.5"
+dashmap = "6.0.1"
+itertools = "0.13.0"
+
+[build-dependencies]
+serde = { version = "1.0.204", features = ["derive"] }
+diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
+index 02dbcc4..aed15be 100644
+--- a/Source/Fn/Binary/Command/Parallel.rs
++++ b/Source/Fn/Binary/Command/Parallel.rs
+@@ -86,18 +86,20 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+		}
+	}
+
+	Output.into_iter().for_each(|(Message, Difference)| {
+	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(|(Message, Difference)| {
+		println!("{}", Message);
+
+		for Difference in Difference {
+			println!("{}", Difference);
+		}
+		Difference
+			.into_iter()
+			.sorted_by_key(|Difference| Reverse(Difference.len()))
+			.for_each(|Difference| println!("{}", Difference));
+	});
+}
+
+use dashmap::DashMap;
+use futures::stream::{FuturesUnordered, StreamExt};
+use itertools::Itertools;
+use rayon::prelude::*;
+use std::collections::HashSet;
+use std::{cmp::Reverse, collections::HashSet};
+
+use crate::Struct::Binary::Command::Entry::Struct as Option;
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
 index 5332dfa..240a227 100644
 --- a/Source/Fn/Summary.rs
