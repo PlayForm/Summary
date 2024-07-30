@@ -1,16 +1,3 @@
-/// Defines and configures command-line arguments for the "Summary" command.
-///
-/// # Returns
-///
-/// * `ArgMatches` - The parsed command-line arguments.
-///
-/// # Example
-///
-/// ```
-/// let matches = Fn();
-/// let parallel = matches.get_flag("Parallel");
-/// let root = matches.get_one::<String>("Root").unwrap();
-/// ```
 pub fn Fn() -> ArgMatches {
 	Command::new("Summary")
 		.version(env!("CARGO_PKG_VERSION"))

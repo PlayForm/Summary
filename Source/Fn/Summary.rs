@@ -1,23 +1,3 @@
-/// Generates a summary based on the provided options.
-///
-/// # Arguments
-///
-/// * `Option` - A struct containing the necessary information for generating the summary.
-///
-/// # Returns
-///
-/// * `Return` - The generated summary.
-///
-/// # Example
-///
-/// ```
-/// let Option = Option {
-///     // Fields needed for summary generation
-/// };
-///
-/// let summary = Fn(&Option);
-///
-/// ```
 pub async fn Fn(
 	Entry: &str,
 	Option: &crate::Struct::Summary::Difference::Struct,

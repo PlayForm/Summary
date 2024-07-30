@@ -1,22 +1,3 @@
-/// Processes entries sequentially, filtering and executing commands based on specified criteria.
-///
-/// # Arguments
-///
-/// * `Option` - A struct containing the following fields:
-///   * `Entry`: Vec<Vec<String>> - List of entries to process
-///   * `Pattern`: String - The pattern to match for inclusion
-///   * `Separator`: char - The path separator character
-///
-/// # Example
-///
-/// ```
-/// let option = Option {
-///     Entry: vec![vec!["path".to_string(), "to".to_string(), "file.txt".to_string()]],
-///     Pattern: "file.txt".to_string(),
-///     Separator: '/',
-/// };
-/// Fn(option);
-/// ```
 pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 	futures::future::join_all(
 		Entry

@@ -1,18 +1,12 @@
-/// Represents the entry options for processing in the Summary command.
 pub struct Struct {
-	/// The path.
 	pub Entry: Type,
 
-	/// Flag indicating whether to use parallel processing.
 	pub Parallel: Parallel,
 
-	/// The pattern to match for inclusion in processing.
 	pub Pattern: Pattern,
 
-	/// The path separator character.
 	pub Separator: Separator,
 
-	/// List of items to omit from processing.
 	pub Omit: Omit,
 }
 
@@ -32,5 +26,4 @@ use crate::Struct::Binary::Command::Option::{
 	Omit, Parallel, Pattern, Separator, Struct as Option,
 };
 
-/// Defines a type alias for a vector of vectors of strings.
 pub type Type = Vec<Vec<String>>;

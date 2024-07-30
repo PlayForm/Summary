@@ -1,26 +1,18 @@
-/// Represents the configuration options for the Summary command.
 pub struct Struct {
-	/// List of patterns to exclude from processing.
 	pub Exclude: Vec<String>,
 
-	/// List of items to omit from processing.
 	pub Omit: Vec<String>,
 
-	/// Flag indicating whether to use parallel processing.
 	pub Parallel: Parallel,
 
-	/// The pattern to match for inclusion in processing.
 	pub Pattern: Pattern,
 
-	/// The root directory to start processing from.
 	pub Root: String,
 
-	/// The path separator character.
 	pub Separator: Separator,
 }
 
 impl Struct {
-	/// Creates a new Struct instance from the provided Option.
 	pub fn Fn(Option { Separator, .. }: Option) -> Self {
 		Self {
 			Exclude: Command()

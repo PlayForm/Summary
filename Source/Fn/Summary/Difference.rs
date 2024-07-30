@@ -1,21 +1,3 @@
-/// Calculates the difference between two summaries.
-///
-/// # Arguments
-///
-/// * `Option` - A struct containing the necessary information for calculating the difference.
-///
-/// # Returns
-///
-/// * `Return` - The calculated difference between the summaries.
-///
-/// # Example
-///
-/// ```
-/// let option = Option {
-///     // Fields needed for difference calculation
-/// };
-/// let difference = Fn(&option);
-/// ```
 pub fn Fn(
 	Repository: &git2::Repository,
 	Start: &str,
