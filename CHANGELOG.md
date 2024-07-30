@@ -1,5 +1,22 @@
 ## 0.0.7
 
+### Changes
+
+-   Updated version number in Cargo.toml from 0.0.6 to 0.0.7
+
+### Improvements
+
+-   Enhanced output formatting in `Summary.rs`:
+    -   Added newline characters before and after summary content for better
+        readability
+    -   Standardized output formatting across different summary types (first
+        commit to last commit, between tags, first commit to latest tag, and
+        latest tag to last commit)
+
+### Developer Notes
+
+-   Minor code refactoring in `Summary.rs` for consistent output formatting
+
 ## 0.0.6
 
 ### Dependencies
@@ -15,7 +32,7 @@
     -   Latest tag and last commit
 -   Added new module `First.rs` to handle retrieving the first commit in a
     repository
--   Refined README documentation for the `--Omit` or `-O` option
+-   Refined `README.md` documentation for the `--Omit` or `-O` option
 
 ### Internal Improvements
 
@@ -30,7 +47,7 @@
 ### Changes
 
 -   Updated version number in Cargo.toml from 0.0.4 to 0.0.5
--   Improved README.md formatting and clarified feature descriptions
+-   Improved `README.md` formatting and clarified feature descriptions
 -   Enhanced Git repository analysis functionality
 
 ### Code Improvements
@@ -57,11 +74,11 @@
 ### Changes
 
 -   Updated version number in Cargo.toml from 0.0.3 to 0.0.4
--   Improved README.md with more detailed information about the tool's features
-    and usage
+-   Improved `README.md` with more detailed information about the tool's
+    features and usage
 -   Enhanced Git repository analysis capabilities
 -   Refined description of Pieces OS integration
--   Added more detailed usage instructions and examples in README.md
+-   Added more detailed usage instructions and examples in `README.md`
 
 ### Features
 
@@ -70,8 +87,8 @@
 
 ### Documentation
 
--   Updated README.md with new features and usage instructions
--   Added more comprehensive examples in README.md
+-   Updated `README.md` with new features and usage instructions
+-   Added more comprehensive examples in `README.md`
 -   Clarified Pieces OS integration benefits
 
 ### Internal
@@ -94,7 +111,7 @@
 -   Updated build script (`build.rs`) for better dependency management
 -   Refactored `Summary.rs` for improved performance and flexibility
 -   Modified `Command.rs` to include new command-line options
--   Updated README.md with more detailed feature descriptions and usage
+-   Updated `README.md` with more detailed feature descriptions and usage
     instructions
 
 ### Removed
@@ -111,7 +128,7 @@
     file filtering capabilities
 -   The `Omit` feature allows for more granular control over which files are
     processed
--   README now includes information about Pieces OS integration
+-   `README.md` now includes information about Pieces OS integration
 
 ## 0.0.2
 

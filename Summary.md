@@ -1,4 +1,56 @@
-🗣️ Summary from tag: Summary/v0.0.6 to tag: Summary/v0.0.1:
+🗣️ Summary from tag: Summary/v0.0.6 to tag: Summary/v0.0.7:
+diff --git a/Cargo.toml b/Cargo.toml
+index 7c5b90e..c907ec5 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -35,5 +35,5 @@ description = "🗣️ Summary —"
+license = "MIT"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.0.6"
+version = "0.0.7"
+edition = "2021"
+diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
+index 2411611..f199ca3 100644
+--- a/Source/Fn/Summary.rs
++++ b/Source/Fn/Summary.rs
+@@ -35,7 +35,7 @@ pub async fn Fn(
+				println!("🗣️ Summary from first commit to last commit:");
+
+				println!(
+					"```\n{}\n```",
+					"{}",
+					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
+				);
+			} else {
+@@ -46,7 +46,7 @@ pub async fn Fn(
+					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
+
+					println!(
+						"```\n{}\n```",
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
+					);
+				}
+@@ -55,14 +55,14 @@ pub async fn Fn(
+					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
+
+					println!(
+						"```\n{}\n```",
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
+					);
+
+					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
+
+					println!(
+						"```\n{}\n```",
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
+					);
+				}
+
+🗣️ Summary from tag: Summary/v0.0.7 to tag: Summary/v0.0.1:
 diff --git a/build.rs b/build.rs
 index 1f0de60..73ccc94 100644
 --- a/build.rs
@@ -20,7 +72,7 @@ struct Toml {
 use serde::Deserialize;
 use std::fs;
 diff --git a/Cargo.toml b/Cargo.toml
-index 7c5b90e..745ad03 100644
+index c907ec5..745ad03 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -14,11 +14,10 @@ rayon = "1.10.0"
@@ -40,7 +92,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 license = "MIT"
 name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
-version = "0.0.6"
+version = "0.0.7"
 version = "0.0.1"
 edition = "2021"
 diff --git a/README.md b/README.md
@@ -496,7 +548,7 @@ pub fn Fn(Option { Entry, Pattern, Separator, .. }: Option) {
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
-index 2411611..eb2d2ce 100644
+index f199ca3..eb2d2ce 100644
 --- a/Source/Fn/Summary.rs
 +++ b/Source/Fn/Summary.rs
 @@ -1,77 +1,44 @@
@@ -541,7 +593,7 @@ pub async fn Fn(
 				println!("🗣️ Summary from first commit to last commit:");
 
 				println!(
-					"```\n{}\n```",
+					"{}",
 					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
 				);
 			} else {
@@ -552,7 +604,7 @@ pub async fn Fn(
 					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
 					);
 				}
@@ -561,14 +613,14 @@ pub async fn Fn(
 					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
 					);
 
 					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
 					);
 				}
@@ -3159,7 +3211,7 @@ pub mod Difference;
 
 🗣️ Summary from latest tag: Summary/v0.0.5 to last commit:
 diff --git a/Cargo.toml b/Cargo.toml
-index 3615257..7c5b90e 100644
+index 3615257..c907ec5 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -18,7 +18,7 @@ regex = "1.10.5"
@@ -3176,7 +3228,7 @@ license = "MIT"
 name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
 version = "0.0.5"
-version = "0.0.6"
+version = "0.0.7"
 edition = "2021"
 diff --git a/README.md b/README.md
 index 4449a1b..d388d49 100644
@@ -3393,7 +3445,7 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 	futures::future::join_all(
 		Entry
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
-index ae3e650..2411611 100644
+index ae3e650..f199ca3 100644
 --- a/Source/Fn/Summary.rs
 +++ b/Source/Fn/Summary.rs
 @@ -1,21 +1,20 @@
@@ -3443,9 +3495,7 @@ pub async fn Fn(
 				println!("🗣️ Summary from first commit to last commit:");
 
 				println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
-					"```\n{}\n```",
+					"{}",
 					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
 				);
 			} else {
@@ -3456,7 +3506,7 @@ pub async fn Fn(
 					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
 					);
 				}
@@ -3465,14 +3515,15 @@ pub async fn Fn(
 					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
 					);
 
 					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
 					);
 				}
