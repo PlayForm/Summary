@@ -2304,7 +2304,7 @@ pub mod Difference;
 
 🗣️ Summary from latest tag: Summary/v0.0.6 to last commit:
 diff --git a/README.md b/README.md
-index 786f795..8963bab 100644
+index 786f795..d388d49 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,11 +1,18 @@
@@ -2318,7 +2318,7 @@ processing capabilities, along with flexible file filtering options.
 [Summary]: HTTPS://crates.io/crates/psummary
 
 ```sh
-Summary -P -O target -O Summary.md > Summary.md
+Summary -P -O Target -O target -O Summary.md -O CHANGELOG.md > Summary.md
 ```
 
 [Summary] will now generate the following [Summary.md](./Summary.md) for all the
@@ -2509,7 +2509,7 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 	futures::future::join_all(
 		Entry
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
-index 0e302ee..016d449 100644
+index 0e302ee..f199ca3 100644
 --- a/Source/Fn/Summary.rs
 +++ b/Source/Fn/Summary.rs
 @@ -1,23 +1,20 @@
@@ -2545,6 +2545,32 @@ index 0e302ee..016d449 100644
 pub async fn Fn(
 	Entry: &str,
 	Option: &crate::Struct::Summary::Difference::Struct,
+@@ -35,7 +32,7 @@ pub async fn Fn(
+			let Last = Head.peel_to_commit()?.id().to_string();
+
+			if Tag.is_empty() {
+				println!("🗣️ Summary from first commit: {} to last commit: {}:", First, Last);
+				println!("🗣️ Summary from first commit to last commit:");
+
+				println!(
+					"{}",
+@@ -55,14 +52,14 @@ pub async fn Fn(
+				}
+
+				if let Some(Latest) = Tag.last() {
+					println!("🗣️ Summary from first commit: {} to latest tag: {}:", First, Latest);
+					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
+
+					println!(
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
+					);
+
+					println!("🗣️ Summary from latest tag: {} to last commit: {}:", Latest, Last);
+					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
+
+					println!(
+						"{}",
 diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
 index cc25057..544095b 100644
 --- a/Source/Fn/Summary/Difference.rs
