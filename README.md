@@ -7,10 +7,10 @@ processing capabilities, along with flexible file filtering options.
 [Summary]: HTTPS://crates.io/crates/psummary
 
 ```sh
-Summary -P > SUMMARY.md
+Summary -P > Summary.md
 ```
 
-[Summary] will now generate the following [SUMMARY.md](./SUMMARY.md) for all the
+[Summary] will now generate the following [Summary.md](./Summary.md) for all the
 commits and tags between the first and the last commit.
 
 ## Features
