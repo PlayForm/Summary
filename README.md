@@ -104,7 +104,7 @@ List of regex to to match on files omitted from processing.
 [Pieces OS] For extended functionality and system integration.
 
 [Summary]: HTTPS://crates.io/crates/psummary
-[Pieces OS]: (HTTPS://Pieces.Appgit)
+[Pieces OS]: (HTTPS://Pieces.App)
 
 ## Changelog
 
