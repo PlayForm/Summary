@@ -50,12 +50,8 @@ flags and configuration options. [Pieces OS]
 Summary
 ```
 
-This command will fetch from upstream for all `.git` repositories inside the
-current directory. It essentially replaces the following command:
-
-```sh
-find -iname .git -type d -execdir git fetch upstream \;
-```
+This command will generate summaries for all the `.git` tags inside the current
+repository.
 
 ## Options
 
@@ -64,7 +60,7 @@ find -iname .git -type d -execdir git fetch upstream \;
 Set the current working directory to a different folder (default is `.`):
 
 ```sh
-Summary -R D:\Developer .git git fetch upstream
+Summary -R D:\Developer
 ```
 
 #### --Parallel or -P:
@@ -72,7 +68,7 @@ Summary -R D:\Developer .git git fetch upstream
 Summary commands in `parallel` (default is `sequential`):
 
 ```sh
-Summary -P -R D:\Developer .git git fetch upstream
+Summary -P -R D:\Developer
 ```
 
 #### --Exclude:
@@ -86,7 +82,11 @@ Specify a custom pattern for matching (defailt is `.git`)
 
 #### --Separator:
 
-Define a custom separator
+Define a custom separator.
+
+#### --Omit:
+
+List of regex to to match on files omitted from processing.
 
 ## Dependencies
 
