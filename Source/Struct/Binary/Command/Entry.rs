@@ -1,20 +1,29 @@
-//! This module defines structures and functions related to binary command entries.
-
 /// Represents the structure for binary command entries.
+///
+/// This struct holds various fields related to the command entries, including the entry paths,
+/// parallel execution flag, pattern to match, separator for file paths, and omit patterns.
 pub struct Struct {
+	/// A vector of vectors, where each inner vector contains the components of a file path.
 	pub Entry: Type,
 
+	/// A flag indicating whether to execute commands in parallel.
 	pub Parallel: Parallel,
 
+	/// A string pattern to match against the last element of each entry.
 	pub Pattern: Pattern,
 
+	/// The separator used for file paths.
 	pub Separator: Separator,
 
+	/// A vector of strings representing patterns to omit.
 	pub Omit: Omit,
 }
 
 impl Struct {
-	/// Creates a new Struct instance from the given options.
+	/// Creates a new instance of the Struct.
+	///
+	/// This function initializes the Struct with the provided options, generating the entry paths
+	/// and cloning the omit patterns, parallel flag, pattern, and separator from the options.
 	///
 	/// # Arguments
 	///
@@ -38,4 +47,5 @@ use crate::Struct::Binary::Command::Option::{
 	Omit, Parallel, Pattern, Separator, Struct as Option,
 };
 
+/// Type alias for a vector of vectors, where each inner vector contains the components of a file path.
 pub type Type = Vec<Vec<String>>;

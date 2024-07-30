@@ -1,20 +1,40 @@
-//! This module provides functionality for generating summaries of git repositories.
-
-/// Generates a summary for a given git repository entry.
+/// Asynchronously generates a summary of differences between commits in a git repository.
+///
+/// This function performs the following steps:
+/// 1. Opens the specified git repository.
+/// 2. Retrieves and sorts the tags in the repository.
+/// 3. Identifies the first and last commits in the repository.
+/// 4. Generates summaries of differences between the first commit and the last commit, as well as between each pair of consecutive tags.
+/// 5. Inserts the generated summaries into a DashMap.
 ///
 /// # Arguments
 ///
-/// * `Entry` - A string representing the repository path.
-/// * `Option` - A reference to a struct containing summary options.
+/// * `Entry` - A string slice representing the path to the git repository.
+/// * `Option` - A reference to a struct containing options for generating the diff summary.
 ///
 /// # Returns
 ///
-/// Returns a Result containing () if successful, or a boxed dynamic error if an error occurs.
+/// Returns a `Result` containing a DashMap with the generated summaries if successful, or a boxed `dyn std::error::Error` if an error occurs.
 ///
 /// # Errors
 ///
-/// This function will return an error if the repository cannot be opened or if there are issues
-/// generating the summary.
+/// This function will return an error if there are issues with opening the repository, retrieving tags, or generating the diff summaries.
+///
+/// # Example
+///
+/// ```rust
+/// let options = crate::Struct::Summary::Difference::Struct {
+///     Omit: vec!["(?i)\\.log$".to_string()],
+/// };
+/// let summary = Fn("/path/to/repo", &options).await.expect("Cannot generate summary.");
+/// for entry in summary.iter() {
+///     println!("{:?}", entry);
+/// }
+/// ```
+///
+/// # Panics
+///
+/// This function does not panic.
 pub async fn Fn(
 	Entry: &str,
 	Option: &crate::Struct::Summary::Difference::Struct,

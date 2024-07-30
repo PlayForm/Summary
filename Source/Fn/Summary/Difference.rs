@@ -1,18 +1,42 @@
-//! This module provides functionality for generating difference summaries between git commits.
-
-/// Generates a difference summary between two git commits.
+/// Generates a diff summary between two commits in a git repository.
+///
+/// This function computes the differences between two specified commits in a git repository,
+/// while filtering out changes to files that match a set of predefined patterns or user-specified
+/// patterns to omit. The resulting diff is returned as a string.
 ///
 /// # Arguments
 ///
-/// * `Repository` - A reference to the git Repository.
-/// * `Start` - The starting commit or reference.
-/// * `End` - The ending commit or reference.
-/// * `Option` - A reference to a struct containing difference options.
+/// * `Repository` - A reference to the git repository.
+/// * `Start` - A string slice representing the starting commit hash.
+/// * `End` - A string slice representing the ending commit hash.
+/// * `Option` - A reference to a struct containing options for generating the diff summary.
 ///
 /// # Returns
 ///
-/// Returns a Result containing a String with the difference summary if successful,
-/// or a boxed dynamic error if an error occurs.
+/// Returns a `Result` containing the diff summary as a `String` if successful, or a `git2::Error`
+/// if an error occurs.
+///
+/// # Errors
+///
+/// This function will return an error if there are issues with accessing the repository, parsing
+/// the commit hashes, or generating the diff.
+///
+/// # Example
+///
+/// ```rust
+/// let repo = git2::Repository::open("/path/to/repo").expect("Cannot open repository.");
+/// let start_commit = "abc123";
+/// let end_commit = "def456";
+/// let options = crate::Struct::Summary::Difference::Struct {
+///     Omit: vec!["(?i)\\.log$".to_string()],
+/// };
+/// let diff_summary = Fn(&repo, start_commit, end_commit, &options).expect("Cannot generate diff.");
+/// println!("{}", diff_summary);
+/// ```
+///
+/// # Panics
+///
+/// This function will panic if the regex set cannot be created.
 pub fn Fn(
 	Repository: &git2::Repository,
 	Start: &str,

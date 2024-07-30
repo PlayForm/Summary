@@ -1,26 +1,36 @@
-//! This module defines structures and functions related to binary command options.
-
-/// Represents the structure for binary command options.
+/// Represents the options for binary command execution.
+///
+/// This struct holds various fields related to the command options, including exclude patterns,
+/// omit patterns, parallel execution flag, pattern to match, root directory, and separator for file paths.
 pub struct Struct {
+	/// A vector of strings representing patterns to exclude.
 	pub Exclude: Vec<String>,
 
+	/// A vector of strings representing patterns to omit.
 	pub Omit: Vec<String>,
 
+	/// A flag indicating whether to execute commands in parallel.
 	pub Parallel: Parallel,
 
+	/// A string pattern to match against the last element of each entry.
 	pub Pattern: Pattern,
 
+	/// The root directory to start the walk from.
 	pub Root: String,
 
+	/// The separator used for file paths.
 	pub Separator: Separator,
 }
 
 impl Struct {
-	/// Creates a new Struct instance from the given options.
+	/// Creates a new instance of the Struct.
+	///
+	/// This function initializes the Struct with the provided options, generating the exclude patterns,
+	/// omit patterns, parallel flag, pattern, root directory, and separator from the options.
 	///
 	/// # Arguments
 	///
-	/// * `Option` - An Option struct containing initialization parameters.
+	/// * `Option` - A reference to an Option struct containing initialization parameters.
 	///
 	/// # Returns
 	///
@@ -48,8 +58,17 @@ impl Struct {
 
 use crate::{Fn::Binary::Command::Fn as Command, Struct::Binary::Command::Struct as Option};
 
+/// Type alias for a vector of strings representing command options.
 pub type Command = Vec<String>;
+
+/// Type alias for a boolean flag indicating parallel execution.
 pub type Parallel = bool;
+
+/// Type alias for a string pattern to match.
 pub type Pattern = String;
+
+/// Type alias for a character used as a separator for file paths.
 pub type Separator = char;
+
+/// Type alias for a vector of strings representing patterns to omit.
 pub type Omit = Vec<String>;

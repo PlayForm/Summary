@@ -1,18 +1,33 @@
-//! This module contains functions for parallel command execution in a binary context.
-
-/// Executes a sequence of operations asynchronously in parallel based on the provided options.
+/// Asynchronously processes entries to generate summaries and outputs the results.
+///
+/// This function performs the following steps:
+/// 1. Filters and processes the provided entries based on the given pattern and separator.
+/// 2. Spawns asynchronous tasks to generate summaries for each entry.
+/// 3. Collects the results and outputs them.
 ///
 /// # Arguments
 ///
-/// * `Option` - A struct containing various options for execution, including:
-///   - `Entry`: A collection of entries to process
-///   - `Separator`: A separator used for joining entry parts
-///   - `Pattern`: A pattern to match against the last element of each entry
-///   - `Omit`: A collection of items to omit from processing
+/// * `Option` - A struct containing the following fields:
+///   - `Entry`: A vector of vectors, where each inner vector contains the components of a file path.
+///   - `Separator`: A character used to join the components of the file path.
+///   - `Pattern`: A string pattern to match against the last element of each entry.
+///   - `Omit`: A vector of strings representing patterns to omit.
 ///
-/// # Async
+/// # Example
 ///
-/// This function is asynchronous and returns a future.
+/// ```rust
+/// let options = Option {
+///     Entry: vec![vec!["path".to_string(), "to".to_string(), "file.git".to_string()]],
+///     Separator: '/',
+///     Pattern: ".git".to_string(),
+///     Omit: vec!["target".to_string()],
+/// };
+/// Fn(options).await;
+/// ```
+///
+/// # Errors
+///
+/// This function will log errors if it fails to generate summaries or send results.
 pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 	let (Approval, mut Receipt) = tokio::sync::mpsc::unbounded_channel();
 
