@@ -18,7 +18,7 @@
 /// Fn(option).await;
 /// ```
 pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
-	stream::iter(
+	futures::stream::iter(
 		Entry
 			.into_par_iter()
 			.filter_map(|Entry| {
@@ -33,8 +33,11 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		let Omit = Omit.clone();
 
 		async move {
-			match crate::Fn::Summary::Fn(&Entry, &crate::Fn::Summary::Difference::Option { Omit })
-				.await
+			match crate::Fn::Summary::Fn(
+				&Entry,
+				&crate::Struct::Summary::Difference::Struct { Omit },
+			)
+			.await
 			{
 				Ok(Summary) => Ok(Summary),
 				Err(_Error) => Err(format!("Error generating summary for {}: {}", Entry, _Error)),
@@ -46,6 +49,7 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 	.await;
 }
 
+use futures::stream::StreamExt;
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+
 use crate::Struct::Binary::Command::Entry::Struct as Option;
-use futures::stream::{self, StreamExt};
-use rayon::prelude::*;

@@ -18,16 +18,16 @@
 /// ```
 pub async fn Fn(
 	Entry: &str,
-	Option: &crate::Fn::Summary::Difference::Option,
+	Option: &crate::Struct::Summary::Difference::Struct,
 ) -> Result<(), Box<dyn std::error::Error>> {
 	match Repository::open(Entry) {
 		Ok(Repository) => {
-			let Tag = Repository.tag_names(None)?;
+			let Name = Repository.tag_names(None)?;
 
-			let Tags: Vec<_> = Tag.iter().filter_map(|Tag| Tag).collect();
+			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
 
-			for (Index, &Current) in Tags.iter().enumerate() {
-				for (_, &Next) in Tags.iter().enumerate().skip(Index + 1) {
+			for (Index, &Current) in Tag.iter().enumerate() {
+				for (_, &Next) in Tag.iter().enumerate().skip(Index + 1) {
 					println!(
 						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?

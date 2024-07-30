@@ -33,7 +33,7 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 				async move {
 					match crate::Fn::Summary::Fn(
 						&Entry,
-						&crate::Fn::Summary::Difference::Option { Omit },
+						&crate::Struct::Summary::Difference::Struct { Omit },
 					)
 					.await
 					{
@@ -45,7 +45,8 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 				}
 			})
 			.collect::<Vec<_>>(),
-	).await;
+	)
+	.await;
 }
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
