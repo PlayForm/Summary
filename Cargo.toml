@@ -18,7 +18,7 @@ regex = "1.10.5"
 
 [build-dependencies]
 serde = { version = "1.0.204", features = ["derive"] }
-toml = "0.8.16"
+toml = "0.8.17"
 
 [lib]
 crate-type = ["staticlib", "cdylib", "rlib"]
@@ -35,5 +35,5 @@ description = "🗣️ Summary —"
 license = "MIT"
 name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
-version = "0.0.5"
+version = "0.0.6"
 edition = "2021"
