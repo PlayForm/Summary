@@ -18,8 +18,7 @@ capabilities, along with flexible file filtering options.
 
 ## [Pieces OS] Integration
 
-The `Summary` CLI supports [Pieces OS], essentially acting as a plugin that can rewrite
-the whole system. This integration allows for:
+The `Summary` CLI supports [Pieces OS], allowing it to:
 
 -   Enhanced code analysis and summarization.
 -   Provide AI-driven code analysis and insights.
