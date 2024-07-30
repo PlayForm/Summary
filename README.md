@@ -74,7 +74,7 @@ Exclude certain files or directories.
 Default is:
 
 ```sh
-Summary -E node_modules
+Summary -P -E node_modules
 ```
 
 #### --Omit or -O:
@@ -84,11 +84,11 @@ Specify regex patterns to omit files from processing.
 Default is:
 
 ```sh
-Summary \
+Summary -P \
 	--Omit "(?i)documentation" \
 	--Omit "(?i)target" \
 	--Omit "(?i)changelog\.md$" \
-	--Omit "(?i)summary\.md$" \
+	--Omit "(?i)summary\.md$"
 ```
 
 #### --Parallel or -P:
@@ -108,7 +108,7 @@ Specify a custom pattern for matching.
 Default is:
 
 ```sh
-Summary --Pattern .git
+Summary -P --Pattern .git
 ```
 
 #### --Root or -R:
@@ -118,7 +118,7 @@ Set the current working directory to a different folder.
 Default is:
 
 ```sh
-Summary --Root .
+Summary -P --Root .
 ```
 
 For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
@@ -141,13 +141,13 @@ Summary -P -R D:\Developer
 Exclude additional directories:
 
 ```sh
-Summary -E "node_modules target dist vendor"
+Summary -P -E "node_modules target dist vendor"
 ```
 
 Omit specific file patterns:
 
 ```sh
-Summary -O "\.md$" -O "\.txt$"
+Summary -P -O "\.md$" -O "\.txt$"
 ```
 
 ## Dependencies
