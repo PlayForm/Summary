@@ -67,7 +67,7 @@ Exclude certain files or directories (defailt is `node_modules`).
 #### --Omit or -O:
 
 Specify regex patterns to omit files from processing (default is
-"Documentation").
+`Documentation`).
 
 #### --Parallel or -P:
 
