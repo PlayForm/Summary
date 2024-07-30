@@ -19,65 +19,65 @@ pub fn Fn(
 	End: &str,
 	Option: &crate::Struct::Summary::Difference::Struct,
 ) -> Result<String, git2::Error> {
-	let mut Omit = vec![
-		r"\.7z$",
-		r"\.accdb$",
-		r"\.avi$",
-		r"\.bak$",
-		r"\.bin$",
-		r"\.bmp$",
-		r"\.class$",
-		r"\.dat$",
-		r"\.db$",
-		r"\.dll$",
-		r"\.dll\.lib$",
-		r"\.dll\.exp$",
-		r"\.doc$",
-		r"\.docx$",
-		r"\.dylib$",
-		r"\.exe$",
-		r"\.flac$",
-		r"\.gif$",
-		r"\.gz$",
-		r"\.heic$",
-		r"\.ico$",
-		r"\.img$",
-		r"\.iso$",
-		r"\.jpeg$",
-		r"\.jpg$",
-		r"\.m4a$",
-		r"\.mdb$",
-		r"\.mkv$",
-		r"\.mov$",
-		r"\.mp3$",
-		r"\.mp4$",
-		r"\.o$",
-		r"\.obj$",
-		r"\.ogg$",
-		r"\.pdb$",
-		r"\.pdf$",
-		r"\.png$",
-		r"\.ppt$",
-		r"\.pptx$",
-		r"\.pyc$",
-		r"\.pyo$",
-		r"\.rar$",
-		r"\.so$",
-		r"\.sqlite$",
-		r"\.svg$",
-		r"\.tar$",
-		r"\.tiff$",
-		r"\.wav$",
-		r"\.webp$",
-		r"\.wmv$",
-		r"\.xls$",
-		r"\.xlsx$",
-		r"\.zip$",
+	let mut Common = vec![
+		r"(?i)\.7z$",
+		r"(?i)\.accdb$",
+		r"(?i)\.avi$",
+		r"(?i)\.bak$",
+		r"(?i)\.bin$",
+		r"(?i)\.bmp$",
+		r"(?i)\.class$",
+		r"(?i)\.dat$",
+		r"(?i)\.db$",
+		r"(?i)\.dll$",
+		r"(?i)\.dll\.lib$",
+		r"(?i)\.dll\.exp$",
+		r"(?i)\.doc$",
+		r"(?i)\.docx$",
+		r"(?i)\.dylib$",
+		r"(?i)\.exe$",
+		r"(?i)\.flac$",
+		r"(?i)\.gif$",
+		r"(?i)\.gz$",
+		r"(?i)\.heic$",
+		r"(?i)\.ico$",
+		r"(?i)\.img$",
+		r"(?i)\.iso$",
+		r"(?i)\.jpeg$",
+		r"(?i)\.jpg$",
+		r"(?i)\.m4a$",
+		r"(?i)\.mdb$",
+		r"(?i)\.mkv$",
+		r"(?i)\.mov$",
+		r"(?i)\.mp3$",
+		r"(?i)\.mp4$",
+		r"(?i)\.o$",
+		r"(?i)\.obj$",
+		r"(?i)\.ogg$",
+		r"(?i)\.pdb$",
+		r"(?i)\.pdf$",
+		r"(?i)\.png$",
+		r"(?i)\.ppt$",
+		r"(?i)\.pptx$",
+		r"(?i)\.pyc$",
+		r"(?i)\.pyo$",
+		r"(?i)\.rar$",
+		r"(?i)\.so$",
+		r"(?i)\.sqlite$",
+		r"(?i)\.svg$",
+		r"(?i)\.tar$",
+		r"(?i)\.tiff$",
+		r"(?i)\.wav$",
+		r"(?i)\.webp$",
+		r"(?i)\.wmv$",
+		r"(?i)\.xls$",
+		r"(?i)\.xlsx$",
+		r"(?i)\.zip$",
 	];
 
-	Omit.extend(Option.Omit.iter().map(|Omit| Omit.as_str()));
+	Common.extend(Option.Omit.iter().map(|Omit| Omit.as_str()));
 
-	let Regex = Omit.into_par_iter().filter_map(|Omit| Regex::new(Omit).ok()).collect::<Vec<_>>();
+	let Regex = regex::RegexSet::new(Common).expect("Cannot RegexSet.");
 
 	let mut Options = git2::DiffOptions::new();
 
@@ -93,7 +93,7 @@ pub fn Fn(
 	Options.show_binary(false);
 	Options.force_binary(false);
 
-	let mut Difference = String::new();
+	let mut Output = String::new();
 
 	Repository
 		.diff_tree_to_tree(
@@ -102,21 +102,17 @@ pub fn Fn(
 			Some(&mut Options),
 		)?
 		.print(git2::DiffFormat::Patch, |Delta, _, Line| {
-			if !Regex.iter().any(|Omit| {
-				Omit.is_match(&Delta.old_file().path().unwrap().display().to_string())
-					|| Omit.is_match(&Delta.new_file().path().unwrap().display().to_string())
-			}) {
+			if !Regex.is_match(&Delta.old_file().path().unwrap().display().to_string())
+				&& !Regex.is_match(&Delta.new_file().path().unwrap().display().to_string())
+			{
 				match std::str::from_utf8(Line.content()) {
-					Ok(Line) => Difference.push_str(Line),
+					Ok(Line) => Output.push_str(Line),
 					Err(_) => (),
 				}
-			};
+			}
 
 			true
 		})?;
 
-	Ok(Difference)
+	Ok(Output)
 }
-
-use rayon::prelude::{IntoParallelIterator, ParallelIterator};
-use regex::Regex;

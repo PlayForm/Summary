@@ -33,14 +33,10 @@ pub fn Fn() -> ArgMatches {
 				.help("🚫 Omit —")
 				.action(clap::ArgAction::Append)
 				.default_values([
-					"Target",
-					"target",
-					"Documentation",
-					"documentation",
-					"SUMMARY.md",
-					"CHANGELOG.md",
-					"summary.md",
-					"changelog.md",
+					"(?i)documentation",
+					"(?i)target",
+					r"(?i)changelog\.md$",
+					r"(?i)summary\.md$",
 				]),
 		)
 		.arg(
