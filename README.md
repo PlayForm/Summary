@@ -50,15 +50,30 @@ repository.
 
 The `Summary` tool can be used with various options:
 
--   `--Root` or `-R`: Set the root directory to analyze (default is current
-    directory)
--   `--Parallel` or `-P`: Run processing in parallel (default is sequential)
--   `--Exclude` or `-E`: Exclude certain files or directories (default is
-    "node_modules")
--   `--Pattern`: Specify a custom pattern for matching (default is ".git")
--   `--Omit` or `-O`: Specify regex patterns to omit files from processing
-    (default is "Documentation")
--   `--Separator`: Define a custom separator (default is system path separator)
+#### --Root or -R:
+
+Set the current working directory to a different folder (default is `.`):
+
+#### --Parallel or -P:
+
+Run processing in parallel (default is `sequential`):
+
+#### --Exclude:
+
+Exclude certain files or directories (defailt is `node_modules`).
+
+#### --Pattern:
+
+Specify a custom pattern for matching (defailt is `.git`).
+
+#### --Separator:
+
+Define a custom separator (default is system path separator).
+
+#### --Omit or -O:
+
+Specify regex patterns to omit files from processing (default is
+"Documentation").
 
 For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
 flags and configuration options. [Pieces OS]
@@ -88,41 +103,6 @@ Omit specific file patterns:
 ```sh
 Summary -O "\.md$" -O "\.txt$"
 ```
-
-## Options
-
-#### --Root or -R:
-
-Set the current working directory to a different folder (default is `.`):
-
-```sh
-Summary -R D:\Developer
-```
-
-#### --Parallel or -P:
-
-Summary commands in `parallel` (default is `sequential`):
-
-```sh
-Summary -P -R D:\Developer
-```
-
-#### --Exclude:
-
-Exclude certain files or directories (defailt is
-`node_modules target dist vendor`)
-
-#### --Pattern:
-
-Specify a custom pattern for matching (defailt is `.git`)
-
-#### --Separator:
-
-Define a custom separator.
-
-#### --Omit:
-
-List of regex to to match on files omitted from processing.
 
 ## Dependencies
 
