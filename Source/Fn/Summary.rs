@@ -28,10 +28,10 @@ pub async fn Fn(
 
 			for (Index, &Current) in Tags.iter().enumerate() {
 				for (_, &Next) in Tags.iter().enumerate().skip(Index + 1) {
-					let Difference =
-						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?;
-
-					println!("{}", Difference);
+					println!(
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
+					);
 				}
 			}
 		}
