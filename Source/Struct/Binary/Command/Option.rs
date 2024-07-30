@@ -23,17 +23,17 @@ impl Struct {
 	/// Creates a new Struct instance from the provided Option.
 	pub fn Fn(Option { Separator, .. }: Option) -> Self {
 		Self {
-			Exclude: Fn()
+			Exclude: Command()
 				.get_one::<String>("Exclude")
 				.expect("Cannot Exclude.")
 				.split(" ")
 				.map(|Exclude| Exclude.to_string())
 				.collect::<Vec<_>>(),
-			Parallel: Fn().get_flag("Parallel"),
-			Pattern: Fn().get_one::<String>("Pattern").expect("Cannot Pattern.").to_owned(),
-			Root: Fn().get_one::<String>("Root").expect("Cannot Root.").to_owned(),
+			Parallel: Command().get_flag("Parallel"),
+			Pattern: Command().get_one::<String>("Pattern").expect("Cannot Pattern.").to_owned(),
+			Root: Command().get_one::<String>("Root").expect("Cannot Root.").to_owned(),
 			Separator,
-			Omit: Fn()
+			Omit: Command()
 				.get_many::<String>("Omit")
 				.expect("Cannot Omit.")
 				.map(|Omit| Omit.to_string())
@@ -42,7 +42,7 @@ impl Struct {
 	}
 }
 
-use crate::{Fn::Binary::Command::Fn, Struct::Binary::Command::Struct as Option};
+use crate::{Fn::Binary::Command::Fn as Command, Struct::Binary::Command::Struct as Option};
 
 pub type Command = Vec<String>;
 pub type Parallel = bool;

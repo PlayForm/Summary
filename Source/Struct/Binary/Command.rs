@@ -19,7 +19,7 @@ impl Struct {
 							Parallel::Fn(Option).await;
 						}
 						false => {
-							Sequential::Fn(Option);
+							Sequential::Fn(Option).await;
 						}
 					};
 				})
