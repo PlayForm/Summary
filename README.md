@@ -20,10 +20,10 @@ capabilities, along with flexible file filtering options.
 
 The `Summary` CLI supports [Pieces OS], allowing it to:
 
--   Enhanced code analysis and summarization.
+-   Generate comprehensive diff logs and release notes automatically.
 -   Provide AI-driven code analysis and insights.
 -   Offer improved context-aware processing of repository changes.
--   Seamlessly interact with other [Pieces OS]-compatible development tools
+-   Seamlessly interact with other [Pieces OS]-compatible development tools.
 
 By leveraging [Pieces OS], `Summary` can tap into a broader ecosystem of development
 tools and services, significantly expanding its capabilities beyond basic file processing.
