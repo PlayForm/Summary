@@ -1,20 +1,20 @@
 # 🗣️ [Summary] —
 
-`Summary` is a powerful command-line tool designed for efficient Git repository
-analysis and summarization. It offers both sequential and parallel processing
-capabilities, along with flexible file filtering options.
+`Summary` is a powerful command-line tool designed for efficient `Git`
+repository analysis and summarization. It offers both sequential and parallel
+processing capabilities, along with flexible file filtering options.
 
 [Summary]: HTTPS://crates.io/crates/psummary
 
 ## Features
 
--   Customizable file pattern matching
--   Diff generation between `Git` tags
--   Directory traversal and file filtering
--   Exclusion of specified files or directories
--   `Git` repository analysis
--   Integration with [Pieces OS] for enhanced functionality
--   Parallel and sequential processing modes
+-   Customizable file pattern matching.
+-   Diff generation between `Git` tags.
+-   Directory traversal and file filtering.
+-   Exclusion of specified files or directories.
+-   `Git` repository analysis.
+-   Integration with [Pieces OS] for enhanced functionality.
+-   Parallel and sequential processing modes.
 
 ## [Pieces OS] Integration
 
@@ -53,7 +53,7 @@ Options:
   -V, --version            Print version
 ```
 
-This command will generate summaries for all the Git tags inside the specified
+This command will generate summaries for all the `Git` tags inside the specified
 repository.
 
 ## Options
@@ -116,7 +116,7 @@ Summary -O "\.md$" -O "\.txt$"
 
 -   `clap` - For parsing command-line arguments.
 -   `futures` - For asynchronous programming abstractions.
--   `git2` - For Git repository operations.
+-   `git2` - For `Git` repository operations.
 -   `num_cpus` - For determining the number of CPUs for parallel processing.
 -   `rayon` - For parallel processing.
 -   `regex` - For pattern matching and text manipulation.
