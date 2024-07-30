@@ -16,17 +16,16 @@ capabilities, along with flexible file filtering options.
 
 ## [Pieces OS] Integration
 
-The `Summary` CLI supports [Pieces OS], essentially acting as a plugin that can
-rewrite the whole system. This integration allows for:
+The `Summary` CLI supports [Pieces OS], essentially acting as a plugin that can rewrite
+the whole system. This integration allows for:
 
 -   Enhanced code analysis and summarization.
 -   Improved context-aware processing.
 -   Seamless integration with other [Pieces OS]-compatible tools.
 -   Potential for AI-driven insights and optimizations.
 
-By leveraging [Pieces OS], `Summary` can tap into a broader ecosystem of
-development tools and services, significantly expanding its capabilities beyond
-basic file processing.
+By leveraging [Pieces OS], `Summary` can tap into a broader ecosystem of development
+tools and services, significantly expanding its capabilities beyond basic file processing.
 
 ## Installation
 
@@ -45,8 +44,7 @@ The `Summary` tool can be used with various options:
 -   `--Separator`: Define a custom separator
 
 For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
-flags and configuration options.
-[Pieces](HTTPS://GitHub.Com/PlayForm/Pieces.git)
+flags and configuration options. [Pieces OS]
 
 ```sh
 Summary
