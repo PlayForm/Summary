@@ -1,3 +1,617 @@
+Summary from Summary/v0.0.4 to Summary/v0.0.5:
+diff --git a/Cargo.toml b/Cargo.toml
+index 3d3159a..3615257 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -35,5 +35,5 @@ description = "🗣️ Summary —"
+license = "MIT"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.0.4"
+version = "0.0.5"
+edition = "2021"
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 0060a33..56f65a8 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,3 +1,7 @@
+## 0.0.5
+
+-   Cleanup
+
+## 0.0.4
+
+-   Cleanup
+diff --git a/README.md b/README.md
+index 49bf9ea..4449a1b 100644
+--- a/README.md
++++ b/README.md
+@@ -1,20 +1,20 @@
+# 🗣️ [Summary] —
+
+`Summary` is a powerful command-line tool designed for efficient Git repository
+analysis and summarization. It offers both sequential and parallel processing
+capabilities, along with flexible file filtering options.
+`Summary` is a powerful command-line tool designed for efficient `Git`
+repository analysis and summarization. It offers both sequential and parallel
+processing capabilities, along with flexible file filtering options.
+
+[Summary]: HTTPS://crates.io/crates/psummary
+
+## Features
+
+-   Customizable file pattern matching
+-   Diff generation between `Git` tags
+-   Directory traversal and file filtering
+-   Exclusion of specified files or directories
+-   `Git` repository analysis
+-   Integration with [Pieces OS] for enhanced functionality
+-   Parallel and sequential processing modes
+-   Customizable file pattern matching.
+-   Diff generation between `Git` tags.
+-   Directory traversal and file filtering.
+-   Exclusion of specified files or directories.
+-   `Git` repository analysis.
+-   Integration with [Pieces OS] for enhanced functionality.
+-   Parallel and sequential processing modes.
+
+## [Pieces OS] Integration
+
+@@ -53,7 +53,7 @@ Options:
+  -V, --version            Print version
+```
+
+This command will generate summaries for all the Git tags inside the specified
+This command will generate summaries for all the `Git` tags inside the specified
+repository.
+
+## Options
+@@ -116,7 +116,7 @@ Summary -O "\.md$" -O "\.txt$"
+
+-   `clap` - For parsing command-line arguments.
+-   `futures` - For asynchronous programming abstractions.
+-   `git2` - For Git repository operations.
+-   `git2` - For `Git` repository operations.
+-   `num_cpus` - For determining the number of CPUs for parallel processing.
+-   `rayon` - For parallel processing.
+-   `regex` - For pattern matching and text manipulation.
+diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
+index 463f890..22654c0 100644
+--- a/Source/Fn/Binary/Command/Parallel.rs
++++ b/Source/Fn/Binary/Command/Parallel.rs
+@@ -18,7 +18,7 @@
+/// Fn(option).await;
+/// ```
+pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+	stream::iter(
+	futures::stream::iter(
+		Entry
+			.into_par_iter()
+			.filter_map(|Entry| {
+@@ -33,7 +33,10 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+		let Omit = Omit.clone();
+
+		async move {
+			match crate::Fn::Summary::Fn(&Entry, &crate::Fn::Summary::Difference::Option { Omit })
+			match crate::Fn::Summary::Fn(
+				&Entry,
+				&crate::Struct::Summary::Difference::Struct { Omit },
+			)
+			.await
+			{
+				Ok(Summary) => Ok(Summary),
+@@ -46,6 +49,7 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+	.await;
+}
+
+use futures::stream::StreamExt;
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+
+use crate::Struct::Binary::Command::Entry::Struct as Option;
+use futures::stream::{self, StreamExt};
+use rayon::prelude::*;
+diff --git a/Source/Fn/Binary/Command/Sequential.rs b/Source/Fn/Binary/Command/Sequential.rs
+index c19801b..7ffeb0f 100644
+--- a/Source/Fn/Binary/Command/Sequential.rs
++++ b/Source/Fn/Binary/Command/Sequential.rs
+@@ -33,7 +33,7 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
+				async move {
+					match crate::Fn::Summary::Fn(
+						&Entry,
+						&crate::Fn::Summary::Difference::Option { Omit },
+						&crate::Struct::Summary::Difference::Struct { Omit },
+					)
+					.await
+					{
+@@ -45,7 +45,8 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
+				}
+			})
+			.collect::<Vec<_>>(),
+	).await;
+	)
+	.await;
+}
+
+use crate::Struct::Binary::Command::Entry::Struct as Option;
+diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
+index f6825a8..ae3e650 100644
+--- a/Source/Fn/Summary.rs
++++ b/Source/Fn/Summary.rs
+@@ -18,16 +18,16 @@
+/// ```
+pub async fn Fn(
+	Entry: &str,
+	Option: &crate::Fn::Summary::Difference::Option,
+	Option: &crate::Struct::Summary::Difference::Struct,
+) -> Result<(), Box<dyn std::error::Error>> {
+	match Repository::open(Entry) {
+		Ok(Repository) => {
+			let Tag = Repository.tag_names(None)?;
+			let Name = Repository.tag_names(None)?;
+
+			let Tags: Vec<_> = Tag.iter().filter_map(|Tag| Tag).collect();
+			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
+
+			for (Index, &Current) in Tags.iter().enumerate() {
+				for (_, &Next) in Tags.iter().enumerate().skip(Index + 1) {
+			for (Index, &Current) in Tag.iter().enumerate() {
+				for (_, &Next) in Tag.iter().enumerate().skip(Index + 1) {
+					println!(
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
+diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
+index d96794d..cc25057 100644
+--- a/Source/Fn/Summary/Difference.rs
++++ b/Source/Fn/Summary/Difference.rs
+@@ -20,9 +20,65 @@ pub fn Fn(
+	Repository: &git2::Repository,
+	Start: &str,
+	End: &str,
+	Option: &Option,
+	Option: &crate::Struct::Summary::Difference::Struct,
+) -> Result<String, git2::Error> {
+	let mut Difference = String::new();
+	let mut Omit = vec![
+		r"\.pdf$",
+		r"\.exe$",
+		r"\.dll$",
+		r"\.so$",
+		r"\.dylib$",
+		r"\.zip$",
+		r"\.tar$",
+		r"\.gz$",
+		r"\.7z$",
+		r"\.rar$",
+		r"\.jpg$",
+		r"\.jpeg$",
+		r"\.png$",
+		r"\.gif$",
+		r"\.bmp$",
+		r"\.tiff$",
+		r"\.ico$",
+		r"\.svg$",
+		r"\.webp$",
+		r"\.heic$",
+		r"\.mp3$",
+		r"\.wav$",
+		r"\.ogg$",
+		r"\.flac$",
+		r"\.m4a$",
+		r"\.mp4$",
+		r"\.avi$",
+		r"\.mov$",
+		r"\.mkv$",
+		r"\.wmv$",
+		r"\.doc$",
+		r"\.docx$",
+		r"\.xls$",
+		r"\.xlsx$",
+		r"\.ppt$",
+		r"\.pptx$",
+		r"\.db$",
+		r"\.sqlite$",
+		r"\.mdb$",
+		r"\.accdb$",
+		r"\.class$",
+		r"\.pyc$",
+		r"\.pyo$",
+		r"\.o$",
+		r"\.obj$",
+		r"\.bin$",
+		r"\.dat$",
+		r"\.bak$",
+		r"\.iso$",
+		r"\.img$",
+	];
+
+	Omit.extend(Option.Omit.iter().map(|Omit| Omit.as_str()));
+
+	let Regex = Omit.into_par_iter().filter_map(|Omit| Regex::new(Omit).ok()).collect::<Vec<_>>();
+
+	let mut Options = git2::DiffOptions::new();
+
+	Options.indent_heuristic(true);
+@@ -34,6 +90,10 @@ pub fn Fn(
+	Options.ignore_whitespace(true);
+	Options.ignore_whitespace_change(true);
+	Options.ignore_whitespace_eol(true);
+	Options.show_binary(false);
+	Options.force_binary(false);
+
+	let mut Difference = String::new();
+
+	Repository
+		.diff_tree_to_tree(
+@@ -42,17 +102,14 @@ pub fn Fn(
+			Some(&mut Options),
+		)?
+		.print(git2::DiffFormat::Patch, |Delta, _, Line| {
+			if !Option
+				.Omit
+				.iter()
+				.map(|Omit: &String| regex::Regex::new(Omit).expect("Cannot Regex."))
+				.collect::<Vec<_>>()
+				.iter()
+				.any(|Omit| {
+			if !Regex.iter().any(|Omit| {
+				Omit.is_match(&Delta.old_file().path().unwrap().display().to_string())
+					|| Omit.is_match(&Delta.new_file().path().unwrap().display().to_string())
+			}) {
+				Difference.push_str(std::str::from_utf8(Line.content()).unwrap());
+				match std::str::from_utf8(Line.content()) {
+					Ok(Line) => Difference.push_str(Line),
+					Err(_) => (),
+				}
+			};
+
+			true
+@@ -61,6 +118,5 @@ pub fn Fn(
+	Ok(Difference)
+}
+
+pub struct Option {
+	pub Omit: Vec<String>,
+}
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+use regex::Regex;
+diff --git a/Source/Struct/mod.rs b/Source/Struct/mod.rs
+index a56e8ce..4ca5f2b 100644
+--- a/Source/Struct/mod.rs
++++ b/Source/Struct/mod.rs
+@@ -1 +1,2 @@
+pub mod Binary;
+pub mod Summary;
+diff --git a/Source/Struct/Summary/Difference.rs b/Source/Struct/Summary/Difference.rs
+new file mode 100644
+index 0000000..7583a0a
+--- /dev/null
++++ b/Source/Struct/Summary/Difference.rs
+@@ -0,0 +1,3 @@
+pub struct Struct {
+	pub Omit: Vec<String>,
+}
+diff --git a/Source/Struct/Summary/mod.rs b/Source/Struct/Summary/mod.rs
+new file mode 100644
+index 0000000..7241509
+--- /dev/null
++++ b/Source/Struct/Summary/mod.rs
+@@ -0,0 +1 @@
+pub mod Difference;
+
+Summary from Summary/v0.0.4 to 91b2b40e8b7aa49a4ea4dc14377ff0526e2203f6:
+diff --git a/Cargo.toml b/Cargo.toml
+index 3d3159a..3615257 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -35,5 +35,5 @@ description = "🗣️ Summary —"
+license = "MIT"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.0.4"
+version = "0.0.5"
+edition = "2021"
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 0060a33..56f65a8 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,3 +1,7 @@
+## 0.0.5
+
+-   Cleanup
+
+## 0.0.4
+
+-   Cleanup
+diff --git a/README.md b/README.md
+index 49bf9ea..786f795 100644
+--- a/README.md
++++ b/README.md
+@@ -1,20 +1,20 @@
+# 🗣️ [Summary] —
+
+`Summary` is a powerful command-line tool designed for efficient Git repository
+analysis and summarization. It offers both sequential and parallel processing
+capabilities, along with flexible file filtering options.
+`Summary` is a powerful command-line tool designed for efficient `Git`
+repository analysis and summarization. It offers both sequential and parallel
+processing capabilities, along with flexible file filtering options.
+
+[Summary]: HTTPS://crates.io/crates/psummary
+
+## Features
+
+-   Customizable file pattern matching
+-   Diff generation between `Git` tags
+-   Directory traversal and file filtering
+-   Exclusion of specified files or directories
+-   `Git` repository analysis
+-   Integration with [Pieces OS] for enhanced functionality
+-   Parallel and sequential processing modes
+-   Customizable file pattern matching.
+-   Diff generation between `Git` tags.
+-   Directory traversal and file filtering.
+-   Exclusion of specified files or directories.
+-   `Git` repository analysis.
+-   Integration with [Pieces OS] for enhanced functionality.
+-   Parallel and sequential processing modes.
+
+## [Pieces OS] Integration
+
+@@ -53,7 +53,7 @@ Options:
+  -V, --version            Print version
+```
+
+This command will generate summaries for all the Git tags inside the specified
+This command will generate summaries for all the `Git` tags inside the specified
+repository.
+
+## Options
+@@ -67,7 +67,7 @@ Exclude certain files or directories (defailt is `node_modules`).
+#### --Omit or -O:
+
+Specify regex patterns to omit files from processing (default is
+"Documentation").
+`Documentation`).
+
+#### --Parallel or -P:
+
+@@ -116,7 +116,7 @@ Summary -O "\.md$" -O "\.txt$"
+
+-   `clap` - For parsing command-line arguments.
+-   `futures` - For asynchronous programming abstractions.
+-   `git2` - For Git repository operations.
+-   `git2` - For `Git` repository operations.
+-   `num_cpus` - For determining the number of CPUs for parallel processing.
+-   `rayon` - For parallel processing.
+-   `regex` - For pattern matching and text manipulation.
+diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
+index 463f890..22654c0 100644
+--- a/Source/Fn/Binary/Command/Parallel.rs
++++ b/Source/Fn/Binary/Command/Parallel.rs
+@@ -18,7 +18,7 @@
+/// Fn(option).await;
+/// ```
+pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+	stream::iter(
+	futures::stream::iter(
+		Entry
+			.into_par_iter()
+			.filter_map(|Entry| {
+@@ -33,7 +33,10 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+		let Omit = Omit.clone();
+
+		async move {
+			match crate::Fn::Summary::Fn(&Entry, &crate::Fn::Summary::Difference::Option { Omit })
+			match crate::Fn::Summary::Fn(
+				&Entry,
+				&crate::Struct::Summary::Difference::Struct { Omit },
+			)
+			.await
+			{
+				Ok(Summary) => Ok(Summary),
+@@ -46,6 +49,7 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+	.await;
+}
+
+use futures::stream::StreamExt;
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+
+use crate::Struct::Binary::Command::Entry::Struct as Option;
+use futures::stream::{self, StreamExt};
+use rayon::prelude::*;
+diff --git a/Source/Fn/Binary/Command/Sequential.rs b/Source/Fn/Binary/Command/Sequential.rs
+index c19801b..7ffeb0f 100644
+--- a/Source/Fn/Binary/Command/Sequential.rs
++++ b/Source/Fn/Binary/Command/Sequential.rs
+@@ -33,7 +33,7 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
+				async move {
+					match crate::Fn::Summary::Fn(
+						&Entry,
+						&crate::Fn::Summary::Difference::Option { Omit },
+						&crate::Struct::Summary::Difference::Struct { Omit },
+					)
+					.await
+					{
+@@ -45,7 +45,8 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
+				}
+			})
+			.collect::<Vec<_>>(),
+	).await;
+	)
+	.await;
+}
+
+use crate::Struct::Binary::Command::Entry::Struct as Option;
+diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
+index f6825a8..ae3e650 100644
+--- a/Source/Fn/Summary.rs
++++ b/Source/Fn/Summary.rs
+@@ -18,16 +18,16 @@
+/// ```
+pub async fn Fn(
+	Entry: &str,
+	Option: &crate::Fn::Summary::Difference::Option,
+	Option: &crate::Struct::Summary::Difference::Struct,
+) -> Result<(), Box<dyn std::error::Error>> {
+	match Repository::open(Entry) {
+		Ok(Repository) => {
+			let Tag = Repository.tag_names(None)?;
+			let Name = Repository.tag_names(None)?;
+
+			let Tags: Vec<_> = Tag.iter().filter_map(|Tag| Tag).collect();
+			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
+
+			for (Index, &Current) in Tags.iter().enumerate() {
+				for (_, &Next) in Tags.iter().enumerate().skip(Index + 1) {
+			for (Index, &Current) in Tag.iter().enumerate() {
+				for (_, &Next) in Tag.iter().enumerate().skip(Index + 1) {
+					println!(
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
+diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
+index d96794d..cc25057 100644
+--- a/Source/Fn/Summary/Difference.rs
++++ b/Source/Fn/Summary/Difference.rs
+@@ -20,9 +20,65 @@ pub fn Fn(
+	Repository: &git2::Repository,
+	Start: &str,
+	End: &str,
+	Option: &Option,
+	Option: &crate::Struct::Summary::Difference::Struct,
+) -> Result<String, git2::Error> {
+	let mut Difference = String::new();
+	let mut Omit = vec![
+		r"\.pdf$",
+		r"\.exe$",
+		r"\.dll$",
+		r"\.so$",
+		r"\.dylib$",
+		r"\.zip$",
+		r"\.tar$",
+		r"\.gz$",
+		r"\.7z$",
+		r"\.rar$",
+		r"\.jpg$",
+		r"\.jpeg$",
+		r"\.png$",
+		r"\.gif$",
+		r"\.bmp$",
+		r"\.tiff$",
+		r"\.ico$",
+		r"\.svg$",
+		r"\.webp$",
+		r"\.heic$",
+		r"\.mp3$",
+		r"\.wav$",
+		r"\.ogg$",
+		r"\.flac$",
+		r"\.m4a$",
+		r"\.mp4$",
+		r"\.avi$",
+		r"\.mov$",
+		r"\.mkv$",
+		r"\.wmv$",
+		r"\.doc$",
+		r"\.docx$",
+		r"\.xls$",
+		r"\.xlsx$",
+		r"\.ppt$",
+		r"\.pptx$",
+		r"\.db$",
+		r"\.sqlite$",
+		r"\.mdb$",
+		r"\.accdb$",
+		r"\.class$",
+		r"\.pyc$",
+		r"\.pyo$",
+		r"\.o$",
+		r"\.obj$",
+		r"\.bin$",
+		r"\.dat$",
+		r"\.bak$",
+		r"\.iso$",
+		r"\.img$",
+	];
+
+	Omit.extend(Option.Omit.iter().map(|Omit| Omit.as_str()));
+
+	let Regex = Omit.into_par_iter().filter_map(|Omit| Regex::new(Omit).ok()).collect::<Vec<_>>();
+
+	let mut Options = git2::DiffOptions::new();
+
+	Options.indent_heuristic(true);
+@@ -34,6 +90,10 @@ pub fn Fn(
+	Options.ignore_whitespace(true);
+	Options.ignore_whitespace_change(true);
+	Options.ignore_whitespace_eol(true);
+	Options.show_binary(false);
+	Options.force_binary(false);
+
+	let mut Difference = String::new();
+
+	Repository
+		.diff_tree_to_tree(
+@@ -42,17 +102,14 @@ pub fn Fn(
+			Some(&mut Options),
+		)?
+		.print(git2::DiffFormat::Patch, |Delta, _, Line| {
+			if !Option
+				.Omit
+				.iter()
+				.map(|Omit: &String| regex::Regex::new(Omit).expect("Cannot Regex."))
+				.collect::<Vec<_>>()
+				.iter()
+				.any(|Omit| {
+			if !Regex.iter().any(|Omit| {
+				Omit.is_match(&Delta.old_file().path().unwrap().display().to_string())
+					|| Omit.is_match(&Delta.new_file().path().unwrap().display().to_string())
+			}) {
+				Difference.push_str(std::str::from_utf8(Line.content()).unwrap());
+				match std::str::from_utf8(Line.content()) {
+					Ok(Line) => Difference.push_str(Line),
+					Err(_) => (),
+				}
+			};
+
+			true
+@@ -61,6 +118,5 @@ pub fn Fn(
+	Ok(Difference)
+}
+
+pub struct Option {
+	pub Omit: Vec<String>,
+}
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+use regex::Regex;
+diff --git a/Source/Struct/mod.rs b/Source/Struct/mod.rs
+index a56e8ce..4ca5f2b 100644
+--- a/Source/Struct/mod.rs
++++ b/Source/Struct/mod.rs
+@@ -1 +1,2 @@
+pub mod Binary;
+pub mod Summary;
+diff --git a/Source/Struct/Summary/Difference.rs b/Source/Struct/Summary/Difference.rs
+new file mode 100644
+index 0000000..7583a0a
+--- /dev/null
++++ b/Source/Struct/Summary/Difference.rs
+@@ -0,0 +1,3 @@
+pub struct Struct {
+	pub Omit: Vec<String>,
+}
+diff --git a/Source/Struct/Summary/mod.rs b/Source/Struct/Summary/mod.rs
+new file mode 100644
+index 0000000..7241509
+--- /dev/null
++++ b/Source/Struct/Summary/mod.rs
+@@ -0,0 +1 @@
+pub mod Difference;
+diff --git a/Summary.md b/Summary.md
+new file mode 100644
+index 0000000..14c9622
+--- /dev/null
++++ b/Summary.md
+@@ -0,0 +1,4892 @@
 diff --git a/Cargo.toml b/Cargo.toml
 index 745ad03..c769c35 100644
 --- a/Cargo.toml
@@ -4889,4 +5503,5 @@ index 0000000..7241509
 +++ b/Source/Struct/Summary/mod.rs
 @@ -0,0 +1 @@
 pub mod Difference;
+
 
