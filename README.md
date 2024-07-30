@@ -12,19 +12,19 @@ capabilities, along with flexible file filtering options.
 -   Parallel and sequential processing modes
 -   Customizable file pattern matching
 -   Exclusion of specified files or directories
--   Integration with Pieces OS for enhanced functionality
+-   Integration with [Pieces OS] for enhanced functionality
 
-## Pieces OS Integration
+## [Pieces OS] Integration
 
-The `Summary` CLI supports Pieces OS, essentially acting as a plugin that can
+The `Summary` CLI supports [Pieces OS], essentially acting as a plugin that can
 rewrite the whole system. This integration allows for:
 
 -   Enhanced code analysis and summarization.
 -   Improved context-aware processing.
--   Seamless integration with other Pieces OS-compatible tools.
+-   Seamless integration with other [Pieces OS]-compatible tools.
 -   Potential for AI-driven insights and optimizations.
 
-By leveraging Pieces OS, `Summary` can tap into a broader ecosystem of
+By leveraging [Pieces OS], `Summary` can tap into a broader ecosystem of
 development tools and services, significantly expanding its capabilities beyond
 basic file processing.
 
@@ -44,7 +44,7 @@ The `Summary` tool can be used with various options:
 -   `--Pattern`: Specify a custom pattern for matching
 -   `--Separator`: Define a custom separator
 
-For Pieces OS integration, refer to the Pieces OS documentation for specific
+For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
 flags and configuration options.
 [Pieces](HTTPS://GitHub.Com/PlayForm/Pieces.git)
 
@@ -99,10 +99,10 @@ Define a custom separator
 -   `tokio` - For asynchronous runtime.
 -   `walkdir` - For efficient filesystem traversal.
 
-[Pieces OS](HTTPS://Pieces.App): For extended functionality and system
-integration.
+[Pieces OS] For extended functionality and system integration.
 
 [Summary]: HTTPS://crates.io/crates/psummary
+[Pieces OS]: (HTTPS://Pieces.Appgit)
 
 ## Changelog
 
