@@ -35,7 +35,7 @@ pub async fn Fn(
 				println!("🗣️ Summary from first commit to last commit:");
 
 				println!(
-					"```\n{}\n```",
+					"{}",
 					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
 				);
 			} else {
@@ -46,7 +46,7 @@ pub async fn Fn(
 					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
 					);
 				}
@@ -55,14 +55,14 @@ pub async fn Fn(
 					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
 					);
 
 					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
 
 					println!(
-						"```\n{}\n```",
+						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
 					);
 				}

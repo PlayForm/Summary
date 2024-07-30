@@ -1,3 +1,1069 @@
+🗣️ Summary from tag: Summary/v0.0.6 to tag: Summary/v0.0.1:
+diff --git a/build.rs b/build.rs
+index 1f0de60..73ccc94 100644
+--- a/build.rs
++++ b/build.rs
+@@ -1,5 +1,8 @@
+#![allow(non_snake_case)]
+
+use serde::Deserialize;
+use std::fs;
+
+#[derive(Deserialize)]
+struct Toml {
+	package: Package,
+@@ -21,6 +24,3 @@ fn main() {
+		.version
+	);
+}
+
+use serde::Deserialize;
+use std::fs;
+diff --git a/Cargo.toml b/Cargo.toml
+index 7c5b90e..745ad03 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -14,11 +14,10 @@ rayon = "1.10.0"
+tokio = { version = "1.39.2", features = ["full"] }
+git2 = { version = "0.19.0" }
+num_cpus = "1.16.0"
+regex = "1.10.5"
+
+[build-dependencies]
+serde = { version = "1.0.204", features = ["derive"] }
+toml = "0.8.17"
+toml = "0.8.16"
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+@@ -35,5 +34,5 @@ description = "🗣️ Summary —"
+license = "MIT"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.0.6"
+version = "0.0.1"
+edition = "2021"
+diff --git a/README.md b/README.md
+index d388d49..fd4bfe5 100644
+--- a/README.md
++++ b/README.md
+@@ -1,40 +1,11 @@
+# 🗣️ [Summary] —
+
+[Summary] is a powerful command-line tool designed for efficient `Git`
+repository analysis and summarization. It offers both sequential and parallel
+processing capabilities, along with flexible file filtering options.
+`Summary` is a command-line tool that executes commands in multiple directories
+simultaneously. It leverages parallel processing and concurrent `I/O` to
+efficiently run tasks across directories.
+
+[Summary]: HTTPS://crates.io/crates/psummary
+
+```sh
+Summary -P -O Target -O target -O Summary.md -O CHANGELOG.md > Summary.md
+```
+
+[Summary] will now generate the following [Summary.md](./Summary.md) for all the
+commits and tags between the first and the latest commit.
+
+## Features
+
+-   Customizable file pattern matching.
+-   Diff generation between `Git` tags.
+-   Directory traversal and file filtering.
+-   Exclusion of specified files or directories.
+-   `Git` repository analysis.
+-   Integration with [Pieces OS] for enhanced functionality.
+-   Parallel and sequential processing modes.
+
+## [Pieces OS] Integration
+
+The [Summary] CLI supports [Pieces OS], allowing it to:
+
+-   Generate comprehensive diff logs and release notes automatically.
+-   Provide AI-driven code analysis and insights.
+-   Offer improved context-aware processing of repository changes.
+-   Seamlessly interact with other [Pieces OS]-compatible development tools.
+
+By leveraging [Pieces OS], [Summary] can tap into a broader ecosystem of development
+tools and services, significantly expanding its capabilities beyond basic file processing.
+
+## Installation
+
+```sh
+@@ -43,97 +14,58 @@ cargo install psummary
+
+## Usage
+
+The Summary tool can be used with various options:
+
+```
+🗣️ Summary —
+
+Usage: Summary [OPTIONS]
+
+Options:
+  -P, --Parallel           ⏩ Parallel —
+  -R, --Root <ROOT>        📂 Root — [default: .]
+  -E, --Exclude <EXCLUDE>  🚫 Exclude — [default: node_modules]
+      --Pattern <PATTERN>  🔍 Pattern — [default: .git]
+  -O, --Omit <OMIT>        🚫 Omit — [default: Documentation]
+  -h, --help               Print help
+  -V, --version            Print version
+```sh
+Summary
+```
+
+This command will generate summaries for all the `Git` tags inside the specified
+repository.
+
+## Options
+
+The [Summary] tool can be used with various options:
+
+#### --Exclude or -E:
+
+Exclude certain files or directories (defailt is `node_modules`).
+
+#### --Omit or -O:
+This command will fetch from upstream for all `.git` repositories inside the
+current directory. It essentially replaces the following command:
+
+Specify regex patterns to omit files from processing (default is
+`Documentation`).
+
+#### --Parallel or -P:
+
+Run processing in parallel (default is `sequential`):
+
+#### --Pattern:
+```sh
+find -iname .git -type d -execdir git fetch upstream \;
+```
+
+Specify a custom pattern for matching (defailt is `.git`).
+## Options
+
+#### --Root or -R:
+
+Set the current working directory to a different folder (default is `.`):
+
+For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
+flags and configuration options. [Pieces OS]
+```sh
+Summary -R D:\Developer .git git fetch upstream
+```
+
+## Examples
+#### --Parallel or -P:
+
+Analyze the current directory:
+Summary commands in `parallel` (default is `sequential`):
+
+```sh
+Summary
+Summary -P -R D:\Developer .git git fetch upstream
+```
+
+Analyze a specific directory in parallel:
+#### --Exclude:
+
+```sh
+Summary -P -R D:\Developer
+```
+Exclude certain files or directories (defailt is
+`node_modules target dist vendor`)
+
+Exclude additional directories:
+#### --Pattern:
+
+```sh
+Summary -E "node_modules target dist vendor"
+```
+Specify a custom pattern for matching (defailt is `.git`)
+
+Omit specific file patterns:
+#### --Separator:
+
+```sh
+Summary -O "\.md$" -O "\.txt$"
+```
+Define a custom separator
+
+## Dependencies
+
+[Summary] relies on several Rust crates to provide its functionality:
+
+-   `clap` - For parsing command-line arguments.
+-   `futures` - For asynchronous programming abstractions.
+-   `git2` - For `Git` repository operations.
+-   `num_cpus` - For determining the number of CPUs for parallel processing.
+-   `rayon` - For parallel processing.
+-   `regex` - For pattern matching and text manipulation.
+-   `tokio` - For asynchronous runtime.
+-   `walkdir` - For efficient filesystem traversal.
+`Summary` relies on several Rust crates to provide its functionality:
+
+[Pieces OS] For extended functionality and system integration.
+-   `clap` - Parses command-line arguments
+-   `rayon` - Enables parallel processing
+-   `tokio` - Provides an asynchronous runtime
+-   `walkdir` - Facilitates efficient filesystem traversal
+
+[Summary]: HTTPS://crates.io/crates/psummary
+[Pieces OS]: HTTPS://Pieces.App
+
+## Changelog
+
+diff --git a/Source/Fn/Binary/Command.rs b/Source/Fn/Binary/Command.rs
+index e355a33..c590122 100644
+--- a/Source/Fn/Binary/Command.rs
++++ b/Source/Fn/Binary/Command.rs
+@@ -1,39 +1,21 @@
+//! This module defines the command-line interface for the Summary application.
+
+/// Configures and returns the command-line argument matches for the Summary application.
+///
+/// This function sets up the command-line interface using the clap crate, defining
+/// various arguments and their properties.
+/// Defines and configures command-line arguments for the "Summary" command.
+///
+/// # Returns
+///
+/// Returns an `ArgMatches` struct containing the parsed command-line arguments.
+/// * `ArgMatches` - The parsed command-line arguments.
+///
+/// # Example
+///
+/// ```
+/// let matches = Fn();
+/// let parallel = matches.get_flag("Parallel");
+/// let root = matches.get_one::<String>("Root").unwrap();
+/// ```
+pub fn Fn() -> ArgMatches {
+	Command::new("Summary")
+		.version(env!("CARGO_PKG_VERSION"))
+		.author("🖋️ Source — 👐🏻 Open — <Source/Open@PlayForm.Cloud>")
+		.about("🗣️ Summary —")
+		.arg(
+			Arg::new("Exclude")
+				.short('E')
+				.long("Exclude")
+				.display_order(4)
+				.value_name("EXCLUDE")
+				.required(false)
+				.help("🚫 Exclude —")
+				.default_value("node_modules"),
+		)
+		.arg(
+			Arg::new("Omit")
+				.short('O')
+				.long("Omit")
+				.display_order(6)
+				.value_name("OMIT")
+				.required(false)
+				.help("🚫 Omit —")
+				.action(clap::ArgAction::Append)
+				.default_values(["Target", "Documentation", r"Summary\.md$"]),
+		)
+		.arg(
+			Arg::new("Parallel")
+				.short('P')
+@@ -44,15 +26,6 @@ pub fn Fn() -> ArgMatches {
+				.required(false)
+				.help("⏩ Parallel —"),
+		)
+		.arg(
+			Arg::new("Pattern")
+				.long("Pattern")
+				.display_order(5)
+				.value_name("PATTERN")
+				.required(false)
+				.help("🔍 Pattern —")
+				.default_value(".git"),
+		)
+		.arg(
+			Arg::new("Root")
+				.short('R')
+@@ -63,6 +36,24 @@ pub fn Fn() -> ArgMatches {
+				.help("📂 Root —")
+				.default_value("."),
+		)
+		.arg(
+			Arg::new("Exclude")
+				.short('E')
+				.long("Exclude")
+				.display_order(4)
+				.value_name("EXCLUDE")
+				.required(false)
+				.help("🚫 Exclude —")
+				.default_value("node_modules"),
+		)
+		.arg(
+			Arg::new("Pattern")
+				.display_order(5)
+				.value_name("PATTERN")
+				.required(false)
+				.help("🔍 Pattern —")
+				.default_value(".git"),
+		)
+		.get_matches()
+}
+
+diff --git a/Source/Fn/Binary/Command/Entry.rs b/Source/Fn/Binary/Command/Entry.rs
+index 387c0e4..64351c7 100644
+--- a/Source/Fn/Binary/Command/Entry.rs
++++ b/Source/Fn/Binary/Command/Entry.rs
+@@ -1,14 +1,29 @@
+//! This module provides functionality for processing binary command entries.
+
+/// Processes entries based on the provided options.
+/// Walks through a directory and filters files based on specified criteria.
+///
+/// # Arguments
+///
+/// * `Option` - A reference to an Option struct containing processing parameters.
+/// * `Option` - A struct containing the following fields:
+///   * `Exclude`: Vec<String> - List of patterns to exclude
+///   * `Pattern`: String - The pattern to match for inclusion
+///   * `Root`: String - The root directory to start the walk from
+///   * `Separator`: char - The path separator character
+///
+/// # Returns
+///
+/// Returns a vector of processed entries.
+/// * `Return` - A vector of vectors of strings, where each inner vector represents a file path
+///   split into its components.
+///
+/// # Example
+///
+/// ```
+/// let option = Option {
+///     Exclude: vec!["node_modules".to_string()],
+///     Pattern: ".git".to_string(),
+///     Root: ".".to_string(),
+///     Separator: std::path::MAIN_SEPARATOR,
+/// };
+/// let result = Fn(&option);
+/// ```
+pub fn Fn(Option { Exclude, Pattern, Root, Separator, .. }: &Option) -> Return {
+	WalkDir::new(Root)
+		.follow_links(false)
+diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
+index 75ef690..37a5949 100644
+--- a/Source/Fn/Binary/Command/Parallel.rs
++++ b/Source/Fn/Binary/Command/Parallel.rs
+@@ -1,20 +1,24 @@
+//! This module contains functions for parallel command execution in a binary context.
+
+/// Executes a sequence of operations asynchronously in parallel based on the provided options.
+/// Processes entries in parallel, filtering and executing commands based on specified criteria.
+///
+/// # Arguments
+///
+/// * `Option` - A struct containing various options for execution, including:
+///   - `Entry`: A collection of entries to process
+///   - `Separator`: A separator used for joining entry parts
+///   - `Pattern`: A pattern to match against the last element of each entry
+///   - `Omit`: A collection of items to omit from processing
+/// * `Option` - A struct containing the following fields:
+///   * `Entry`: Vec<Vec<String>> - List of entries to process
+///   * `Separator`: char - The path separator character
+///   * `Pattern`: String - The pattern to match for inclusion
+///
+/// # Async
+/// # Example
+///
+/// This function is asynchronous and returns a future.
+pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+	futures::stream::iter(
+/// ```
+/// let option = Option {
+///     Entry: vec![vec!["path".to_string(), "to".to_string(), "file.txt".to_string()]],
+///     Separator: '/',
+///     Pattern: "file.txt".to_string(),
+/// };
+/// Fn(option).await;
+/// ```
+pub async fn Fn(Option { Entry, Separator, Pattern, .. }: Option) {
+	let Queue: Vec<_> = stream::iter(
+		Entry
+			.into_par_iter()
+			.filter_map(|Entry| {
+@@ -25,27 +29,22 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+			})
+			.collect::<Vec<String>>(),
+	)
+	.map(|Entry| {
+		let Omit = Omit.clone();
+
+		async move {
+			match crate::Fn::Summary::Fn(
+				&Entry,
+				&crate::Struct::Summary::Difference::Struct { Omit },
+			)
+			.await
+			{
+				Ok(Summary) => Ok(Summary),
+				Err(_Error) => Err(format!("Error generating summary for {}: {}", Entry, _Error)),
+			}
+	.map(|Entry| async move {
+		match crate::Fn::Summary::Fn(&Entry).await {
+			Ok(summary) => Ok(summary),
+			Err(e) => Err(format!("Error generating summary for {}: {}", Entry, e)),
+		}
+	})
+	.buffer_unordered(num_cpus::get())
+	.collect::<Vec<_>>()
+	.collect()
+	.await;
+}
+
+use futures::stream::StreamExt;
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+	Queue.par_iter().for_each(|Output| match Output {
+		Ok(Summary) => println!("Summary: {:?}", Summary),
+		Err(Error) => eprintln!("Error: {}", Error),
+	});
+}
+
+use crate::Struct::Binary::Command::Entry::Struct as Option;
+use futures::stream::{self, StreamExt};
+use rayon::prelude::*;
+diff --git a/Source/Fn/Binary/Command/Sequential.rs b/Source/Fn/Binary/Command/Sequential.rs
+index a84435b..63923f7 100644
+--- a/Source/Fn/Binary/Command/Sequential.rs
++++ b/Source/Fn/Binary/Command/Sequential.rs
+@@ -1,16 +1,23 @@
+//! This module contains functions for sequential command execution in a binary context.
+
+/// Executes a sequence of operations asynchronously based on the provided options.
+/// Processes entries sequentially, filtering and executing commands based on specified criteria.
+///
+/// # Arguments
+///
+/// * `Option` - A struct containing various options for execution.
+/// * `Option` - A struct containing the following fields:
+///   * `Entry`: Vec<Vec<String>> - List of entries to process
+///   * `Pattern`: String - The pattern to match for inclusion
+///   * `Separator`: char - The path separator character
+///
+/// # Async
+/// # Example
+///
+/// This function is asynchronous and returns a future.
+pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
+	futures::future::join_all(
+/// ```
+/// let option = Option {
+///     Entry: vec![vec!["path".to_string(), "to".to_string(), "file.txt".to_string()]],
+///     Pattern: "file.txt".to_string(),
+///     Separator: '/',
+/// };
+/// Fn(option);
+/// ```
+pub fn Fn(Option { Entry, Pattern, Separator, .. }: Option) {
+	Entry
+		.into_iter()
+		.filter_map(|Entry| {
+@@ -19,26 +26,9 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
+				.filter(|Last| *Last == &Pattern)
+				.map(|_| Entry[0..Entry.len() - 1].join(&Separator.to_string()))
+		})
+			.map(|Entry| {
+				let Omit = Omit.clone();
+
+				async move {
+					match crate::Fn::Summary::Fn(
+						&Entry,
+						&crate::Struct::Summary::Difference::Struct { Omit },
+					)
+					.await
+					{
+						Ok(Summary) => Ok(Summary),
+						Err(_Error) => {
+							Err(format!("Error generating summary for {}: {}", Entry, _Error))
+						}
+					}
+				}
+		.for_each(|_Entry| {
+			// TODO: GENERATE SUMMARY
+		})
+			.collect::<Vec<_>>(),
+	)
+	.await;
+}
+
+use crate::Struct::Binary::Command::Entry::Struct as Option;
+diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
+index 2411611..eb2d2ce 100644
+--- a/Source/Fn/Summary.rs
++++ b/Source/Fn/Summary.rs
+@@ -1,77 +1,44 @@
+//! This module provides functionality for generating summaries of git repositories.
+
+/// Generates a summary for a given git repository entry.
+/// Generates a summary based on the provided options.
+///
+/// # Arguments
+///
+/// * `Entry` - A string representing the repository path.
+/// * `Option` - A reference to a struct containing summary options.
+/// * `Option` - A struct containing the necessary information for generating the summary.
+///
+/// # Returns
+///
+/// Returns a Result containing () if successful, or a boxed dynamic error if an error occurs.
+/// * `Return` - The generated summary.
+///
+/// # Errors
+/// # Example
+///
+/// This function will return an error if the repository cannot be opened or if there are issues
+/// generating the summary.
+pub async fn Fn(
+	Entry: &str,
+	Option: &crate::Struct::Summary::Difference::Struct,
+) -> Result<(), Box<dyn std::error::Error>> {
+	match Repository::open(Entry) {
+		Ok(Repository) => {
+			let Name = Repository.tag_names(None)?;
+
+			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
+
+			let Head = Repository.head()?;
+
+			let First = Repository.find_commit(First::Fn(&Repository)?)?.id().to_string();
+
+			let Last = Head.peel_to_commit()?.id().to_string();
+
+			if Tag.is_empty() {
+				println!("🗣️ Summary from first commit to last commit:");
+
+				println!(
+					"```\n{}\n```",
+					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
+				);
+			} else {
+				for Window in Tag.windows(2) {
+					let Start = Window[0];
+					let End = Window[1];
+
+					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
+
+					println!(
+						"```\n{}\n```",
+						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
+					);
+				}
+
+				if let Some(Latest) = Tag.last() {
+					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
+
+					println!(
+						"```\n{}\n```",
+						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
+					);
+
+					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
+
+					println!(
+						"```\n{}\n```",
+						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
+					);
+				}
+			}
+/// ```
+/// let option = Option {
+///     // Fields needed for summary generation
+/// };
+/// let summary = Fn(&option);
+/// ```
+pub async fn Fn(Entry: &str) -> Result<(), Box<dyn std::error::Error>> {
+	let Repository = Repository::open(Entry)?;
+
+	let Tag = Repository.tag_names(None)?;
+	let mut Start = None;
+
+	let Summary = "Summary";
+	fs::create_dir_all(Summary)?;
+
+	for i in 0..Tag.len() {
+		if let Some(Tag) = Tag.get(i) {
+			if let Some(Start) = Start {
+				let Difference = crate::Fn::Summary::Difference::Fn(&Repository, Start, Tag)?;
+
+				File::create(&format!("{}/Difference_{}_{}.txt", Summary, Start, Tag))?.write_all(
+					crate::Fn::Summary::Difference::Fn(&Repository, Start, Tag)?.as_bytes(),
+				)?;
+
+				File::create(&format!("{}/Release_{}_{}.txt", Summary, Start, Tag))?
+					.write_all(crate::Fn::Summary::Release::Fn(&Difference).as_bytes())?;
+			}
+		Err(_Error) => {
+			println!("Cannot Repository: {}", _Error);
+
+			return Err(_Error.into());
+			Start = Some(Tag);
+		}
+	}
+
+@@ -79,6 +46,10 @@ pub async fn Fn(
+}
+
+use git2::Repository;
+use std::{
+	fs::{self, File},
+	io::Write,
+};
+
+pub mod Difference;
+pub mod First;
+pub mod Release;
+diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
+index 544095b..8d7badf 100644
+--- a/Source/Fn/Summary/Difference.rs
++++ b/Source/Fn/Summary/Difference.rs
+@@ -1,122 +1,33 @@
+//! This module provides functionality for generating difference summaries between git commits.
+
+/// Generates a difference summary between two git commits.
+/// Calculates the difference between two summaries.
+///
+/// # Arguments
+///
+/// * `Repository` - A reference to the git Repository.
+/// * `Start` - The starting commit or reference.
+/// * `End` - The ending commit or reference.
+/// * `Option` - A reference to a struct containing difference options.
+/// * `Option` - A struct containing the necessary information for calculating the difference.
+///
+/// # Returns
+///
+/// Returns a Result containing a String with the difference summary if successful,
+/// or a boxed dynamic error if an error occurs.
+pub fn Fn(
+	Repository: &git2::Repository,
+	Start: &str,
+	End: &str,
+	Option: &crate::Struct::Summary::Difference::Struct,
+) -> Result<String, git2::Error> {
+	let mut Omit = vec![
+		r"\.7z$",
+		r"\.accdb$",
+		r"\.avi$",
+		r"\.bak$",
+		r"\.bin$",
+		r"\.bmp$",
+		r"\.class$",
+		r"\.dat$",
+		r"\.db$",
+		r"\.dll$",
+		r"\.dll\.lib$",
+		r"\.dll\.exp$",
+		r"\.doc$",
+		r"\.docx$",
+		r"\.dylib$",
+		r"\.exe$",
+		r"\.flac$",
+		r"\.gif$",
+		r"\.gz$",
+		r"\.heic$",
+		r"\.ico$",
+		r"\.img$",
+		r"\.iso$",
+		r"\.jpeg$",
+		r"\.jpg$",
+		r"\.m4a$",
+		r"\.mdb$",
+		r"\.mkv$",
+		r"\.mov$",
+		r"\.mp3$",
+		r"\.mp4$",
+		r"\.o$",
+		r"\.obj$",
+		r"\.ogg$",
+		r"\.pdb$",
+		r"\.pdf$",
+		r"\.png$",
+		r"\.ppt$",
+		r"\.pptx$",
+		r"\.pyc$",
+		r"\.pyo$",
+		r"\.rar$",
+		r"\.so$",
+		r"\.sqlite$",
+		r"\.svg$",
+		r"\.tar$",
+		r"\.tiff$",
+		r"\.wav$",
+		r"\.webp$",
+		r"\.wmv$",
+		r"\.xls$",
+		r"\.xlsx$",
+		r"\.zip$",
+	];
+
+	Omit.extend(Option.Omit.iter().map(|Omit| Omit.as_str()));
+
+	let Regex = Omit.into_par_iter().filter_map(|Omit| Regex::new(Omit).ok()).collect::<Vec<_>>();
+
+	let mut Options = git2::DiffOptions::new();
+
+	Options.indent_heuristic(true);
+	Options.minimal(true);
+	Options.force_text(true);
+	Options.ignore_blank_lines(true);
+	Options.ignore_case(true);
+	Options.ignore_filemode(true);
+	Options.ignore_whitespace(true);
+	Options.ignore_whitespace_change(true);
+	Options.ignore_whitespace_eol(true);
+	Options.show_binary(false);
+	Options.force_binary(false);
+
+/// * `Return` - The calculated difference between the summaries.
+///
+/// # Example
+///
+/// ```
+/// let option = Option {
+///     // Fields needed for difference calculation
+/// };
+/// let difference = Fn(&option);
+/// ```
+pub fn Fn(Repo: &git2::Repository, Start: &str, End: &str) -> Result<String, git2::Error> {
+	let mut Difference = String::new();
+
+	Repository
+		.diff_tree_to_tree(
+			Some(&Repository.revparse_single(Start)?.peel_to_commit()?.tree()?),
+			Some(&Repository.revparse_single(End)?.peel_to_commit()?.tree()?),
+			Some(&mut Options),
+	Repo.diff_tree_to_tree(
+		Some(&Repo.revparse_single(Start)?.peel_to_commit()?.tree()?),
+		Some(&Repo.revparse_single(End)?.peel_to_commit()?.tree()?),
+		Some(&mut git2::DiffOptions::new()),
+	)?
+		.print(git2::DiffFormat::Patch, |Delta, _, Line| {
+			if !Regex.iter().any(|Omit| {
+				Omit.is_match(&Delta.old_file().path().unwrap().display().to_string())
+					|| Omit.is_match(&Delta.new_file().path().unwrap().display().to_string())
+			}) {
+				match std::str::from_utf8(Line.content()) {
+					Ok(Line) => Difference.push_str(Line),
+					Err(_) => (),
+				}
+			};
+
+	.print(git2::DiffFormat::Patch, |_, _, line| {
+		Difference.push_str(std::str::from_utf8(line.content()).unwrap());
+		true
+	})?;
+
+	Ok(Difference)
+}
+
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+use regex::Regex;
+diff --git a/Source/Fn/Summary/First.rs b/Source/Fn/Summary/First.rs
+deleted file mode 100644
+index a0c3df6..0000000
+--- a/Source/Fn/Summary/First.rs
++++ /dev/null
+@@ -1,26 +0,0 @@
+//! This module provides functionality for generating summaries of the first commit in a git repository.
+
+/// Generates a summary of the first commit in a git repository.
+///
+/// # Arguments
+///
+/// * `Repository` - A reference to the git Repository.
+/// * `Option` - A reference to a struct containing summary options.
+///
+/// # Returns
+///
+/// Returns a Result containing a String with the summary if successful,
+/// or a boxed dynamic error if an error occurs.
+pub fn Fn(Repository: &Repository) -> Result<Oid, git2::Error> {
+	let mut Walk = Repository.revwalk()?;
+	Walk.push_head()?;
+	Walk.set_sorting(Sort::TOPOLOGICAL | Sort::REVERSE)?;
+
+	match Walk.next() {
+		Some(Ok(Identifier)) => Ok(Identifier),
+		Some(Err(_Error)) => Err(_Error),
+		None => Err(git2::Error::from_str("Cannot git2.")),
+	}
+}
+
+use git2::{Oid, Repository, Sort};
+diff --git a/Source/Fn/Summary/Release.rs b/Source/Fn/Summary/Release.rs
+new file mode 100644
+index 0000000..611f1eb
+--- /dev/null
++++ b/Source/Fn/Summary/Release.rs
+@@ -0,0 +1,33 @@
+/// Generates a release summary.
+///
+/// # Arguments
+///
+/// * `Option` - A struct containing the necessary information for generating the release summary.
+///
+/// # Returns
+///
+/// * `Return` - The generated release summary.
+///
+/// # Example
+///
+/// ```
+/// let option = Option {
+///     // Fields needed for release summary generation
+/// };
+/// let release_summary = Fn(&option);
+/// ```
+pub fn Fn(Difference: &str) -> String {
+	let mut Release = String::new();
+
+	Release.push_str("Release Notes:\n");
+
+	for Difference in Difference.lines() {
+		if Difference.starts_with("+") && !Difference.starts_with("+++") {
+			Release.push_str(&format!("Added: {}\n", &Difference[1..]));
+		} else if Difference.starts_with("-") && !Difference.starts_with("---") {
+			Release.push_str(&format!("Removed: {}\n", &Difference[1..]));
+		}
+	}
+
+	Release
+}
+diff --git a/Source/Library.rs b/Source/Library.rs
+index 7b297ec..6864249 100644
+--- a/Source/Library.rs
++++ b/Source/Library.rs
+@@ -1,13 +1,9 @@
+//! The main entry point for the Summary application.
+
+#![allow(non_snake_case)]
+
+/// The main function that initializes and runs the `Summary` application.
+///
+/// # Errors
+/// The main entry point for the Summary application.
+///
+/// This function will return an error if there are issues parsing arguments
+/// or executing the requested commands.
+/// This function initializes the command structure and executes the appropriate
+/// command based on the provided command-line arguments.
+#[allow(dead_code)]
+#[tokio::main]
+async fn main() {
+diff --git a/Source/Struct/Binary/Command.rs b/Source/Struct/Binary/Command.rs
+index 7473837..da03f34 100644
+--- a/Source/Struct/Binary/Command.rs
++++ b/Source/Struct/Binary/Command.rs
+@@ -1,23 +1,12 @@
+//! This module defines the main command structure and its implementation for the binary command execution.
+
+/// Represents the main command structure for binary command execution.
+/// Represents the main command structure for the Summary application.
+pub struct Struct {
+	/// The separator used for file paths.
+	/// The path separator character.
+	pub Separator: Option::Separator,
+
+	/// A boxed function that returns a pinned future representing the command execution.
+	/// A boxed function that returns a pinned future.
+	pub Fn: Box<dyn Fn() -> Pin<Box<dyn Future<Output = ()> + Send + 'static>> + Send + 'static>,
+}
+
+impl Struct {
+	/// Creates a new instance of the Struct.
+	///
+	/// This function initializes the Struct with the system's main separator
+	/// and a boxed async function that handles command execution.
+	///
+	/// # Returns
+	///
+	/// Returns a new instance of Struct.
+	pub fn Fn() -> Self {
+		Self {
+			Separator: std::path::MAIN_SEPARATOR,
+@@ -30,7 +19,7 @@ impl Struct {
+							Parallel::Fn(Option).await;
+						}
+						false => {
+							Sequential::Fn(Option).await;
+							Sequential::Fn(Option);
+						}
+					};
+				})
+@@ -39,10 +28,10 @@ impl Struct {
+	}
+}
+
+use crate::Fn::Binary::Command::{Parallel, Sequential};
+
+use futures::Future;
+use std::pin::Pin;
+
+pub mod Entry;
+pub mod Option;
+
+use crate::Fn::Binary::Command::{Parallel, Sequential};
+diff --git a/Source/Struct/Binary/Command/Entry.rs b/Source/Struct/Binary/Command/Entry.rs
+index ee24305..c0c6b89 100644
+--- a/Source/Struct/Binary/Command/Entry.rs
++++ b/Source/Struct/Binary/Command/Entry.rs
+@@ -1,32 +1,22 @@
+//! This module defines structures and functions related to binary command entries.
+
+/// Represents the structure for binary command entries.
+/// Represents the entry options for processing in the Summary command.
+pub struct Struct {
+	/// The path.
+	pub Entry: Type,
+
+	/// Flag indicating whether to use parallel processing.
+	pub Parallel: Parallel,
+
+	/// The pattern to match for inclusion in processing.
+	pub Pattern: Pattern,
+
+	/// The path separator character.
+	pub Separator: Separator,
+
+	pub Omit: Omit,
+}
+
+impl Struct {
+	/// Creates a new Struct instance from the given options.
+	///
+	/// # Arguments
+	///
+	/// * `Option` - A reference to an Option struct containing initialization parameters.
+	///
+	/// # Returns
+	///
+	/// Returns a new instance of Struct.
+	pub fn Fn(Option: &Option) -> Self {
+		Self {
+			Entry: crate::Fn::Binary::Command::Entry::Fn(Option),
+			Omit: Option.Omit.clone(),
+			Parallel: Option.Parallel,
+			Pattern: Option.Pattern.clone(),
+			Separator: Option.Separator,
+@@ -34,8 +24,7 @@ impl Struct {
+	}
+}
+
+use crate::Struct::Binary::Command::Option::{
+	Omit, Parallel, Pattern, Separator, Struct as Option,
+};
+use crate::Struct::Binary::Command::Option::{Parallel, Pattern, Separator, Struct as Option};
+
+/// Defines a type alias for a vector of vectors of strings.
+pub type Type = Vec<Vec<String>>;
+diff --git a/Source/Struct/Binary/Command/Option.rs b/Source/Struct/Binary/Command/Option.rs
+index 3f069ff..8453d33 100644
+--- a/Source/Struct/Binary/Command/Option.rs
++++ b/Source/Struct/Binary/Command/Option.rs
+@@ -1,55 +1,42 @@
+//! This module defines structures and functions related to binary command options.
+
+/// Represents the structure for binary command options.
+/// Represents the configuration options for the Summary command.
+pub struct Struct {
+	/// List of patterns to exclude from processing.
+	pub Exclude: Vec<String>,
+
+	pub Omit: Vec<String>,
+
+	/// Flag indicating whether to use parallel processing.
+	pub Parallel: Parallel,
+
+	/// The pattern to match for inclusion in processing.
+	pub Pattern: Pattern,
+
+	/// The root directory to start processing from.
+	pub Root: String,
+
+	/// The path separator character.
+	pub Separator: Separator,
+}
+
+impl Struct {
+	/// Creates a new Struct instance from the given options.
+	///
+	/// # Arguments
+	///
+	/// * `Option` - An Option struct containing initialization parameters.
+	///
+	/// # Returns
+	///
+	/// Returns a new instance of Struct.
+	/// Creates a new Struct instance from the provided Option.
+	pub fn Fn(Option { Separator, .. }: Option) -> Self {
+		Self {
+			Exclude: Command()
+			Exclude: Fn()
+				.get_one::<String>("Exclude")
+				.expect("Cannot Exclude.")
+				.split(" ")
+				.map(|Exclude| Exclude.to_string())
+				.map(|Command| Command.to_string())
+				.collect::<Vec<_>>(),
+			Parallel: Command().get_flag("Parallel"),
+			Pattern: Command().get_one::<String>("Pattern").expect("Cannot Pattern.").to_owned(),
+			Root: Command().get_one::<String>("Root").expect("Cannot Root.").to_owned(),
+			Parallel: Fn().get_flag("Parallel"),
+			Pattern: Fn().get_one::<String>("Pattern").expect("Cannot Pattern.").to_owned(),
+			Root: Fn().get_one::<String>("Root").expect("Cannot Root.").to_owned(),
+			Separator,
+			Omit: Command()
+				.get_many::<String>("Omit")
+				.expect("Cannot Omit.")
+				.map(|Omit| Omit.to_string())
+				.collect(),
+		}
+	}
+}
+
+use crate::{Fn::Binary::Command::Fn as Command, Struct::Binary::Command::Struct as Option};
+use crate::{Fn::Binary::Command::Fn, Struct::Binary::Command::Struct as Option};
+
+pub type Command = Vec<String>;
+pub type Parallel = bool;
+pub type Pattern = String;
+pub type Separator = char;
+pub type Omit = Vec<String>;
+diff --git a/Source/Struct/mod.rs b/Source/Struct/mod.rs
+index 4ca5f2b..a56e8ce 100644
+--- a/Source/Struct/mod.rs
++++ b/Source/Struct/mod.rs
+@@ -1,2 +1 @@
+pub mod Binary;
+pub mod Summary;
+diff --git a/Source/Struct/Summary/Difference.rs b/Source/Struct/Summary/Difference.rs
+deleted file mode 100644
+index bb7ec8e..0000000
+--- a/Source/Struct/Summary/Difference.rs
++++ /dev/null
+@@ -1,6 +0,0 @@
+//! This module defines structures related to git diff summary options.
+
+/// Represents the options for generating a git diff summary.
+pub struct Struct {
+	pub Omit: Vec<String>,
+}
+diff --git a/Source/Struct/Summary/mod.rs b/Source/Struct/Summary/mod.rs
+deleted file mode 100644
+index 7241509..0000000
+--- a/Source/Struct/Summary/mod.rs
++++ /dev/null
+@@ -1 +0,0 @@
+pub mod Difference;
+
 🗣️ Summary from tag: Summary/v0.0.1 to tag: Summary/v0.0.2:
 diff --git a/Cargo.toml b/Cargo.toml
 index 745ad03..c769c35 100644
@@ -1067,149 +2133,7 @@ index 0000000..7241509
 @@ -0,0 +1 @@
 pub mod Difference;
 
-🗣️ Summary from tag: Summary/v0.0.5 to tag: Summary/v0.0.6:
-diff --git a/Cargo.toml b/Cargo.toml
-index 3615257..7c5b90e 100644
---- a/Cargo.toml
-+++ b/Cargo.toml
-@@ -18,7 +18,7 @@ regex = "1.10.5"
-
-[build-dependencies]
-serde = { version = "1.0.204", features = ["derive"] }
-toml = "0.8.16"
-toml = "0.8.17"
-
-[lib]
-crate-type = ["staticlib", "cdylib", "rlib"]
-@@ -35,5 +35,5 @@ description = "🗣️ Summary —"
-license = "MIT"
-name = "psummary"
-repository = "https://github.com/PlayForm/Summary.git"
-version = "0.0.5"
-version = "0.0.6"
-edition = "2021"
-diff --git a/README.md b/README.md
-index 4449a1b..786f795 100644
---- a/README.md
-+++ b/README.md
-@@ -67,7 +67,7 @@ Exclude certain files or directories (defailt is `node_modules`).
-#### --Omit or -O:
-
-Specify regex patterns to omit files from processing (default is
-"Documentation").
-`Documentation`).
-
-#### --Parallel or -P:
-
-diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
-index ae3e650..0e302ee 100644
---- a/Source/Fn/Summary.rs
-+++ b/Source/Fn/Summary.rs
-@@ -11,10 +11,12 @@
-/// # Example
-///
-/// ```
-/// let option = Option {
-/// let Option = Option {
-///     // Fields needed for summary generation
-/// };
-/// let summary = Fn(&option);
-///
-/// let summary = Fn(&Option);
-///
-/// ```
-pub async fn Fn(
-	Entry: &str,
-@@ -26,17 +28,52 @@ pub async fn Fn(
-
-			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
-
-			for (Index, &Current) in Tag.iter().enumerate() {
-				for (_, &Next) in Tag.iter().enumerate().skip(Index + 1) {
-			let Head = Repository.head()?;
-
-			let First = Repository.find_commit(First::Fn(&Repository)?)?.id().to_string();
-
-			let Last = Head.peel_to_commit()?.id().to_string();
-
-			if Tag.is_empty() {
-				println!("🗣️ Summary from first commit: {} to last commit: {}:", First, Last);
-
-				println!(
-					"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
-					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
-				);
-			} else {
-				for Window in Tag.windows(2) {
-					let Start = Window[0];
-					let End = Window[1];
-
-					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
-					);
-				}
-
-				if let Some(Latest) = Tag.last() {
-					println!("🗣️ Summary from first commit: {} to latest tag: {}:", First, Latest);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
-					);
-
-					println!("🗣️ Summary from latest tag: {} to last commit: {}:", Latest, Last);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
-					);
-				}
-			}
-		}
-		Err(_Error) => {
-			println!("Failed to open repository: {}", _Error);
-			println!("Cannot Repository: {}", _Error);
-
-			return Err(_Error.into());
-		}
-	}
-@@ -47,3 +84,4 @@ pub async fn Fn(
-use git2::Repository;
-
-pub mod Difference;
-pub mod First;
-diff --git a/Source/Fn/Summary/First.rs b/Source/Fn/Summary/First.rs
-new file mode 100644
-index 0000000..7bfdeee
---- /dev/null
-+++ b/Source/Fn/Summary/First.rs
-@@ -0,0 +1,20 @@
-/// Function to iterate over the commits in a repository in reverse topological order.
-///
-/// # Arguments
-/// * `Repository` - A reference to the repository to iterate over.
-///
-/// # Returns
-/// * Result containing the next commit in the iteration or an error if no commits are found.
-pub fn Fn(Repository: &Repository) -> Result<Oid, git2::Error> {
-	let mut Walk = Repository.revwalk()?;
-	Walk.push_head()?;
-	Walk.set_sorting(Sort::TOPOLOGICAL | Sort::REVERSE)?;
-
-	match Walk.next() {
-		Some(Ok(Identifier)) => Ok(Identifier),
-		Some(Err(_Error)) => Err(_Error),
-		None => Err(git2::Error::from_str("Cannot git2.")),
-	}
-}
-
-use git2::{Oid, Repository, Sort};
-
-🗣️ Summary from first commit to latest tag: Summary/v0.0.6:
+🗣️ Summary from first commit to latest tag: Summary/v0.0.5:
 diff --git a/.gitignore b/.gitignore
 index 34f0334..619d2a9 100644
 --- a/.gitignore
@@ -1243,10 +2167,10 @@ struct Toml {
 use serde::Deserialize;
 use std::fs;
 diff --git a/Cargo.toml b/Cargo.toml
-index 3e65019..7c5b90e 100644
+index 3e65019..3615257 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
-@@ -11,13 +11,14 @@ clap = { features = ["derive"], version = "4.5.11" }
+@@ -11,9 +11,10 @@ clap = { features = ["derive"], version = "4.5.11" }
 walkdir = "2.5.0"
 futures = "0.3.30"
 rayon = "1.10.0"
@@ -1258,20 +2182,15 @@ regex = "1.10.5"
 
 [build-dependencies]
 serde = { version = "1.0.204", features = ["derive"] }
-toml = "0.8.16"
-toml = "0.8.17"
-
-[lib]
-crate-type = ["staticlib", "cdylib", "rlib"]
 @@ -34,5 +35,5 @@ description = "🗣️ Summary —"
 license = "MIT"
 name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
 version = "0.0.1"
-version = "0.0.6"
+version = "0.0.5"
 edition = "2021"
 diff --git a/README.md b/README.md
-index 871c006..786f795 100644
+index 871c006..4449a1b 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,11 +1,33 @@
@@ -1354,7 +2273,7 @@ Exclude certain files or directories (defailt is `node_modules`).
 #### --Omit or -O:
 
 Specify regex patterns to omit files from processing (default is
-`Documentation`).
+"Documentation").
 
 #### --Parallel or -P:
 
@@ -1697,10 +2616,10 @@ pub mod Binary;
 pub mod Summary;
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
 new file mode 100644
-index 0000000..0e302ee
+index 0000000..ae3e650
 --- /dev/null
 +++ b/Source/Fn/Summary.rs
-@@ -0,0 +1,87 @@
+@@ -0,0 +1,49 @@
 /// Generates a summary based on the provided options.
 ///
 /// # Arguments
@@ -1714,12 +2633,10 @@ index 0000000..0e302ee
 /// # Example
 ///
 /// ```
-/// let Option = Option {
+/// let option = Option {
 ///     // Fields needed for summary generation
 /// };
-///
-/// let summary = Fn(&Option);
-///
+/// let summary = Fn(&option);
 /// ```
 pub async fn Fn(
 	Entry: &str,
@@ -1731,52 +2648,17 @@ pub async fn Fn(
 
 			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
 
-			let Head = Repository.head()?;
-
-			let First = Repository.find_commit(First::Fn(&Repository)?)?.id().to_string();
-
-			let Last = Head.peel_to_commit()?.id().to_string();
-
-			if Tag.is_empty() {
-				println!("🗣️ Summary from first commit: {} to last commit: {}:", First, Last);
-
-				println!(
-					"{}",
-					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
-				);
-			} else {
-				for Window in Tag.windows(2) {
-					let Start = Window[0];
-					let End = Window[1];
-
-					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
-
+			for (Index, &Current) in Tag.iter().enumerate() {
+				for (_, &Next) in Tag.iter().enumerate().skip(Index + 1) {
 					println!(
 						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
-					);
-				}
-
-				if let Some(Latest) = Tag.last() {
-					println!("🗣️ Summary from first commit: {} to latest tag: {}:", First, Latest);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
-					);
-
-					println!("🗣️ Summary from latest tag: {} to last commit: {}:", Latest, Last);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
+						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
 					);
 				}
 			}
 		}
 		Err(_Error) => {
-			println!("Cannot Repository: {}", _Error);
-
+			println!("Failed to open repository: {}", _Error);
 			return Err(_Error.into());
 		}
 	}
@@ -1787,7 +2669,6 @@ pub async fn Fn(
 use git2::Repository;
 
 pub mod Difference;
-pub mod First;
 diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
 new file mode 100644
 index 0000000..cc25057
@@ -1916,32 +2797,6 @@ pub fn Fn(
 
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
-diff --git a/Source/Fn/Summary/First.rs b/Source/Fn/Summary/First.rs
-new file mode 100644
-index 0000000..7bfdeee
---- /dev/null
-+++ b/Source/Fn/Summary/First.rs
-@@ -0,0 +1,20 @@
-/// Function to iterate over the commits in a repository in reverse topological order.
-///
-/// # Arguments
-/// * `Repository` - A reference to the repository to iterate over.
-///
-/// # Returns
-/// * Result containing the next commit in the iteration or an error if no commits are found.
-pub fn Fn(Repository: &Repository) -> Result<Oid, git2::Error> {
-	let mut Walk = Repository.revwalk()?;
-	Walk.push_head()?;
-	Walk.set_sorting(Sort::TOPOLOGICAL | Sort::REVERSE)?;
-
-	match Walk.next() {
-		Some(Ok(Identifier)) => Ok(Identifier),
-		Some(Err(_Error)) => Err(_Error),
-		None => Err(git2::Error::from_str("Cannot git2.")),
-	}
-}
-
-use git2::{Oid, Repository, Sort};
 diff --git a/Source/Library.rs b/Source/Library.rs
 index 62cfaff..6864249 100644
 --- a/Source/Library.rs
@@ -2302,9 +3157,29 @@ index 0000000..7241509
 @@ -0,0 +1 @@
 pub mod Difference;
 
-🗣️ Summary from latest tag: Summary/v0.0.6 to last commit:
+🗣️ Summary from latest tag: Summary/v0.0.5 to last commit:
+diff --git a/Cargo.toml b/Cargo.toml
+index 3615257..7c5b90e 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -18,7 +18,7 @@ regex = "1.10.5"
+
+[build-dependencies]
+serde = { version = "1.0.204", features = ["derive"] }
+toml = "0.8.16"
+toml = "0.8.17"
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+@@ -35,5 +35,5 @@ description = "🗣️ Summary —"
+license = "MIT"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.0.5"
+version = "0.0.6"
+edition = "2021"
 diff --git a/README.md b/README.md
-index 786f795..d388d49 100644
+index 4449a1b..d388d49 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,11 +1,18 @@
@@ -2352,6 +3227,15 @@ The `Summary` tool can be used with various options:
 The [Summary] tool can be used with various options:
 
 #### --Exclude or -E:
+
+@@ -67,7 +74,7 @@ Exclude certain files or directories (defailt is `node_modules`).
+#### --Omit or -O:
+
+Specify regex patterns to omit files from processing (default is
+"Documentation").
+`Documentation`).
+
+#### --Parallel or -P:
 
 @@ -112,7 +119,7 @@ Summary -O "\.md$" -O "\.txt$"
 
@@ -2509,10 +3393,10 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 	futures::future::join_all(
 		Entry
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
-index 0e302ee..f199ca3 100644
+index ae3e650..2411611 100644
 --- a/Source/Fn/Summary.rs
 +++ b/Source/Fn/Summary.rs
-@@ -1,23 +1,20 @@
+@@ -1,21 +1,20 @@
 /// Generates a summary based on the provided options.
 //! This module provides functionality for generating summaries of git repositories.
 
@@ -2527,50 +3411,85 @@ index 0e302ee..f199ca3 100644
 /// # Returns
 ///
 /// * `Return` - The generated summary.
-///
-/// # Example
-///
-/// ```
-/// let Option = Option {
-///     // Fields needed for summary generation
-/// };
 /// Returns a Result containing () if successful, or a boxed dynamic error if an error occurs.
 ///
-/// let summary = Fn(&Option);
+/// # Example
 /// # Errors
 ///
+/// ```
+/// let option = Option {
+///     // Fields needed for summary generation
+/// };
+/// let summary = Fn(&option);
 /// ```
 /// This function will return an error if the repository cannot be opened or if there are issues
 /// generating the summary.
 pub async fn Fn(
 	Entry: &str,
 	Option: &crate::Struct::Summary::Difference::Struct,
-@@ -35,7 +32,7 @@ pub async fn Fn(
+@@ -26,17 +25,52 @@ pub async fn Fn(
+
+			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
+
+			for (Index, &Current) in Tag.iter().enumerate() {
+				for (_, &Next) in Tag.iter().enumerate().skip(Index + 1) {
+			let Head = Repository.head()?;
+
+			let First = Repository.find_commit(First::Fn(&Repository)?)?.id().to_string();
+
 			let Last = Head.peel_to_commit()?.id().to_string();
 
 			if Tag.is_empty() {
-				println!("🗣️ Summary from first commit: {} to last commit: {}:", First, Last);
 				println!("🗣️ Summary from first commit to last commit:");
 
 				println!(
-					"{}",
-@@ -55,14 +52,14 @@ pub async fn Fn(
+						"{}",
+						crate::Fn::Summary::Difference::Fn(&Repository, Current, Next, Option)?
+					"```\n{}\n```",
+					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
+				);
+			} else {
+				for Window in Tag.windows(2) {
+					let Start = Window[0];
+					let End = Window[1];
+
+					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
+
+					println!(
+						"```\n{}\n```",
+						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
+					);
 				}
 
 				if let Some(Latest) = Tag.last() {
-					println!("🗣️ Summary from first commit: {} to latest tag: {}:", First, Latest);
 					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
 
 					println!(
-						"{}",
+						"```\n{}\n```",
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
 					);
 
-					println!("🗣️ Summary from latest tag: {} to last commit: {}:", Latest, Last);
 					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
 
 					println!(
-						"{}",
+						"```\n{}\n```",
+						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
+					);
+				}
+			}
+		}
+		Err(_Error) => {
+			println!("Failed to open repository: {}", _Error);
+			println!("Cannot Repository: {}", _Error);
+
+			return Err(_Error.into());
+		}
+	}
+@@ -47,3 +81,4 @@ pub async fn Fn(
+use git2::Repository;
+
+pub mod Difference;
+pub mod First;
 diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
 index cc25057..544095b 100644
 --- a/Source/Fn/Summary/Difference.rs
@@ -2707,29 +3626,37 @@ pub fn Fn(
 
 	Omit.extend(Option.Omit.iter().map(|Omit| Omit.as_str()));
 diff --git a/Source/Fn/Summary/First.rs b/Source/Fn/Summary/First.rs
-index 7bfdeee..a0c3df6 100644
---- a/Source/Fn/Summary/First.rs
+new file mode 100644
+index 0000000..a0c3df6
+--- /dev/null
 +++ b/Source/Fn/Summary/First.rs
-@@ -1,10 +1,16 @@
-/// Function to iterate over the commits in a repository in reverse topological order.
+@@ -0,0 +1,26 @@
 //! This module provides functionality for generating summaries of the first commit in a git repository.
 
 /// Generates a summary of the first commit in a git repository.
 ///
 /// # Arguments
-/// * `Repository` - A reference to the repository to iterate over.
 ///
 /// * `Repository` - A reference to the git Repository.
 /// * `Option` - A reference to a struct containing summary options.
 ///
 /// # Returns
-/// * Result containing the next commit in the iteration or an error if no commits are found.
 ///
 /// Returns a Result containing a String with the summary if successful,
 /// or a boxed dynamic error if an error occurs.
 pub fn Fn(Repository: &Repository) -> Result<Oid, git2::Error> {
 	let mut Walk = Repository.revwalk()?;
 	Walk.push_head()?;
+	Walk.set_sorting(Sort::TOPOLOGICAL | Sort::REVERSE)?;
+
+	match Walk.next() {
+		Some(Ok(Identifier)) => Ok(Identifier),
+		Some(Err(_Error)) => Err(_Error),
+		None => Err(git2::Error::from_str("Cannot git2.")),
+	}
+}
+
+use git2::{Oid, Repository, Sort};
 diff --git a/Source/Library.rs b/Source/Library.rs
 index 6864249..7b297ec 100644
 --- a/Source/Library.rs
