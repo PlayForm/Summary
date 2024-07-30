@@ -1,5 +1,3 @@
-use core::fmt::Debug;
-
 /// Calculates the difference between two summaries.
 ///
 /// # Arguments
@@ -50,7 +48,7 @@ pub fn Fn(
 	Options.ignore_whitespace_change(true);
 	Options.ignore_whitespace_eol(true);
 
-	// Options.pathspec("*\n!tsconfig.json");
+	Options.pathspec("!*");
 
 	Repository
 		.diff_tree_to_tree(
@@ -58,16 +56,10 @@ pub fn Fn(
 			Some(&Repository.revparse_single(End)?.peel_to_commit()?.tree()?),
 			Some(&mut Options),
 		)?
-		.deltas()
-		.for_each(|Delta| {
-			for Omit in &Option.Omit {
-				if Delta.old_file().path().unwrap().display().to_string().contains(Omit)
-					|| Delta.new_file().path().unwrap().display().to_string().contains(Omit)
-				{
-					println!("{:?}", Delta.status());
-				}
-			}
-		});
+		.print(git2::DiffFormat::Patch, |_, _, line| {
+			Difference.push_str(std::str::from_utf8(line.content()).unwrap());
+			true
+		})?;
 
 	Ok(Difference)
 }
