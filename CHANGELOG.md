@@ -1,5 +1,60 @@
 ## 0.0.8
 
+### Changed
+
+-   Updated license in Cargo.toml from "MIT" to "SEE LICENSE IN LICENSE"
+-   Updated version number in Cargo.toml from 0.0.7 to 0.0.8
+
+### Added
+
+-   Added `dashmap = "6.0.1"` as a new dependency
+
+### Improved
+
+-   Enhanced command-line interface in `Source/Fn/Binary/Command.rs`:
+
+    -   Updated default values for the `Omit` argument to use case-insensitive
+        patterns
+    -   Simplified and improved regex patterns for file exclusion
+
+-   Optimized diff generation in `Source/Fn/Summary/Difference.rs`:
+
+    -   Improved file filtering logic using a single `RegexSet` instead of
+        multiple individual regexes
+    -   Enhanced performance of diff generation process
+
+-   Refactored `Source/Fn/Summary.rs`:
+
+    -   Improved error handling and return types
+    -   Enhanced summary generation process using `DashMap` for concurrent
+        access
+
+-   Added new module `Source/Fn/Summary/Insert.rs` for handling summary
+    insertions
+
+### Documentation
+
+-   Significantly improved documentation throughout the codebase:
+    -   Added more detailed function descriptions
+    -   Included usage examples in function documentation
+    -   Clarified error handling and return types
+
+### Internal Changes
+
+-   Refactored internal structures and type definitions for better code
+    organization
+-   Updated various internal function signatures for improved consistency and
+    type safety
+
+### Developer Notes
+
+-   This update focuses on performance improvements, code organization, and
+    documentation enhancements
+-   The new `dashmap` dependency allows for more efficient concurrent operations
+    in summary generation
+-   The license change should be reviewed to ensure compliance with the new
+    licensing terms
+
 ## 0.0.7
 
 ### Changed
