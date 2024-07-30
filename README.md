@@ -7,7 +7,7 @@ processing capabilities, along with flexible file filtering options.
 [Summary]: HTTPS://crates.io/crates/psummary
 
 ```sh
-Summary -P -O target -O Summary.md > Summary.md
+Summary -P -O Target -O target -O Summary.md -O CHANGELOG.md > Summary.md
 ```
 
 [Summary] will now generate the following [Summary.md](./Summary.md) for all the
