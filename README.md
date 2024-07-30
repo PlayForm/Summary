@@ -22,9 +22,9 @@ The `Summary` CLI supports [Pieces OS], essentially acting as a plugin that can 
 the whole system. This integration allows for:
 
 -   Enhanced code analysis and summarization.
--   Improved context-aware processing.
--   Seamless integration with other [Pieces OS]-compatible tools.
--   Potential for AI-driven insights and optimizations.
+-   Provide AI-driven code analysis and insights.
+-   Offer improved context-aware processing of repository changes.
+-   Seamlessly interact with other [Pieces OS]-compatible development tools
 
 By leveraging [Pieces OS], `Summary` can tap into a broader ecosystem of development
 tools and services, significantly expanding its capabilities beyond basic file processing.
