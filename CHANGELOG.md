@@ -2,9 +2,9 @@
 
 ### Changed
 
--   Updated `Cargo.toml` to include specific files in the package:
-    -   Added `include = ["LICENSE", "README.md", "CHANGELOG.md", "build.rs"]`
-        to specify which files should be included when packaging the crate
+-   Updated `Cargo.toml` to include specific files in the package: - Added
+    `include = [ "Source/**/*", "LICENSE", "README.md", "CHANGELOG.md", "build.rs", "Cargo.toml", ]`
+    to specify which files should be included when packaging the crate
 
 ### Developer Notes
 

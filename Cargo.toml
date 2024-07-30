@@ -38,4 +38,11 @@ name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
 version = "0.0.9"
 edition = "2021"
-include = ["LICENSE", "README.md", "CHANGELOG.md", "build.rs"]
+include = [
+	"Source/**/*",
+	"LICENSE",
+	"README.md",
+	"CHANGELOG.md",
+	"build.rs",
+	"Cargo.toml",
+]
