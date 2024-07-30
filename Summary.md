@@ -1209,7 +1209,7 @@ pub fn Fn(Repository: &Repository) -> Result<Oid, git2::Error> {
 
 use git2::{Oid, Repository, Sort};
 
-🗣️ Summary from first commit: 0f04f39f2758143df349a48f6bf522ab8e500d84 to latest tag: Summary/v0.0.6:
+🗣️ Summary from first commit to latest tag: Summary/v0.0.6:
 diff --git a/.gitignore b/.gitignore
 index 34f0334..619d2a9 100644
 --- a/.gitignore
@@ -2302,7 +2302,7 @@ index 0000000..7241509
 @@ -0,0 +1 @@
 pub mod Difference;
 
-🗣️ Summary from latest tag: Summary/v0.0.6 to last commit: 4bad2a2c5b40e149c0970e40d62de9cc2b0877a7:
+🗣️ Summary from latest tag: Summary/v0.0.6 to last commit:
 diff --git a/README.md b/README.md
 index 786f795..8963bab 100644
 --- a/README.md

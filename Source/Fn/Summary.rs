@@ -32,7 +32,7 @@ pub async fn Fn(
 			let Last = Head.peel_to_commit()?.id().to_string();
 
 			if Tag.is_empty() {
-				println!("🗣️ Summary from first commit: {} to last commit: {}:", First, Last);
+				println!("🗣️ Summary from first commit to last commit:");
 
 				println!(
 					"{}",
@@ -52,14 +52,14 @@ pub async fn Fn(
 				}
 
 				if let Some(Latest) = Tag.last() {
-					println!("🗣️ Summary from first commit: {} to latest tag: {}:", First, Latest);
+					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
 
 					println!(
 						"{}",
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
 					);
 
-					println!("🗣️ Summary from latest tag: {} to last commit: {}:", Latest, Last);
+					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
 
 					println!(
 						"{}",
