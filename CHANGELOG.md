@@ -1,3 +1,26 @@
+## 0.0.9
+
+### Changed
+
+-   Updated `Cargo.toml` to include specific files in the package:
+    -   Added `include = ["LICENSE", "README.md", "CHANGELOG.md", "build.rs"]`
+        to specify which files should be included when packaging the crate
+
+### Developer Notes
+
+-   This change ensures that only necessary files are included in the published
+    crate, potentially reducing package size and improving distribution
+    efficiency
+-   The inclusion of `LICENSE`, `README.md`, and `CHANGELOG.md` ensures that
+    important documentation is bundled with the package
+-   Including `build.rs` ensures that any custom build steps are properly
+    executed when the crate is built by users
+
+### Internal
+
+-   Version bump from 0.0.8 to 0.0.9 (implied by the new CHANGELOG entry, though
+    not explicitly shown in the diff)
+
 ## 0.0.8
 
 ### Changed
