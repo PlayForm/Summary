@@ -40,7 +40,7 @@ pub async fn Fn(
 				Insert::Fn(
 					&Summary,
 					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option)?,
-					format!("🗣️ Summary from first commit to last commit:"),
+					format!("🗣️ Summary from first commit to last commit"),
 				)
 			} else {
 				for Window in Tag.windows(2) {
@@ -50,7 +50,7 @@ pub async fn Fn(
 					Insert::Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?,
-						format!("🗣️ Summary from tag: {} to tag: {}:", Start, End),
+						format!("🗣️ Summary from {} to {}", Start, End),
 					);
 				}
 
@@ -58,13 +58,13 @@ pub async fn Fn(
 					Insert::Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?,
-						format!("🗣️ Summary from first commit to latest tag: {}:", Latest),
+						format!("🗣️ Summary from first commit to latest {}", Latest),
 					);
 
 					Insert::Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
-						format!("🗣️ Summary from latest tag: {} to last commit:", Latest),
+						format!("🗣️ Summary from latest {} to last commit", Latest),
 					);
 				}
 			}

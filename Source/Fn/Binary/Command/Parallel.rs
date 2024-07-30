@@ -54,26 +54,35 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		drop(Approval);
 	});
 
-	// let Output = DashMap::new();
+	let Output = DashMap::new();
 
 	while let Some((Entry, Summary)) = Receipt.recv().await {
-		println!("Entry: {}", Entry);
-
-		for (Hash, (Difference, Message)) in Summary.into_iter() {
-			println!("{}", Hash);
-			println!("{}", Message);
-			println!("{}", Difference);
-
-			// Output
-			//     .entry(message.clone())
-			//     .or_insert_with(Vec::new)
-			//     .push(format!("{}: {}", Entry, content));
+		for (_, (Difference, Message)) in Summary.into_iter() {
+			Output
+				.entry(Message + " in " + &Entry)
+				.and_modify(|Existing: &mut HashSet<String>| {
+					Existing.insert(Difference.clone());
+				})
+				.or_insert_with(|| {
+					let mut Set = HashSet::new();
+					Set.insert(Difference);
+					Set
+				});
 		}
 	}
+
+	Output.into_iter().for_each(|(Message, Difference)| {
+		println!("{}", Message);
+
+		for Difference in Difference {
+			println!("{}", Difference);
+		}
+	});
 }
 
 use dashmap::DashMap;
 use futures::stream::{FuturesUnordered, StreamExt};
 use rayon::prelude::*;
+use std::collections::HashSet;
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
