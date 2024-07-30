@@ -35,7 +35,7 @@ pub fn Fn() -> ArgMatches {
 				.required(false)
 				.help("🚫 Omit —")
 				.action(clap::ArgAction::Append)
-				.default_value("Documentation"),
+				.default_values(["Target", "Documentation", r"Summary\.md$"]),
 		)
 		.arg(
 			Arg::new("Parallel")
