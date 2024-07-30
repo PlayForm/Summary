@@ -14,38 +14,74 @@
 ///
 /// This function is asynchronous and returns a future.
 pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
-	futures::stream::iter(
-		Entry
-			.into_par_iter()
-			.filter_map(|Entry| {
-				Entry
-					.last()
-					.filter(|Last| *Last == &Pattern)
-					.map(|_| Entry[0..Entry.len() - 1].join(&Separator.to_string()))
-			})
-			.collect::<Vec<String>>(),
-	)
-	.map(|Entry| {
-		let Omit = Omit.clone();
+	let (Approval, mut Receipt) = tokio::sync::mpsc::unbounded_channel();
 
-		async move {
+	let Entry = Entry
+		.into_par_iter()
+		.filter_map(|Entry| {
+			Entry
+				.last()
+				.filter(|Last| *Last == &Pattern)
+				.map(|_| Entry[0..Entry.len() - 1].join(&Separator.to_string()))
+		})
+		.collect::<Vec<String>>();
+
+	let Queue = FuturesUnordered::new();
+
+	for Entry in Entry {
+		let Omit = Omit.clone();
+		let Approval = Approval.clone();
+
+		Queue.push(tokio::spawn(async move {
 			match crate::Fn::Summary::Fn(
 				&Entry,
 				&crate::Struct::Summary::Difference::Struct { Omit },
 			)
 			.await
 			{
-				Ok(Summary) => Ok(Summary),
-				Err(_Error) => Err(format!("Error generating summary for {}: {}", Entry, _Error)),
+				Ok(Summary) => {
+					if let Err(_Error) = Approval.send((Entry, Summary)) {
+						eprintln!("Failed to send result: {}", _Error);
+					}
+				}
+				Err(_Error) => eprintln!("Error generating summary for {}: {}", Entry, _Error),
 			}
+		}));
+	}
+
+	tokio::spawn(async move {
+		Queue.collect::<Vec<_>>().await;
+		drop(Approval);
+	});
+
+	let Output = DashMap::new();
+
+	while let Some((Entry, Summary)) = Receipt.recv().await {
+		for (Difference, Message) in Summary {
+			Output.insert(
+				crate::Fn::Summary::Insert::Calculate::Fn(&Entry + Difference),
+				(Difference, Message),
+			);
 		}
-	})
-	.buffer_unordered(num_cpus::get())
-	.collect::<Vec<_>>()
-	.await;
+	}
+
+	// // Deduplication and grouping
+	// let mut Deduplicated= HashMap::new();
+
+	// for (_, Summary) in Output.iter() {
+	// 	for (Difference, Message) in Summary.iter() {
+	// 		Deduplicated.entry(Difference.clone()).or_insert(Message.clone());
+	// 	}
+	// }
+
+	// Output.par_iter().for_each(|(Entry, Summary)| {
+	// 	println!("Entry: \n {}", Entry);
+	// 	println!("Summary: \n {:?}", Summary);
+	// });
 }
 
-use futures::stream::StreamExt;
-use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+use futures::stream::{FuturesUnordered, StreamExt};
+use rayon::prelude::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
+use std::collections::HashMap;
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;

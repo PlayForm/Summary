@@ -18,12 +18,17 @@
 pub async fn Fn(
 	Entry: &str,
 	Option: &crate::Struct::Summary::Difference::Struct,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<DashMap<u64, (String, String)>, Box<dyn std::error::Error>> {
+	let Summary = DashMap::new();
+
 	match Repository::open(Entry) {
 		Ok(Repository) => {
 			let Name = Repository.tag_names(None)?;
 
-			let Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
+			let mut Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
+
+			Tag.sort();
+			Tag.dedup();
 
 			let Head = Repository.head()?;
 
@@ -32,38 +37,34 @@ pub async fn Fn(
 			let Last = Head.peel_to_commit()?.id().to_string();
 
 			if Tag.is_empty() {
-				println!("🗣️ Summary from first commit to last commit:");
-
-				println!(
-					"{}",
-					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option,)?
-				);
+				Insert::Fn(
+					&Summary,
+					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option)?,
+					format!("🗣️ Summary from first commit to last commit:"),
+				)
 			} else {
 				for Window in Tag.windows(2) {
 					let Start = Window[0];
 					let End = Window[1];
 
-					println!("🗣️ Summary from tag: {} to tag: {}:", Start, End);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?
+					Insert::Fn(
+						&Summary,
+						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?,
+						format!("🗣️ Summary from tag: {} to tag: {}:", Start, End),
 					);
 				}
 
 				if let Some(Latest) = Tag.last() {
-					println!("🗣️ Summary from first commit to latest tag: {}:", Latest);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?
+					Insert::Fn(
+						&Summary,
+						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?,
+						format!("🗣️ Summary from first commit to latest tag: {}:", Latest),
 					);
 
-					println!("🗣️ Summary from latest tag: {} to last commit:", Latest);
-
-					println!(
-						"{}",
-						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?
+					Insert::Fn(
+						&Summary,
+						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
+						format!("🗣️ Summary from latest tag: {} to last commit:", Latest),
 					);
 				}
 			}
@@ -75,10 +76,12 @@ pub async fn Fn(
 		}
 	}
 
-	Ok(())
+	Ok(Summary)
 }
 
+use dashmap::DashMap;
 use git2::Repository;
 
 pub mod Difference;
 pub mod First;
+pub mod Insert;
