@@ -54,34 +54,13 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		drop(Approval);
 	});
 
-	let Output = DashMap::new();
-
 	while let Some((Entry, Summary)) = Receipt.recv().await {
-		for (Difference, Message) in Summary {
-			Output.insert(
-				crate::Fn::Summary::Insert::Calculate::Fn(&Entry + Difference),
-				(Difference, Message),
-			);
-		}
+		println!("Entry: \n {}", Entry);
+		println!("Summary: \n {:?}", Summary);
 	}
-
-	// // Deduplication and grouping
-	// let mut Deduplicated= HashMap::new();
-
-	// for (_, Summary) in Output.iter() {
-	// 	for (Difference, Message) in Summary.iter() {
-	// 		Deduplicated.entry(Difference.clone()).or_insert(Message.clone());
-	// 	}
-	// }
-
-	// Output.par_iter().for_each(|(Entry, Summary)| {
-	// 	println!("Entry: \n {}", Entry);
-	// 	println!("Summary: \n {:?}", Summary);
-	// });
 }
 
 use futures::stream::{FuturesUnordered, StreamExt};
-use rayon::prelude::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
-use std::collections::HashMap;
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
