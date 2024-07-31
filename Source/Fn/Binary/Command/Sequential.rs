@@ -29,7 +29,7 @@
 ///
 /// This function will log errors if it fails to generate summaries or send results.
 pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
-	futures::future::join_all(
+	let Queue = futures::future::join_all(
 		Entry
 			.into_iter()
 			.filter_map(|Entry| {
@@ -48,16 +48,17 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 					)
 					.await
 					{
-						Ok(Summary) => Ok(Summary),
+						Ok(Summary) => Ok((Entry, Summary)),
 						Err(_Error) => {
 							Err(format!("Error generating summary for {}: {}", Entry, _Error))
 						}
 					}
 				}
-			})
-			.collect::<Vec<_>>(),
+			}),
 	)
 	.await;
+
+	crate::Fn::Summary::Group::Fn(Queue.into_iter().filter_map(Result::ok).collect::<Vec<_>>());
 }
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;

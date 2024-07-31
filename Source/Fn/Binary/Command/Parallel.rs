@@ -30,8 +30,9 @@
 /// This function will log errors if it fails to generate summaries or send results.
 pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 	let (Approval, mut Receipt) = tokio::sync::mpsc::unbounded_channel();
+	let Queue = futures::stream::FuturesUnordered::new();
 
-	let Entry = Entry
+	for Entry in Entry
 		.into_par_iter()
 		.filter_map(|Entry| {
 			Entry
@@ -39,11 +40,8 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 				.filter(|Last| *Last == &Pattern)
 				.map(|_| Entry[0..Entry.len() - 1].join(&Separator.to_string()))
 		})
-		.collect::<Vec<String>>();
-
-	let Queue = FuturesUnordered::new();
-
-	for Entry in Entry {
+		.collect::<Vec<String>>()
+	{
 		let Omit = Omit.clone();
 		let Approval = Approval.clone();
 
@@ -69,37 +67,16 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		drop(Approval);
 	});
 
-	let Output = DashMap::new();
+	let mut Output = Vec::new();
 
 	while let Some((Entry, Summary)) = Receipt.recv().await {
-		for (_, (Difference, Message)) in Summary.into_iter() {
-			Output
-				.entry(Message + " in " + &Entry)
-				.and_modify(|Existing: &mut HashSet<String>| {
-					Existing.insert(Difference.clone());
-				})
-				.or_insert_with(|| {
-					let mut Set = HashSet::new();
-					Set.insert(Difference);
-					Set
-				});
-		}
+		Output.push((Entry, Summary));
 	}
 
-	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(|(Message, Difference)| {
-		println!("{}", Message);
-
-		Difference
-			.into_iter()
-			.sorted_by_key(|Difference| Reverse(Difference.len()))
-			.for_each(|Difference| println!("{}", Difference));
-	});
+	crate::Fn::Summary::Group::Fn(Output);
 }
 
-use dashmap::DashMap;
-use futures::stream::{FuturesUnordered, StreamExt};
-use itertools::Itertools;
-use rayon::prelude::*;
-use std::{cmp::Reverse, collections::HashSet};
+use futures::stream::StreamExt;
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;

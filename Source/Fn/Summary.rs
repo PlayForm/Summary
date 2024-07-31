@@ -105,3 +105,4 @@ use git2::Repository;
 pub mod Difference;
 pub mod First;
 pub mod Insert;
+pub mod Group;
