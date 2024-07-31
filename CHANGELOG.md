@@ -1,5 +1,42 @@
 ## 0.1.0
 
+### Added
+
+-   New dependency: `itertools = "0.13.0"`
+-   New module: `Source/Fn/Summary/Group.rs` for processing and printing
+    summaries of differences
+
+### Changed
+
+-   Updated dependencies:
+    -   `tokio` from `1.39.1` to `1.39.2`
+    -   `toml` from `0.8.16` to `0.8.17`
+-   Refactored `Source/Fn/Binary/Command/Parallel.rs`:
+    -   Now uses `FuturesUnordered` for managing asynchronous tasks
+    -   Changed `Output` data structure from `DashMap` to `Vec`
+    -   Simplified entry collection and processing
+-   Updated `Source/Fn/Binary/Command/Sequential.rs`:
+    -   Now uses `futures::future::join_all` for sequential processing
+    -   Adjusted result handling to match the new structure
+-   Modified `Source/Fn/Summary.rs`:
+    -   Updated format strings for summary messages
+    -   Added new `Group` module for summary processing
+
+### Improved
+
+-   Enhanced parallel processing capabilities
+-   Optimized memory usage in summary generation
+-   Improved code readability and maintainability
+
+### Developer Notes
+
+-   The new `Group` module provides a more efficient way to aggregate and
+    display differences
+-   The switch to `FuturesUnordered` in the parallel processing should improve
+    performance for large datasets
+-   Developers should review the changes in `Parallel.rs` and `Sequential.rs` to
+    understand the new processing flow
+
 ## 0.0.9
 
 ### Changed
