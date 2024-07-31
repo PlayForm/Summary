@@ -129,9 +129,15 @@ pub fn Fn(
 			if !Regex.is_match(&Delta.old_file().path().unwrap().display().to_string())
 				&& !Regex.is_match(&Delta.new_file().path().unwrap().display().to_string())
 			{
-				match std::str::from_utf8(Line.content()) {
-					Ok(Line) => Output.push_str(Line),
+				let Content = match std::str::from_utf8(Line.content()) {
+					Ok(Line) => Line,
 					Err(_) => (),
+				}
+
+				match Line.origin() {
+					'+' => Output.push_str(&format!("+ {}", Content)),
+					'-' => Output.push_str(&format!("- {}", Content)),
+					_ => (),
 				}
 			}
 

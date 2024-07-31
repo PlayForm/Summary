@@ -2997,7 +2997,7 @@ include = [
 	"Cargo.toml",
 ]
 
-🗣️ Summary from Summary/v0.0.9 to last commit in .
+🗣️ Summary from Summary/v0.0.9 to Summary/v0.1.0 in .
 diff --git a/Cargo.toml b/Cargo.toml
 index 0f0c9c7..3716998 100644
 --- a/Cargo.toml
@@ -3236,7 +3236,9 @@ use dashmap::DashMap;
 use itertools::Itertools;
 use std::{cmp::Reverse, collections::HashSet};
 
-🗣️ Summary from first commit to Summary/v0.0.9 in .
+🗣️ Summary from Summary/v0.1.0 to last commit in .
+
+🗣️ Summary from first commit to Summary/v0.1.0 in .
 diff --git a/.gitignore b/.gitignore
 index 34f0334..619d2a9 100644
 --- a/.gitignore
@@ -3270,10 +3272,10 @@ struct Toml {
 use serde::Deserialize;
 use std::fs;
 diff --git a/Cargo.toml b/Cargo.toml
-index 3e65019..0f0c9c7 100644
+index 3e65019..3716998 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
-@@ -11,13 +11,15 @@ clap = { features = ["derive"], version = "4.5.11" }
+@@ -11,13 +11,16 @@ clap = { features = ["derive"], version = "4.5.11" }
 walkdir = "2.5.0"
 futures = "0.3.30"
 rayon = "1.10.0"
@@ -3283,6 +3285,7 @@ git2 = { version = "0.19.0" }
 num_cpus = "1.16.0"
 regex = "1.10.5"
 dashmap = "6.0.1"
+itertools = "0.13.0"
 
 [build-dependencies]
 serde = { version = "1.0.204", features = ["derive"] }
@@ -3291,12 +3294,12 @@ toml = "0.8.17"
 
 [lib]
 crate-type = ["staticlib", "cdylib", "rlib"]
-@@ -34,5 +36,13 @@ description = "🗣️ Summary —"
+@@ -34,5 +37,13 @@ description = "🗣️ Summary —"
 license = "MIT"
 name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
 version = "0.0.1"
-version = "0.0.9"
+version = "0.1.0"
 edition = "2021"
 include = [
 	"Source/**/*",
@@ -3681,10 +3684,10 @@ use crate::Struct::Binary::Command::{Entry::Type as Return, Option::Struct as Op
 use walkdir::WalkDir;
 diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
 new file mode 100644
-index 0000000..02dbcc4
+index 0000000..bfda9a9
 --- /dev/null
 +++ b/Source/Fn/Binary/Command/Parallel.rs
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,82 @@
 /// Asynchronously processes entries to generate summaries and outputs the results.
 ///
 /// This function performs the following steps:
@@ -3717,8 +3720,9 @@ index 0000000..02dbcc4
 /// This function will log errors if it fails to generate summaries or send results.
 pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 	let (Approval, mut Receipt) = tokio::sync::mpsc::unbounded_channel();
+	let Queue = futures::stream::FuturesUnordered::new();
 
-	let Entry = Entry
+	for Entry in Entry
 		.into_par_iter()
 		.filter_map(|Entry| {
 			Entry
@@ -3726,11 +3730,8 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 				.filter(|Last| *Last == &Pattern)
 				.map(|_| Entry[0..Entry.len() - 1].join(&Separator.to_string()))
 		})
-		.collect::<Vec<String>>();
-
-	let Queue = FuturesUnordered::new();
-
-	for Entry in Entry {
+		.collect::<Vec<String>>()
+	{
 		let Omit = Omit.clone();
 		let Approval = Approval.clone();
 
@@ -3756,44 +3757,25 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		drop(Approval);
 	});
 
-	let Output = DashMap::new();
+	let mut Output = Vec::new();
 
 	while let Some((Entry, Summary)) = Receipt.recv().await {
-		for (_, (Difference, Message)) in Summary.into_iter() {
-			Output
-				.entry(Message + " in " + &Entry)
-				.and_modify(|Existing: &mut HashSet<String>| {
-					Existing.insert(Difference.clone());
-				})
-				.or_insert_with(|| {
-					let mut Set = HashSet::new();
-					Set.insert(Difference);
-					Set
-				});
-		}
+		Output.push((Entry, Summary));
 	}
 
-	Output.into_iter().for_each(|(Message, Difference)| {
-		println!("{}", Message);
-
-		for Difference in Difference {
-			println!("{}", Difference);
-		}
-	});
+	crate::Fn::Summary::Group::Fn(Output);
 }
 
-use dashmap::DashMap;
-use futures::stream::{FuturesUnordered, StreamExt};
-use rayon::prelude::*;
-use std::collections::HashSet;
+use futures::stream::StreamExt;
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
 diff --git a/Source/Fn/Binary/Command/Sequential.rs b/Source/Fn/Binary/Command/Sequential.rs
 new file mode 100644
-index 0000000..666e377
+index 0000000..4986cdb
 --- /dev/null
 +++ b/Source/Fn/Binary/Command/Sequential.rs
-@@ -0,0 +1,63 @@
+@@ -0,0 +1,64 @@
 /// Asynchronously processes entries to generate summaries and outputs the results sequentially.
 ///
 /// This function performs the following steps:
@@ -3825,7 +3807,7 @@ index 0000000..666e377
 ///
 /// This function will log errors if it fails to generate summaries or send results.
 pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
-	futures::future::join_all(
+	let Queue = futures::future::join_all(
 		Entry
 			.into_iter()
 			.filter_map(|Entry| {
@@ -3844,16 +3826,17 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 					)
 					.await
 					{
-						Ok(Summary) => Ok(Summary),
+						Ok(Summary) => Ok((Entry, Summary)),
 						Err(_Error) => {
 							Err(format!("Error generating summary for {}: {}", Entry, _Error))
 						}
 					}
 				}
-			})
-			.collect::<Vec<_>>(),
+			}),
 	)
 	.await;
+
+	crate::Fn::Summary::Group::Fn(Queue.into_iter().filter_map(Result::ok).collect::<Vec<_>>());
 }
 
 use crate::Struct::Binary::Command::Entry::Struct as Option;
@@ -3866,10 +3849,10 @@ pub mod Binary;
 pub mod Summary;
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
 new file mode 100644
-index 0000000..5332dfa
+index 0000000..3a4bd61
 --- /dev/null
 +++ b/Source/Fn/Summary.rs
-@@ -0,0 +1,107 @@
+@@ -0,0 +1,108 @@
 /// Asynchronously generates a summary of differences between commits in a git repository.
 ///
 /// This function performs the following steps:
@@ -3950,13 +3933,13 @@ pub async fn Fn(
 					Insert::Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?,
-						format!("🗣️ Summary from first commit to latest {}", Latest),
+						format!("🗣️ Summary from first commit to {}", Latest),
 					);
 
 					Insert::Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
-						format!("🗣️ Summary from latest {} to last commit", Latest),
+						format!("🗣️ Summary from {} to last commit", Latest),
 					);
 				}
 			}
@@ -3977,6 +3960,7 @@ use git2::Repository;
 pub mod Difference;
 pub mod First;
 pub mod Insert;
+pub mod Group;
 diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
 new file mode 100644
 index 0000000..4364657
@@ -4174,6 +4158,93 @@ pub fn Fn(Repository: &Repository) -> Result<Oid, git2::Error> {
 }
 
 use git2::{Oid, Repository, Sort};
+diff --git a/Source/Fn/Summary/Group.rs b/Source/Fn/Summary/Group.rs
+new file mode 100644
+index 0000000..892b7ba
+--- /dev/null
++++ b/Source/Fn/Summary/Group.rs
+@@ -0,0 +1,81 @@
+/// Processes and prints summaries of differences.
+///
+/// This function takes an iterator of summaries, processes them to aggregate differences
+/// by their associated messages, and then prints the aggregated results. The summaries
+/// are expected to be in the form of a tuple containing an entry string and a `DashMap`
+/// of differences.
+///
+/// # Type Parameters
+///
+/// * `I` - An iterator type that yields items of type `(String, DashMap<u64, (String, String)>)`.
+///
+/// # Arguments
+///
+/// * `summaries` - An iterator of summaries, where each summary is a tuple containing:
+///   - `Entry`: A `String` representing the entry associated with the summary.
+///   - `Summary`: A `DashMap<u64, (String, String)>` where the key is a hash and the value is a tuple
+///     containing a difference string and a message string.
+///
+/// # Example
+///
+/// ```rust
+/// use dashmap::DashMap;
+/// use std::collections::HashSet;
+/// use itertools::Itertools;
+/// use std::cmp::Reverse;
+///
+/// let mut summary1 = DashMap::new();
+/// summary1.insert(1, ("diff1".to_string(), "message1".to_string()));
+///
+/// let mut summary2 = DashMap::new();
+/// summary2.insert(2, ("diff2".to_string(), "message2".to_string()));
+///
+/// let summaries = vec![
+///     ("entry1".to_string(), summary1),
+///     ("entry2".to_string(), summary2),
+/// ];
+///
+/// Fn(summaries);
+/// ```
+///
+/// # Panics
+///
+/// This function does not panic.
+///
+/// # Errors
+///
+/// This function does not return errors.
+pub fn Fn<I>(Summary: I)
+where
+	I: IntoIterator<Item = (String, DashMap<u64, (String, String)>)>,
+{
+	let Output: DashMap<String, HashSet<String>> = DashMap::new();
+
+	for (Entry, Summary) in Summary {
+		for (_, (Difference, Message)) in Summary.into_iter() {
+			Output
+				.entry(Message + " in " + &Entry)
+				.and_modify(|Existing: &mut HashSet<String>| {
+					Existing.insert(Difference.clone());
+				})
+				.or_insert_with(|| {
+					let mut New = HashSet::new();
+					New.insert(Difference);
+					New
+				});
+		}
+	}
+
+	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(|(Message, Difference)| {
+		println!("{}", Message);
+
+		Difference
+			.into_iter()
+			.sorted_by_key(|Difference| Reverse(Difference.len()))
+			.for_each(|Difference| println!("{}", Difference));
+	});
+}
+
+use dashmap::DashMap;
+use itertools::Itertools;
+use std::{cmp::Reverse, collections::HashSet};
 diff --git a/Source/Fn/Summary/Insert.rs b/Source/Fn/Summary/Insert.rs
 new file mode 100644
 index 0000000..9ae2a0b
