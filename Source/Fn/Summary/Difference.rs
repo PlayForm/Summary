@@ -131,8 +131,8 @@ pub fn Fn(
 			{
 				let Content = match std::str::from_utf8(Line.content()) {
 					Ok(Line) => Line,
-					Err(_) => (),
-				}
+					Err(_) => " ",
+				};
 
 				match Line.origin() {
 					'+' => Output.push_str(&format!("+ {}", Content)),
