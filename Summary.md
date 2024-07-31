@@ -2999,7 +2999,7 @@ include = [
 
 🗣️ Summary from Summary/v0.0.9 to last commit in .
 diff --git a/Cargo.toml b/Cargo.toml
-index 0f0c9c7..1919b93 100644
+index 0f0c9c7..3716998 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -16,6 +16,7 @@ git2 = { version = "0.19.0" }
@@ -3010,6 +3010,15 @@ itertools = "0.13.0"
 
 [build-dependencies]
 serde = { version = "1.0.204", features = ["derive"] }
+@@ -36,7 +37,7 @@ description = "🗣️ Summary —"
+license = "MIT"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.0.9"
+version = "0.1.0"
+edition = "2021"
+include = [
+	"Source/**/*",
 diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
 index 02dbcc4..bfda9a9 100644
 --- a/Source/Fn/Binary/Command/Parallel.rs
