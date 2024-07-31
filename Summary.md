@@ -1927,14 +1927,16 @@
 🗣️ Summary from Summary/v0.1.0 to last commit in .
 - 				match std::str::from_utf8(Line.content()) {
 - 					Ok(Line) => Output.push_str(Line),
+- 					Err(_) => (),
 + 				let Content = match std::str::from_utf8(Line.content()) {
 + 					Ok(Line) => Line,
++ 					Err(_) => " ",
++ 				};
 + 
 + 				match Line.origin() {
 + 					'+' => Output.push_str(&format!("+ {}", Content)),
 + 					'-' => Output.push_str(&format!("- {}", Content)),
 + 					_ => (),
-+ 				}
 
 🗣️ Summary from first commit to Summary/v0.1.0 in .
 - !/Target/release/PRun
