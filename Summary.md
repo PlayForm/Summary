@@ -3237,6 +3237,29 @@ use itertools::Itertools;
 use std::{cmp::Reverse, collections::HashSet};
 
 🗣️ Summary from Summary/v0.1.0 to last commit in .
+diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
+index 4364657..cbcb5bb 100644
+--- a/Source/Fn/Summary/Difference.rs
++++ b/Source/Fn/Summary/Difference.rs
+@@ -129,10 +129,16 @@ pub fn Fn(
+			if !Regex.is_match(&Delta.old_file().path().unwrap().display().to_string())
+				&& !Regex.is_match(&Delta.new_file().path().unwrap().display().to_string())
+			{
+				match std::str::from_utf8(Line.content()) {
+					Ok(Line) => Output.push_str(Line),
+				let Content = match std::str::from_utf8(Line.content()) {
+					Ok(Line) => Line,
+					Err(_) => (),
+				}
+
+				match Line.origin() {
+					'+' => Output.push_str(&format!("+ {}", Content)),
+					'-' => Output.push_str(&format!("- {}", Content)),
+					_ => (),
+				}
+			}
+
+			true
 
 🗣️ Summary from first commit to Summary/v0.1.0 in .
 diff --git a/.gitignore b/.gitignore
