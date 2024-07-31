@@ -126,19 +126,20 @@ pub fn Fn(
 			Some(&mut Options),
 		)?
 		.print(git2::DiffFormat::Patch, |Delta, _, Line| {
-			if !Regex.is_match(&Delta.old_file().path().unwrap().display().to_string())
-				&& !Regex.is_match(&Delta.new_file().path().unwrap().display().to_string())
-			{
-				let Content = match std::str::from_utf8(Line.content()) {
-					Ok(Line) => Line,
-					Err(_) => " ",
-				};
+			let Path = (
+				&Delta.old_file().path().unwrap().display().to_string(),
+				&Delta.new_file().path().unwrap().display().to_string(),
+			);
 
-				match Line.origin() {
-					'+' => Output.push_str(&format!("+ {}", Content)),
-					'-' => Output.push_str(&format!("- {}", Content)),
-					_ => (),
-				}
+			if !Regex.is_match(Path.0) && !Regex.is_match(Path.1) {
+				if let Ok(Content) = std::str::from_utf8(Line.content()) {
+					match Line.origin() {
+						'F' => Output.push_str(&format!("{}", Content)),
+						'+' => Output.push_str(&format!("+ {}", Content)),
+						'-' => Output.push_str(&format!("- {}", Content)),
+						_ => (),
+					}
+				};
 			}
 
 			true
