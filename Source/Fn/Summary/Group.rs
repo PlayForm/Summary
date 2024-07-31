@@ -55,18 +55,18 @@ where
 		for (_, (Difference, Message)) in Summary.into_iter() {
 			Output
 				.entry(Message + " in " + &Entry)
-				.and_modify(|existing: &mut HashSet<String>| {
-					existing.insert(Difference.clone());
+				.and_modify(|Existing: &mut HashSet<String>| {
+					Existing.insert(Difference.clone());
 				})
 				.or_insert_with(|| {
-					let mut set = HashSet::new();
-					set.insert(Difference);
-					set
+					let mut New = HashSet::new();
+					New.insert(Difference);
+					New
 				});
 		}
 	}
 
-	Output.into_iter().sorted_by(|(a, _), (b, _)| a.cmp(b)).for_each(|(Message, Difference)| {
+	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(|(Message, Difference)| {
 		println!("{}", Message);
 
 		Difference
