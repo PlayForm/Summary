@@ -1,5 +1,23 @@
 ## 0.1.1
 
+### Changed
+
+-   Updated version number in Cargo.toml from 0.1.0 to 0.1.1
+
+### Improved
+
+-   Enhanced diff processing in Source/Fn/Summary/Difference.rs:
+    -   Simplified path handling for old and new files
+    -   Improved content processing with better formatting
+    -   Added support for file rename/move operations (indicated by 'F' origin)
+
+### Developer Notes
+
+-   The changes in Difference.rs should improve readability and maintainability
+    of the diff processing code
+-   The new handling of 'F' origin allows for better tracking of file renames
+    and moves in the repository
+
 ## 0.1.0
 
 ### Added
