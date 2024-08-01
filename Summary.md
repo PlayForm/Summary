@@ -2191,7 +2191,7 @@ index 0000000..892b7ba
 + use itertools::Itertools;
 + use std::{cmp::Reverse, collections::HashSet};
 
-🗣️ Summary from Summary/v0.1.0 to last commit in .
+🗣️ Summary from Summary/v0.1.0 to Summary/v0.1.1 in .
 diff --git a/Cargo.toml b/Cargo.toml
 index 3716998..bdae5d9 100644
 --- a/Cargo.toml
@@ -2228,7 +2228,9 @@ index 4364657..eeeef83 100644
 + 						_ => (),
 + 				};
 
-🗣️ Summary from first commit to Summary/v0.1.0 in .
+🗣️ Summary from Summary/v0.1.1 to last commit in .
+
+🗣️ Summary from first commit to Summary/v0.1.1 in .
 diff --git a/.gitignore b/.gitignore
 index 34f0334..619d2a9 100644
 --- a/.gitignore
@@ -2248,7 +2250,7 @@ index 73ccc94..1f0de60 100644
 + use serde::Deserialize;
 + use std::fs;
 diff --git a/Cargo.toml b/Cargo.toml
-index 3e65019..3716998 100644
+index 3e65019..bdae5d9 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 - tokio = { version = "1.39.1", features = ["full"] }
@@ -2259,7 +2261,7 @@ index 3e65019..3716998 100644
 - toml = "0.8.16"
 + toml = "0.8.17"
 - version = "0.0.1"
-+ version = "0.1.0"
++ version = "0.1.1"
 + include = [
 + 	"Source/**/*",
 + 	"LICENSE",
@@ -2758,7 +2760,7 @@ index a56e8ce..4ca5f2b 100644
 + pub mod Summary;
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
 new file mode 100644
-index 0000000..3a4bd61
+index 0000000..b904dbd
 --- /dev/null
 +++ b/Source/Fn/Summary.rs
 + /// Asynchronously generates a summary of differences between commits in a git repository.
@@ -2867,11 +2869,11 @@ index 0000000..3a4bd61
 + 
 + pub mod Difference;
 + pub mod First;
-+ pub mod Insert;
 + pub mod Group;
++ pub mod Insert;
 diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
 new file mode 100644
-index 0000000..4364657
+index 0000000..eeeef83
 --- /dev/null
 +++ b/Source/Fn/Summary/Difference.rs
 + /// Generates a diff summary between two commits in a git repository.
@@ -3002,13 +3004,20 @@ index 0000000..4364657
 + 			Some(&mut Options),
 + 		)?
 + 		.print(git2::DiffFormat::Patch, |Delta, _, Line| {
-+ 			if !Regex.is_match(&Delta.old_file().path().unwrap().display().to_string())
-+ 				&& !Regex.is_match(&Delta.new_file().path().unwrap().display().to_string())
-+ 			{
-+ 				match std::str::from_utf8(Line.content()) {
-+ 					Ok(Line) => Output.push_str(Line),
-+ 					Err(_) => (),
-+ 				}
++ 			let Path = (
++ 				&Delta.old_file().path().unwrap().display().to_string(),
++ 				&Delta.new_file().path().unwrap().display().to_string(),
++ 			);
++ 
++ 			if !Regex.is_match(Path.0) && !Regex.is_match(Path.1) {
++ 				if let Ok(Content) = std::str::from_utf8(Line.content()) {
++ 					match Line.origin() {
++ 						'F' => Output.push_str(&format!("{}", Content)),
++ 						'+' => Output.push_str(&format!("+ {}", Content)),
++ 						'-' => Output.push_str(&format!("- {}", Content)),
++ 						_ => (),
++ 					}
++ 				};
 + 			}
 + 
 + 			true
