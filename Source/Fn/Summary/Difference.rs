@@ -117,7 +117,8 @@ pub fn Fn(
 	Options.show_binary(false);
 	Options.force_binary(false);
 
-	let mut Output = String::new();
+	let mut FileChanges = HashMap::new();
+	let mut CurrentFile = String::new();
 
 	Repository
 		.diff_tree_to_tree(
@@ -134,9 +135,15 @@ pub fn Fn(
 			if !Regex.is_match(Path.0) && !Regex.is_match(Path.1) {
 				if let Ok(Content) = std::str::from_utf8(Line.content()) {
 					match Line.origin() {
-						'F' => Output.push_str(&format!("{}", Content)),
-						'+' => Output.push_str(&format!("+ {}", Content)),
-						'-' => Output.push_str(&format!("- {}", Content)),
+						'F' => {
+							CurrentFile = format!("{} - {}", Path.0, Path.1);
+						}
+						'+' | '-' => {
+							FileChanges
+								.entry(CurrentFile.clone())
+								.or_insert_with(Vec::new)
+								.push((Line.origin(), Content.trim_end().to_string()));
+						}
 						_ => (),
 					}
 				};
@@ -145,5 +152,73 @@ pub fn Fn(
 			true
 		})?;
 
+	let mut Output = String::new();
+
+	for (File, Changes) in FileChanges {
+		Output.push_str(&format!("In file '{}':\n", File));
+		let (OldContent, NewContent): (Vec<_>, Vec<_>) =
+			Changes.iter().partition(|&(origin, _)| *origin == '-');
+
+		let OldText: String =
+			OldContent.iter().map(|(_, content)| content.as_str()).collect::<Vec<_>>().join("\n");
+		let NewText: String =
+			NewContent.iter().map(|(_, content)| content.as_str()).collect::<Vec<_>>().join("\n");
+
+		let Diff = diff::lines(&OldText, &NewText);
+		let mut Additions = Vec::new();
+		let mut Deletions = Vec::new();
+		let mut Modifications = Vec::new();
+
+		for d in Diff {
+			match d {
+				diff::Result::Left(l) => Deletions.push(l.to_string()),
+				diff::Result::Right(r) => Additions.push(r.to_string()),
+				diff::Result::Both(l, r) if l != r => {
+					Modifications.push((l.to_string(), r.to_string()))
+				}
+				_ => {}
+			}
+		}
+
+		if !Additions.is_empty() {
+			Output.push_str(&format!("- Added {} line(s):\n", Additions.len()));
+			for (i, addition) in Additions.iter().enumerate().take(3) {
+				Output.push_str(&format!("  {}. {}\n", i + 1, addition));
+			}
+			if Additions.len() > 3 {
+				Output.push_str(&format!("  ... and {} more additions\n", Additions.len() - 3));
+			}
+		}
+
+		if !Deletions.is_empty() {
+			Output.push_str(&format!("- Removed {} line(s):\n", Deletions.len()));
+			for (i, deletion) in Deletions.iter().enumerate().take(3) {
+				Output.push_str(&format!("  {}. {}\n", i + 1, deletion));
+			}
+			if Deletions.len() > 3 {
+				Output.push_str(&format!("  ... and {} more deletions\n", Deletions.len() - 3));
+			}
+		}
+
+		if !Modifications.is_empty() {
+			Output.push_str(&format!("- Modified {} line(s):\n", Modifications.len()));
+			for (i, (old, new)) in Modifications.iter().enumerate().take(3) {
+				Output.push_str(&format!("  {}. Changed from \"{}\" to \"{}\"\n", i + 1, old, new));
+			}
+			if Modifications.len() > 3 {
+				Output.push_str(&format!(
+					"  ... and {} more modifications\n",
+					Modifications.len() - 3
+				));
+			}
+		}
+
+		Output.push_str("\n");
+	}
+
 	Ok(Output)
 }
+
+use diff;
+use std::collections::HashMap;
+use prettytable::{Table, Row, Cell};
