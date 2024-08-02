@@ -2231,37 +2231,335 @@ index 4364657..eeeef83 100644
 🗣️ Summary from Summary/v0.1.1 to last commit in .
 
 🗣️ Summary from first commit to Summary/v0.1.1 in .
+diff --git a/.cargo/Config.toml b/.cargo/Config.toml
+new file mode 100644
+index 0000000..5507528
+--- /dev/null
++++ b/.cargo/Config.toml
++ [build]
++ target-dir = "Target"
++ 
++ [cargo-new]
++ vcs = "git"
++ 
++ [profile.release]
++ opt-level = 3
++ codegen-units = 1
++ debug = false
++ lto = true
++ panic = "abort"
+diff --git a/.github/dependabot.yml b/.github/dependabot.yml
+new file mode 100644
+index 0000000..44227ad
+--- /dev/null
++++ b/.github/dependabot.yml
++ version: 2
++ enable-beta-ecosystems: true
++ 
++ updates:
++     - package-ecosystem: "github-actions"
++       directory: "/"
++       schedule:
++           interval: "daily"
++ 
++     - package-ecosystem: "cargo"
++       directory: "/"
++       schedule:
++           interval: "daily"
++       versioning-strategy: lockfile-only
+diff --git a/.github/FUNDING.yml b/.github/FUNDING.yml
+new file mode 100644
+index 0000000..3ba6945
+--- /dev/null
++++ b/.github/FUNDING.yml
++ open_collective: playform-cloud-collective
+diff --git a/.github/workflows/Dependabot.yml b/.github/workflows/Dependabot.yml
+new file mode 100644
+index 0000000..387fece
+--- /dev/null
++++ b/.github/workflows/Dependabot.yml
++ name: Dependabot
++ 
++ concurrency:
++     group: Dependabot-${{ github.workflow }}-${{ github.ref }}
++     cancel-in-progress: true
++ 
++ permissions:
++     security-events: write
++     contents: write
++     pull-requests: write
++ 
++ on:
++     workflow_dispatch:
++     pull_request:
++ 
++ jobs:
++     Approve:
++         runs-on: ubuntu-latest
++ 
++         if: ${{ github.actor == 'dependabot[bot]' }}
++ 
++         steps:
++             - uses: dependabot/fetch-metadata@v2.2.0
++               with:
++                   github-token: "${{ secrets.GITHUB_TOKEN }}"
++ 
++             - run: gh pr review --approve "$PR_URL"
++               env:
++                   PR_URL: ${{github.event.pull_request.html_url}}
++                   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
++ 
++     Merge:
++         runs-on: ubuntu-latest
++ 
++         if: ${{ github.actor == 'dependabot[bot]' }}
++ 
++         steps:
++             - uses: dependabot/fetch-metadata@v2.2.0
++               with:
++                   github-token: "${{ secrets.GITHUB_TOKEN }}"
++ 
++             - run: gh pr merge --auto --merge "$PR_URL"
++               env:
++                   PR_URL: ${{github.event.pull_request.html_url}}
++                   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+diff --git a/.github/workflows/GitHub.yml b/.github/workflows/GitHub.yml
+new file mode 100644
+index 0000000..7b1e399
+--- /dev/null
++++ b/.github/workflows/GitHub.yml
++ name: GitHub
++ 
++ concurrency:
++     group: GitHub-${{ github.workflow }}-${{ github.ref }}
++     cancel-in-progress: true
++ 
++ permissions:
++     issues: write
++     pull-requests: write
++ 
++ on:
++     issues:
++         types: [opened]
++     pull_request:
++         types: [opened]
++ 
++ jobs:
++     Assign:
++         runs-on: ubuntu-latest
++ 
++         env:
++             ADBLOCK: true
++             ASTRO_TELEMETRY_DISABLED: 1
++             AUTOMATEDLAB_TELEMETRY_OPTOUT: 1
++             AZURE_CORE_COLLECT_TELEMETRY: 0
++             CHOOSENIM_NO_ANALYTICS: 1
++             DIEZ_DO_NOT_TRACK: 1
++             DOTNET_CLI_TELEMETRY_OPTOUT: 1
++             DOTNET_INTERACTIVE_CLI_TELEMETRY_OPTOUT: 1
++             DO_NOT_TRACK: 1
++             ET_NO_TELEMETRY: 1
++             GATSBY_TELEMETRY_DISABLED: 1
++             GATSBY_TELEMETRY_OPTOUT: 1
++             GATSBY_TELEMETRY_OPT_OUT: 1
++             GRIT_TELEMETRY_DISABLED: 1
++             HASURA_GRAPHQL_ENABLE_TELEMETRY: false
++             HINT_TELEMETRY: off
++             HOMEBREW_NO_ANALYTICS: 1
++             INFLUXD_REPORTING_DISABLED: true
++             ITERATIVE_DO_NOT_TRACK: 1
++             NEXT_TELEMETRY_DEBUG: 1
++             NEXT_TELEMETRY_DISABLED: 1
++             NG_CLI_ANALYTICS: false
++             NUXT_TELEMETRY_DISABLED: 1
++             PIN_DO_NOT_TRACK: 1
++             POWERSHELL_TELEMETRY_OPTOUT: 1
++             SAM_CLI_TELEMETRY: 0
++             STNOUPGRADE: 1
++             STRIPE_CLI_TELEMETRY_OPTOUT: 1
++             TELEMETRY_DISABLED: 1
++             TERRAFORM_TELEMETRY: 0
++ 
++         steps:
++             - uses: pozil/auto-assign-issue@v2.0.0
++               with:
++                   repo-token: ${{ secrets.GITHUB_TOKEN }}
++                   assignees: NikolaRHristov
++                   numOfAssignee: 1
+diff --git a/.github/workflows/Rust.yml b/.github/workflows/Rust.yml
+new file mode 100644
+index 0000000..9edf181
+--- /dev/null
++++ b/.github/workflows/Rust.yml
++ name: Rust
++ 
++ concurrency:
++     group: Rust-${{ github.workflow }}-${{ github.ref }}
++     cancel-in-progress: true
++ 
++ permissions:
++     security-events: write
++ 
++ on:
++     workflow_dispatch:
++     push:
++         branches: [Current]
++     pull_request:
++         branches: [Current]
++     workflow_call:
++ 
++ jobs:
++     Build:
++         runs-on: ubuntu-latest
++ 
++         env:
++             ADBLOCK: true
++             ASTRO_TELEMETRY_DISABLED: 1
++             AUTOMATEDLAB_TELEMETRY_OPTOUT: 1
++             AZURE_CORE_COLLECT_TELEMETRY: 0
++             CHOOSENIM_NO_ANALYTICS: 1
++             DIEZ_DO_NOT_TRACK: 1
++             DOTNET_CLI_TELEMETRY_OPTOUT: 1
++             DOTNET_INTERACTIVE_CLI_TELEMETRY_OPTOUT: 1
++             DO_NOT_TRACK: 1
++             ET_NO_TELEMETRY: 1
++             GATSBY_TELEMETRY_DISABLED: 1
++             GATSBY_TELEMETRY_OPTOUT: 1
++             GATSBY_TELEMETRY_OPT_OUT: 1
++             GRIT_TELEMETRY_DISABLED: 1
++             HASURA_GRAPHQL_ENABLE_TELEMETRY: false
++             HINT_TELEMETRY: off
++             HOMEBREW_NO_ANALYTICS: 1
++             INFLUXD_REPORTING_DISABLED: true
++             ITERATIVE_DO_NOT_TRACK: 1
++             NEXT_TELEMETRY_DEBUG: 1
++             NEXT_TELEMETRY_DISABLED: 1
++             NG_CLI_ANALYTICS: false
++             NUXT_TELEMETRY_DISABLED: 1
++             PIN_DO_NOT_TRACK: 1
++             POWERSHELL_TELEMETRY_OPTOUT: 1
++             SAM_CLI_TELEMETRY: 0
++             STNOUPGRADE: 1
++             STRIPE_CLI_TELEMETRY_OPTOUT: 1
++             TELEMETRY_DISABLED: 1
++             TERRAFORM_TELEMETRY: 0
++ 
++         strategy:
++             matrix:
++                 toolchain: ["stable", "nightly"]
++ 
++         steps:
++             - uses: actions/checkout@v4.1.7
++ 
++             - uses: actions-rs/toolchain@v1.0.7
++               with:
++                   profile: minimal
++                   toolchain: ${{ matrix.toolchain }}
++ 
++             - uses: actions/cache@v4.0.2
++               with:
++                   path: |
++                       ~/.cargo/bin/
++                       ~/.cargo/registry/index/
++                       ~/.cargo/registry/cache/
++                       ~/.cargo/git/db/
++                       target/
++                       Target/
++                   key: ${{ runner.os }}-cargo-${{ hashFiles('./Cargo.toml') }}
++             - uses: actions-rs/cargo@v1.0.3
++               with:
++                 command: build
++                 args: --release --all-features --manifest-path ./Cargo.toml
 diff --git a/.gitignore b/.gitignore
-index 34f0334..619d2a9 100644
+index ea8c4bf..619d2a9 100644
 --- a/.gitignore
 +++ b/.gitignore
-- !/Target/release/PRun
-- !/Target/release/Run
+- /target
++ /Target/*
++ 
++ !/Target/release
++ /Target/release/*
++ 
++ !/Target/release/*.deb
++ !/Target/release/*.exe
 + !/Target/release/PSummary
 + !/Target/release/Summary
 diff --git a/build.rs b/build.rs
-index 73ccc94..1f0de60 100644
---- a/build.rs
+new file mode 100644
+index 0000000..1f0de60
+--- /dev/null
 +++ b/build.rs
-- use serde::Deserialize;
-- use std::fs;
-- 
++ #![allow(non_snake_case)]
++ 
++ #[derive(Deserialize)]
++ struct Toml {
++ 	package: Package,
++ }
++ 
++ #[derive(Deserialize)]
++ struct Package {
++ 	version: String,
++ }
++ 
++ fn main() {
++ 	println!("cargo:rerun-if-changed=Cargo.toml");
++ 
++ 	println!(
++ 		"cargo:rustc-env=CARGO_PKG_VERSION={}",
++ 		(toml::from_str::<Toml>(&fs::read_to_string("Cargo.toml").expect("Cannot Cargo.toml."))
++ 			.expect("Cannot toml."))
++ 		.package
++ 		.version
++ 	);
++ }
 + 
 + use serde::Deserialize;
 + use std::fs;
 diff --git a/Cargo.toml b/Cargo.toml
-index 3e65019..bdae5d9 100644
+index 8d4b18b..bdae5d9 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
-- tokio = { version = "1.39.1", features = ["full"] }
+- [package]
++ [[bin]]
++ name = "PSummary"
++ path = "Source/Library.rs"
++ 
++ [[bin]]
+- version = "0.1.0"
+- edition = "2021"
++ path = "Source/Library.rs"
++ clap = { features = ["derive"], version = "4.5.11" }
++ walkdir = "2.5.0"
++ futures = "0.3.30"
++ rayon = "1.10.0"
 + tokio = { version = "1.39.2", features = ["full"] }
++ git2 = { version = "0.19.0" }
++ num_cpus = "1.16.0"
 + regex = "1.10.5"
 + dashmap = "6.0.1"
 + itertools = "0.13.0"
-- toml = "0.8.16"
++ 
++ [build-dependencies]
++ serde = { version = "1.0.204", features = ["derive"] }
 + toml = "0.8.17"
-- version = "0.0.1"
++ 
++ [lib]
++ crate-type = ["staticlib", "cdylib", "rlib"]
++ name = "Library"
++ path = "Source/Library.rs"
++ 
++ [package]
++ autobenches = false
++ autobins = false
++ autoexamples = false
++ autotests = false
++ default-run = "Summary"
++ description = "🗣️ Summary —"
++ license = "MIT"
++ name = "psummary"
++ repository = "https://github.com/PlayForm/Summary.git"
 + version = "0.1.1"
++ edition = "2021"
 + include = [
 + 	"Source/**/*",
 + 	"LICENSE",
@@ -2270,16 +2568,334 @@ index 3e65019..bdae5d9 100644
 + 	"build.rs",
 + 	"Cargo.toml",
 + ]
+diff --git a/CODE_OF_CONDUCT.md b/CODE_OF_CONDUCT.md
+new file mode 100644
+index 0000000..01e92b5
+--- /dev/null
++++ b/CODE_OF_CONDUCT.md
++ # Code of Conduct
++ 
++ ## Our Pledge
++ 
++ Welcome to our community! We are committed to creating a welcoming and inclusive
++ environment for all contributors. As members, contributors, and leaders, we
++ pledge to make participation in our community a harassment-free experience for
++ everyone, regardless of:
++ 
++ -   Age
++ -   Body size
++ -   Visible or invisible disability
++ -   Ethnicity
++ -   Sex characteristics
++ -   Gender identity and expression
++ -   Level of experience
++ -   Education
++ -   Socio-economic status
++ -   Nationality
++ -   Personal appearance
++ -   Race
++ -   Caste
++ -   Color
++ -   Religion
++ -   Sexual identity and orientation
++ 
++ We promise to act and interact in ways that contribute to an open, welcoming,
++ diverse, inclusive, and healthy community.
++ 
++ ## Our Standards
++ 
++ Examples of behavior that contributes to a positive environment for our
++ community include:
++ 
++ -   Demonstrating empathy and kindness toward other people
++ -   Being respectful of differing opinions, viewpoints, and experiences
++ -   Giving and gracefully accepting constructive feedback
++ -   Accepting responsibility and apologizing to those affected by our mistakes,
++     and learning from the experience
++ -   Focusing on what is best not just for us as individuals but for the overall
++     community
++ 
++ Examples of unacceptable behavior include:
++ 
++ -   The use of sexualized language or imagery, and sexual attention or advances
++     of any kind
++ -   Trolling, insulting, or derogatory comments, and personal or political
++     attacks
++ -   Public or private harassment
++ -   Publishing others' private information, such as a physical or email address,
++     without their explicit permission
++ -   Other conduct which could reasonably be considered inappropriate in a
++     professional setting
++ 
++ ## Enforcement Responsibilities
++ 
++ Community leaders are responsible for clarifying and enforcing our standards of
++ acceptable behavior. They will take appropriate and fair corrective action in
++ response to any behavior they deem inappropriate, threatening, offensive, or
++ harmful. This may include removing, editing, or rejecting comments, commits,
++ code, wiki edits, issues, and other contributions that do not align with this
++ Code of Conduct. Community leaders will communicate reasons for moderation
++ decisions when appropriate.
++ 
++ ## Scope
++ 
++ This Code of Conduct applies within all community spaces, and also applies when
++ an individual is officially representing the community in public spaces.
++ Examples of representing our community include using an official e-mail address,
++ posting via an official social media account, or acting as an appointed
++ representative at an online or offline event.
++ 
++ ## Enforcement
++ 
++ Instances of abusive, harassing, or otherwise unacceptable behavior may be
++ reported to the community leaders responsible for enforcement at
++ Community@PlayForm.Cloud. All complaints will be reviewed and investigated
++ promptly and fairly. All community leaders are obligated to respect the privacy
++ and security of the reporter of any incident.
++ 
++ ## Enforcement Guidelines
++ 
++ Community leaders will follow these Community Impact Guidelines in determining
++ the consequences for any action they deem in violation of this Code of Conduct:
++ 
++ ### 1. Correction
++ 
++ **Community Impact**: Use of inappropriate language or other behavior deemed
++ unprofessional or unwelcome in the community.
++ 
++ **Consequence**: A private, written warning from community leaders, providing
++ clarity around the nature of the violation and an explanation of why the
++ behavior was inappropriate. A public apology may be requested.
++ 
++ ### 2. Warning
++ 
++ **Community Impact**: A violation through a single incident or series of
++ actions.
++ 
++ **Consequence**: A warning with consequences for continued behavior. No
++ interaction with the people involved, including unsolicited interaction with
++ those enforcing the Code of Conduct, for a specified period of time. This
++ includes avoiding interactions in community spaces as well as external channels
++ like social media. Violating these terms may lead to a temporary or permanent
++ ban.
++ 
++ ### 3. Temporary Ban
++ 
++ **Community Impact**: A serious violation of community standards, including
++ sustained inappropriate behavior.
++ 
++ **Consequence**: A temporary ban from any sort of interaction or public
++ communication with the community for a specified period of time. No public or
++ private interaction with the people involved, including unsolicited interaction
++ with those enforcing the Code of Conduct, is allowed during this period.
++ Violating these terms may lead to a permanent ban.
++ 
++ ### 4. Permanent Ban
++ 
++ **Community Impact**: Demonstrating a pattern of violation of community
++ standards, including sustained inappropriate behavior, harassment of an
++ individual, or aggression toward or disparagement of classes of individuals.
++ 
++ **Consequence**: A permanent ban from any sort of public interaction within the
++ community.
++ 
++ ## Attribution
++ 
++ This Code of Conduct is adapted from the [Contributor Covenant][homepage],
++ version 2.1, available at
++ [https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1].
++ Community Impact Guidelines were inspired by [Mozilla's code of conduct
++ enforcement ladder][Mozilla CoC].
++ 
++ For answers to common questions about this code of conduct, see the FAQ at
++ [https://www.contributor-covenant.org/faq][FAQ]. Translations are available at
++ [https://www.contributor-covenant.org/translations][translations].
++ 
++ [homepage]: HTTPS://www.contributor-covenant.org
++ [v2.1]: HTTPS://www.contributor-covenant.org/version/2/1/code_of_conduct.html
++ [Mozilla CoC]: HTTPS://github.com/mozilla/diversity
++ [FAQ]: HTTPS://www.contributor-covenant.org/faq
++ [translations]: HTTPS://www.contributor-covenant.org/translations
++ 
++ Thank you for being part of our community and helping us create a safe and
++ respectful environment for everyone!
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+new file mode 100644
+index 0000000..c390eae
+--- /dev/null
++++ b/CONTRIBUTING.md
++ # Contributing Guidelines
++ 
++ Welcome to our community! We are committed to creating a welcoming and inclusive
++ environment for all contributors. Before you get started, please read and adhere
++ to the following code of conduct. By participating in our community, you agree
++ to abide by these guidelines.
++ 
++ ## Our Pledge
++ 
++ We, as members, contributors, and leaders, pledge to make participation in our
++ community a harassment-free experience for everyone, regardless of age, body
++ size, visible or invisible disability, ethnicity, sex characteristics, gender
++ identity and expression, level of experience, education, socio-economic status,
++ nationality, personal appearance, race, caste, color, religion, or sexual
++ identity and orientation. We pledge to act and interact in ways that contribute
++ to an open, welcoming, diverse, inclusive, and healthy community.
++ 
++ ## Our Standards
++ 
++ Examples of behavior that contributes to a positive environment for our
++ community include:
++ 
++ -   Demonstrating empathy and kindness toward other people
++ -   Being respectful of differing opinions, viewpoints, and experiences
++ -   Giving and gracefully accepting constructive feedback
++ -   Accepting responsibility and apologizing to those affected by our mistakes,
++     and learning from the experience
++ -   Focusing on what is best not just for us as individuals, but for the overall
++     community
++ 
++ Examples of unacceptable behavior include:
++ 
++ -   The use of sexualized language or imagery, and sexual attention or advances
++     of any kind
++ -   Trolling, insulting, or derogatory comments, and personal or political
++     attacks
++ -   Public or private harassment
++ -   Publishing others' private information, such as a physical or email address,
++     without their explicit permission
++ -   Other conduct which could reasonably be considered inappropriate in a
++     professional setting
++ 
++ ## Enforcement Responsibilities
++ 
++ Community leaders are responsible for clarifying and enforcing our standards of
++ acceptable behavior and will take appropriate and fair corrective action in
++ response to any behavior that they deem inappropriate, threatening, offensive,
++ or harmful. Community leaders have the right and responsibility to remove, edit,
++ or reject comments, commits, code, wiki edits, issues, and other contributions
++ that are not aligned with this Code of Conduct, and will communicate reasons for
++ moderation decisions when appropriate.
++ 
++ ## Scope
++ 
++ This Code of Conduct applies within all community spaces, and also applies when
++ an individual is officially representing the community in public spaces.
++ Examples of representing our community include using an official e-mail address,
++ posting via an official social media account, or acting as an appointed
++ representative at an online or offline event.
++ 
++ ## Enforcement
++ 
++ Instances of abusive, harassing, or otherwise unacceptable behavior may be
++ reported to the community leaders responsible for enforcement at
++ Community@PlayForm.Cloud. All complaints will be reviewed and investigated
++ promptly and fairly. All community leaders are obligated to respect the privacy
++ and security of the reporter of any incident.
++ 
++ ## Enforcement Guidelines
++ 
++ Community leaders will follow these Community Impact Guidelines in determining
++ the consequences for any action they deem in violation of this Code of Conduct:
++ 
++ ### 1. Correction
++ 
++ **Community Impact**: Use of inappropriate language or other behavior deemed
++ unprofessional or unwelcome in the community.
++ 
++ **Consequence**: A private, written warning from community leaders, providing
++ clarity around the nature of the violation and an explanation of why the
++ behavior was inappropriate. A public apology may be requested.
++ 
++ ### 2. Warning
++ 
++ **Community Impact**: A violation through a single incident or series of
++ actions.
++ 
++ **Consequence**: A warning with consequences for continued behavior. No
++ interaction with the people involved, including unsolicited interaction with
++ those enforcing the Code of Conduct, for a specified period of time. This
++ includes avoiding interactions in community spaces as well as external channels
++ like social media. Violating these terms may lead to a temporary or permanent
++ ban.
++ 
++ ### 3. Temporary Ban
++ 
++ **Community Impact**: A serious violation of community standards, including
++ sustained inappropriate behavior.
++ 
++ **Consequence**: A temporary ban from any sort of interaction or public
++ communication with the community for a specified period of time. No public or
++ private interaction with the people involved, including unsolicited interaction
++ with those enforcing the Code of Conduct, is allowed during this period.
++ Violating these terms may lead to a permanent ban.
++ 
++ ### 4. Permanent Ban
++ 
++ **Community Impact**: Demonstrating a pattern of violation of community
++ standards, including sustained inappropriate behavior, harassment of an
++ individual, or aggression toward or disparagement of classes of individuals.
++ 
++ **Consequence**: A permanent ban from any sort of public interaction within the
++ community.
++ 
++ ## Attribution
++ 
++ This Code of Conduct is adapted from the [Contributor Covenant][homepage],
++ version 2.1, available at
++ [https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1].
++ Community Impact Guidelines were inspired by [Mozilla's code of conduct
++ enforcement ladder][Mozilla CoC].
++ 
++ For answers to common questions about this code of conduct, see the FAQ at
++ [https://www.contributor-covenant.org/faq][FAQ]. Translations are available at
++ [https://www.contributor-covenant.org/translations][translations].
++ 
++ [homepage]: HTTPS://www.contributor-covenant.org
++ [v2.1]: HTTPS://www.contributor-covenant.org/version/2/1/code_of_conduct.html
++ [Mozilla CoC]: HTTPS://github.com/mozilla/diversity
++ [FAQ]: HTTPS://www.contributor-covenant.org/faq
++ [translations]: HTTPS://www.contributor-covenant.org/translations
++ 
++ Thank you for being part of our community and helping us create a safe and
++ respectful environment for everyone!
+diff --git a/LICENSE b/LICENSE
+new file mode 100644
+index 0000000..f236d76
+--- /dev/null
++++ b/LICENSE
++ MIT License
++ 
++ Copyright (c) 2023-2024 PlayForm
++ 
++ Permission is hereby granted, free of charge, to any person obtaining a copy of
++ this software and associated documentation files (the "Software"), to deal in
++ the Software without restriction, including without limitation the rights to
++ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
++ the Software, and to permit persons to whom the Software is furnished to do so,
++ subject to the following conditions:
++ 
++ The above copyright notice and this permission notice shall be included in all
++ copies or substantial portions of the Software.
++ 
++ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
++ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
++ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
++ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
++ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 diff --git a/README.md b/README.md
-index 871c006..1bf06be 100644
---- a/README.md
+new file mode 100644
+index 0000000..1bf06be
+--- /dev/null
 +++ b/README.md
-- `Summary` is a command-line tool that executes commands in multiple directories
-- simultaneously. It leverages parallel processing and concurrent `I/O` to
-- efficiently run tasks across directories.
++ # 🗣️ [Summary] —
++ 
 + [Summary] is a powerful command-line tool designed for efficient `Git`
 + repository analysis and summarization. It offers both sequential and parallel
 + processing capabilities, along with flexible file filtering options.
++ 
++ [Summary]: HTTPS://crates.io/crates/psummary
++ 
 + ```sh
 + Summary -P > Summary.md
 + ```
@@ -2308,6 +2924,14 @@ index 871c006..1bf06be 100644
 + 
 + By leveraging [Pieces OS], [Summary] can tap into a broader ecosystem of development
 + tools and services, significantly expanding its capabilities beyond basic file processing.
++ 
++ ## Installation
++ 
++ ```sh
++ cargo install psummary
++ ```
++ 
++ ## Usage
 + 
 + The Summary tool can be used with various options:
 + 
@@ -2339,22 +2963,24 @@ index 871c006..1bf06be 100644
 + 
 + Default is:
 + 
-- Summary
++ ```sh
 + Summary -P -E node_modules
-- This command will fetch from upstream for all `.git` repositories inside the
-- current directory. It essentially replaces the following command:
++ ```
++ 
 + #### --Omit or -O:
 + 
 + Specify regex patterns to omit files from processing.
 + 
 + Default is:
-- find -iname .git -type d -execdir git fetch upstream \;
++ 
++ ```sh
 + Summary -P \
 + 	--Omit "(?i)documentation" \
 + 	--Omit "(?i)target" \
 + 	--Omit "(?i)changelog\.md$" \
 + 	--Omit "(?i)summary\.md$"
-- ## Options
++ ```
++ 
 + #### --Parallel or -P:
 + 
 + Run processing in parallel.
@@ -2374,31 +3000,36 @@ index 871c006..1bf06be 100644
 + ```sh
 + Summary -P --Pattern .git
 + ```
-- Set the current working directory to a different folder (default is `.`):
++ 
++ #### --Root or -R:
++ 
 + Set the current working directory to a different folder.
 + 
 + Default is:
-- Summary -R D:\Developer .git git fetch upstream
++ 
++ ```sh
 + Summary -P --Root .
-- #### --Parallel or -P:
++ ```
++ 
 + For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
 + flags and configuration options. [Pieces OS]
 + 
 + ## Examples
-- Summary commands in `parallel` (default is `sequential`):
++ 
 + Analyze the current directory:
-- Summary -P -R D:\Developer .git git fetch upstream
++ 
++ ```sh
 + Summary
-- #### --Exclude:
++ ```
++ 
 + Analyze a specific directory in parallel:
-- Exclude certain files or directories (defailt is
-- `node_modules target dist vendor`)
++ 
 + ```sh
 + Summary -P -R D:\Developer
 + ```
-- #### --Pattern:
++ 
 + Exclude additional directories:
-- Specify a custom pattern for matching (defailt is `.git`)
++ 
 + ```sh
 + Summary -P -E "node_modules target dist vendor"
 + ```
@@ -2408,7 +3039,9 @@ index 871c006..1bf06be 100644
 + ```sh
 + Summary -P -O "\.md$" -O "\.txt$"
 + ```
-- `Summary` relies on several Rust crates to provide its functionality:
++ 
++ ## Dependencies
++ 
 + [Summary] relies on several Rust crates to provide its functionality:
 + 
 + -   `clap` - For parsing command-line arguments.
@@ -2419,15 +3052,19 @@ index 871c006..1bf06be 100644
 + -   `regex` - For pattern matching and text manipulation.
 + -   `tokio` - For asynchronous runtime.
 + -   `walkdir` - For efficient filesystem traversal.
-- -   `clap` - Parses command-line arguments
-- -   `rayon` - Enables parallel processing
-- -   `tokio` - Provides an asynchronous runtime
-- -   `walkdir` - Facilitates efficient filesystem traversal
++ 
 + [Pieces OS] For extended functionality and system integration.
++ 
++ [Summary]: HTTPS://crates.io/crates/psummary
 + [Pieces OS]: HTTPS://Pieces.App
++ 
++ ## Changelog
++ 
++ See [CHANGELOG.md](CHANGELOG.md) for a history of changes to this CLI.
 diff --git a/Source/Fn/Binary/Command.rs b/Source/Fn/Binary/Command.rs
-index e69de29..4686859 100644
---- a/Source/Fn/Binary/Command.rs
+new file mode 100644
+index 0000000..4686859
+--- /dev/null
 +++ b/Source/Fn/Binary/Command.rs
 + /// Creates and returns the command-line argument matches for the `Summary` application.
 + ///
@@ -2753,10 +3390,18 @@ index 0000000..4986cdb
 + }
 + 
 + use crate::Struct::Binary::Command::Entry::Struct as Option;
+diff --git a/Source/Fn/Binary/mod.rs b/Source/Fn/Binary/mod.rs
+new file mode 100644
+index 0000000..9da7843
+--- /dev/null
++++ b/Source/Fn/Binary/mod.rs
++ pub mod Command;
 diff --git a/Source/Fn/mod.rs b/Source/Fn/mod.rs
-index a56e8ce..4ca5f2b 100644
---- a/Source/Fn/mod.rs
+new file mode 100644
+index 0000000..4ca5f2b
+--- /dev/null
 +++ b/Source/Fn/mod.rs
++ pub mod Binary;
 + pub mod Summary;
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
 new file mode 100644
@@ -3246,12 +3891,14 @@ index 0000000..abf2d05
 + 	hash::{Hash, Hasher},
 + };
 diff --git a/Source/Library.rs b/Source/Library.rs
-index 62cfaff..bd54253 100644
---- a/Source/Library.rs
+new file mode 100644
+index 0000000..bd54253
+--- /dev/null
 +++ b/Source/Library.rs
-- mod Fn;
-- mod Struct;
-- 
++ #![allow(non_snake_case)]
++ 
++ #[allow(dead_code)]
++ #[tokio::main]
 + /// The main entry point for the application.
 + ///
 + /// This function initializes the command structure and executes the asynchronous function
@@ -3270,172 +3917,12 @@ index 62cfaff..bd54253 100644
 + ///     (Struct::Binary::Command::Struct::Fn().Fn)().await
 + /// }
 + /// ```
++ async fn main() {
++ 	(Struct::Binary::Command::Struct::Fn().Fn)().await
++ }
 + 
 + pub mod Fn;
 + pub mod Struct;
-diff --git a/Source/main.rs b/Source/main.rs
-deleted file mode 100644
-index 3f3ccf9..0000000
---- a/Source/main.rs
-+++ /dev/null
-- use git2::{DiffOptions, Repository};
-- use std::{
-- 	fs::{self, File},
-- 	io::Write,
-- 	path::Path,
-- };
-- 
-- fn main() -> Result<(), Box<dyn std::error::Error>> {
-- 	// Clone the repository (if you haven't already)
-- 	let repo_url = "<repository_url>";
-- 	let repo_path = "<repository_name>";
-- 	if !Path::new(repo_path).exists() {
-- 		Repository::clone(repo_url, repo_path)?;
-- 	}
-- 	let repo = Repository::open(repo_path)?;
-- 
-- 	// List all tags
-- 	let tags = repo.tag_names(None)?;
-- 	let mut previous_tag = None;
-- 
-- 	// Create the Summary directory if it doesn't exist
-- 	let summary_dir = "Summary";
-- 	fs::create_dir_all(summary_dir)?;
-- 
-- 	for i in 0..tags.len() {
-- 		if let Some(tag) = tags.get(i) {
-- 			if let Some(prev_tag) = previous_tag {
-- 				// Generate diff between previous_tag and current tag
-- 				let diff = Diff(&repo, prev_tag, tag)?;
-- 				let diff_file_path = format!("{}/diff_{}_{}.txt", summary_dir, prev_tag, tag);
-- 				let mut diff_file = File::create(&diff_file_path)?;
-- 				diff_file.write_all(diff.as_bytes())?;
-- 
-- 				// Generate release message
-- 				let release_message = Release(&diff);
-- 				let release_file_path = format!("{}/release_{}_{}.txt", summary_dir, prev_tag, tag);
-- 				let mut release_file = File::create(&release_file_path)?;
-- 				release_file.write_all(release_message.as_bytes())?;
-- 			}
-- 			previous_tag = Some(tag);
-- 		}
-- 	}
-- 
-- 	Ok(())
-- }
-- 
-- fn Diff(repo: &Repository, old_tag: &str, new_tag: &str) -> Result<String, git2::Error> {
-- 	let Old = repo.revparse_single(old_tag)?.peel_to_commit()?;
-- 	let New = repo.revparse_single(new_tag)?.peel_to_commit()?;
-- 
-- 	let mut Options = DiffOptions::new();
-- 	let diff = repo.diff_tree_to_tree(
-- 		Some(&Old.tree()?),
-- 		Some(&New.tree()?),
-- 		Some(&mut Options),
-- 	)?;
-- 
-- 	let mut diff_str = String::new();
-- 	diff.print(git2::DiffFormat::Patch, |_, _, line| {
-- 		diff_str.push_str(std::str::from_utf8(line.content()).unwrap());
-- 		true
-- 	})?;
-- 
-- 	Ok(diff_str)
-- }
-- 
-- fn Release(diff: &str) -> String {
-- 	// This is a simple example. You can enhance this function to generate more detailed messages.
-- 	let mut release_message = String::new();
-- 	release_message.push_str("Release Notes:\n");
-- 	for line in diff.lines() {
-- 		if line.starts_with("+") && !line.starts_with("+++") {
-- 			release_message.push_str(&format!("Added: {}\n", &line[1..]));
-- 		} else if line.starts_with("-") && !line.starts_with("---") {
-- 			release_message.push_str(&format!("Removed: {}\n", &line[1..]));
-- 		}
-- 	}
-- 	release_message
-- }
-- use git2::{DiffOptions, Repository};
-- use std::{
-- 	fs::{self, File},
-- 	io::Write,
-- 	path::Path,
-- };
-- 
-- fn main() -> Result<(), Box<dyn std::error::Error>> {
-- 	// Clone the repository (if you haven't already)
-- 	let repo_url = "<repository_url>";
-- 	let repo_path = "<repository_name>";
-- 	if !Path::new(repo_path).exists() {
-- 		Repository::clone(repo_url, repo_path)?;
-- 	}
-- 	let repo = Repository::open(repo_path)?;
-- 
-- 	// List all tags
-- 	let tags = repo.tag_names(None)?;
-- 	let mut previous_tag = None;
-- 
-- 	// Create the Summary directory if it doesn't exist
-- 	let summary_dir = "Summary";
-- 	fs::create_dir_all(summary_dir)?;
-- 
-- 	for i in 0..tags.len() {
-- 		if let Some(tag) = tags.get(i) {
-- 			if let Some(prev_tag) = previous_tag {
-- 				// Generate diff between previous_tag and current tag
-- 				let diff = Diff(&repo, prev_tag, tag)?;
-- 				let diff_file_path = format!("{}/diff_{}_{}.txt", summary_dir, prev_tag, tag);
-- 				let mut diff_file = File::create(&diff_file_path)?;
-- 				diff_file.write_all(diff.as_bytes())?;
-- 
-- 				// Generate release message
-- 				let release_message = Release(&diff);
-- 				let release_file_path = format!("{}/release_{}_{}.txt", summary_dir, prev_tag, tag);
-- 				let mut release_file = File::create(&release_file_path)?;
-- 				release_file.write_all(release_message.as_bytes())?;
-- 			}
-- 			previous_tag = Some(tag);
-- 		}
-- 	}
-- 
-- 	Ok(())
-- }
-- 
-- fn Diff(repo: &Repository, old_tag: &str, new_tag: &str) -> Result<String, git2::Error> {
-- 	let Old = repo.revparse_single(old_tag)?.peel_to_commit()?;
-- 	let New = repo.revparse_single(new_tag)?.peel_to_commit()?;
-- 
-- 	let mut Options = DiffOptions::new();
-- 	let diff = repo.diff_tree_to_tree(
-- 		Some(&Old.tree()?),
-- 		Some(&New.tree()?),
-- 		Some(&mut Options),
-- 	)?;
-- 
-- 	let mut diff_str = String::new();
-- 	diff.print(git2::DiffFormat::Patch, |_, _, line| {
-- 		diff_str.push_str(std::str::from_utf8(line.content()).unwrap());
-- 		true
-- 	})?;
-- 
-- 	Ok(diff_str)
-- }
-- 
-- fn Release(diff: &str) -> String {
-- 	// This is a simple example. You can enhance this function to generate more detailed messages.
-- 	let mut release_message = String::new();
-- 	release_message.push_str("Release Notes:\n");
-- 	for line in diff.lines() {
-- 		if line.starts_with("+") && !line.starts_with("+++") {
-- 			release_message.push_str(&format!("Added: {}\n", &line[1..]));
-- 		} else if line.starts_with("-") && !line.starts_with("---") {
-- 			release_message.push_str(&format!("Removed: {}\n", &line[1..]));
-- 		}
-- 	}
-- 	release_message
-- }
 diff --git a/Source/Struct/Binary/Command.rs b/Source/Struct/Binary/Command.rs
 new file mode 100644
 index 0000000..2c5edaf
@@ -3669,4 +4156,12 @@ index 0000000..7241509
 --- /dev/null
 +++ b/Source/Struct/Summary/mod.rs
 + pub mod Difference;
+diff --git a/src/main.rs b/src/main.rs
+deleted file mode 100644
+index a30eb95..0000000
+--- a/src/main.rs
++++ /dev/null
+- fn main() {
+- 	println!("Hello, world!");
+- }
 
