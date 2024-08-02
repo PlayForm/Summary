@@ -17,8 +17,6 @@ num_cpus = "1.16.0"
 regex = "1.10.5"
 dashmap = "6.0.1"
 itertools = "0.13.0"
-diff = "0.1.13"
-prettytable-rs = "0.10.0"
 
 [build-dependencies]
 serde = { version = "1.0.204", features = ["derive"] }
