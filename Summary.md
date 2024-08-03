@@ -2285,7 +2285,7 @@ index b904dbd..d6728f0 100644
 + 						crate::Fn::Summary::Difference::Fn(&Repository, &Start, &End, Option)?,
 + use chrono::{DateTime, FixedOffset};
 
-🗣️ Summary from Summary/v0.1.2 to last commit in .
+🗣️ Summary from Summary/v0.1.2 to Summary/v0.1.3 in .
 diff --git a/Cargo.toml b/Cargo.toml
 index 586e342..65a92aa 100644
 --- a/Cargo.toml
@@ -2330,4 +2330,6 @@ index d6728f0..7900705 100644
 + 						format!("🗣️ Summary from {} to {}", Start, End),
 - 			println!("Cannot Repository: {}", _Error);
 + 			eprintln!("Cannot Repository: {}", _Error);
+
+🗣️ Summary from Summary/v0.1.3 to Summary/v0.1.4 in .
 
