@@ -9,12 +9,12 @@
 ///
 /// # Arguments
 ///
-/// * `Entry` - A string slice representing the path to the git repository.
-/// * `Option` - A reference to a struct containing options for generating the diff summary.
+/// * Entry - A string slice representing the path to the git repository.
+/// * Option - A reference to a struct containing options for generating the diff summary.
 ///
 /// # Returns
 ///
-/// Returns a `Result` containing a DashMap with the generated summaries if successful, or a boxed `dyn std::error::Error` if an error occurs.
+/// Returns a Result containing a DashMap with the generated summaries if successful, or a boxed dyn std::error::Error if an error occurs.
 ///
 /// # Errors
 ///
@@ -41,66 +41,149 @@ pub async fn Fn(
 ) -> Result<DashMap<u64, (String, String)>, Box<dyn std::error::Error>> {
 	let Summary = DashMap::new();
 
-	match Repository::open(Entry) {
-		Ok(Repository) => {
-			let Name = Repository.tag_names(None)?;
+	let Repository = Arc::new(Repository::open(Entry)?);
 
-			let mut Tag: Vec<_> = Name.iter().filter_map(|Tag| Tag).collect();
+	let Name = Repository.tag_names(None)?;
 
-			Tag.sort();
-			Tag.dedup();
+	let mut Date: Vec<(String, DateTime<FixedOffset>)> = Name
+		.iter()
+		.filter_map(|Tag| {
+			Tag.and_then(|Tag| {
+				Repository
+					.revparse_single(&Tag)
+					.ok()
+					.and_then(|Commit| Commit.peel_to_commit().ok())
+					.map(|Commit| {
+						(
+							Tag.to_string(),
+							DateTime::from_timestamp(Commit.time().seconds(), 0)
+								.unwrap()
+								.fixed_offset(),
+						)
+					})
+			})
+		})
+		.collect();
 
-			let Head = Repository.head()?;
+	Date.par_sort_by(|A, B| B.1.cmp(&A.1));
 
-			let First = Repository.find_commit(First::Fn(&Repository)?)?.id().to_string();
+	let Tag: Vec<String> = Date.into_iter().map(|(Tag, _)| Tag).collect();
 
-			let Last = Head.peel_to_commit()?.id().to_string();
+	let Head = Repository.head()?;
 
-			if Tag.is_empty() {
-				Insert::Fn(
-					&Summary,
-					crate::Fn::Summary::Difference::Fn(&Repository, &First, &Last, Option)?,
-					format!("🗣️ Summary from first commit to last commit"),
-				)
-			} else {
-				for Window in Tag.windows(2) {
-					let Start = Window[0];
-					let End = Window[1];
+	let First = Repository.find_commit(First::Fn(&Repository)?)?.id().to_string();
 
-					Insert::Fn(
-						&Summary,
-						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?,
-						format!("🗣️ Summary from {} to {}", Start, End),
-					);
-				}
+	let Last = Head.peel_to_commit()?.id().to_string();
 
-				if let Some(Latest) = Tag.last() {
-					Insert::Fn(
-						&Summary,
-						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?,
-						format!("🗣️ Summary from first commit to {}", Latest),
-					);
+	let (Approval, mut Receipt) = mpsc::unbounded_channel();
+	let Approval = Arc::new(Mutex::new(Approval));
 
-					Insert::Fn(
-						&Summary,
-						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
-						format!("🗣️ Summary from {} to last commit", Latest),
-					);
-				}
-			}
+	let mut Queue = FuturesUnordered::new();
+
+	if Tag.is_empty() {
+		let RepositoryClone = Repository.clone();
+		let ApprovalClone = Approval.clone();
+		let OptionClone = Option.clone();
+
+		Queue.push(tokio::spawn(async move {
+			ApprovalClone.lock().await.send((
+				"🗣️ Summary from first commit to last commit".to_string(),
+				crate::Fn::Summary::Difference::Fn(&RepositoryClone, &First, &Last, OptionClone)?,
+			))?;
+
+			Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
+		}));
+	} else {
+		for Window in Tag.windows(2) {
+			let Start = Window[0];
+			let End = &Window[1];
+
+			let RepositoryClone = Repository.clone();
+			let ApprovalClone = Approval.clone();
+			let OptionClone = Option.clone();
+
+			Queue.push(tokio::spawn(async move {
+				ApprovalClone.lock().await.send((
+					format!("🗣️ Summary from {} to {}", Start, End),
+					crate::Fn::Summary::Difference::Fn(
+						&RepositoryClone,
+						&Start,
+						&End,
+						OptionClone,
+					)?,
+				))?;
+
+				Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
+			}));
 		}
-		Err(_Error) => {
-			println!("Cannot Repository: {}", _Error);
 
-			return Err(_Error.into());
+		if let Some(Latest) = Tag.last() {
+			let Latest = Latest.clone();
+			let RepositoryClone = Repository.clone();
+			let ApprovalClone = Approval.clone();
+			let OptionClone = Option.clone();
+
+			Queue.push(tokio::spawn(async move {
+				ApprovalClone.lock().await.send((
+					format!("🗣️ Summary from first commit to {}", Latest),
+					crate::Fn::Summary::Difference::Fn(
+						&RepositoryClone,
+						&First,
+						&Latest,
+						OptionClone,
+					)?,
+				))?;
+
+				Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
+			}));
+
+			let RepositoryClone = Repository.clone();
+			let ApprovalClone = Approval.clone();
+			let OptionClone = Option.clone();
+
+			Queue.push(tokio::spawn(async move {
+				ApprovalClone.lock().await.send((
+					format!("🗣️ Summary from {} to last commit", Latest),
+					crate::Fn::Summary::Difference::Fn(
+						&RepositoryClone,
+						&Latest,
+						&Last,
+						OptionClone,
+					)?,
+				))?;
+
+				Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
+			}));
 		}
+	}
+
+	drop(Approval);
+
+	while let Some(Result) = Queue.next().await {
+		if let Err(e) = Result {
+			eprintln!("Task error: {}", e);
+			continue;
+		}
+
+		if let Err(e) = Result.unwrap() {
+			eprintln!("Inner task error: {}", e);
+		}
+	}
+
+	while let Some((Message, Difference)) = Receipt.recv().await {
+		Insert::Fn(&Summary, Difference, Message);
 	}
 
 	Ok(Summary)
 }
 
+use chrono::{DateTime, FixedOffset};
 use dashmap::DashMap;
+use futures::stream::{FuturesUnordered, StreamExt};
 use git2::Repository;
+use rayon::prelude::*;
+use std::sync::Arc;
+use tokio::sync::{mpsc, Mutex};
 
 pub mod Difference;
 pub mod First;
