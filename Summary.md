@@ -2286,6 +2286,12 @@ index b904dbd..d6728f0 100644
 + use chrono::{DateTime, FixedOffset};
 
 🗣️ Summary from Summary/v0.1.2 to last commit in .
+diff --git a/Cargo.toml b/Cargo.toml
+index 586e342..65a92aa 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+- version = "0.1.2"
++ version = "0.1.3"
 diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
 index bfda9a9..fe0c226 100644
 --- a/Source/Fn/Binary/Command/Parallel.rs
