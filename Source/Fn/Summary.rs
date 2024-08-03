@@ -65,7 +65,7 @@ pub async fn Fn(
 				})
 				.collect();
 
-			Date.sort_by(|A, B| A.1.cmp(&B.1)); // Sort in descending order (newest first)
+			Date.sort_by(|A, B| A.1.cmp(&B.1));
 
 			let Tag: Vec<String> = Date.into_iter().map(|(Tag, _)| Tag).collect();
 
@@ -82,6 +82,14 @@ pub async fn Fn(
 					format!("🗣️ Summary from first commit to last commit"),
 				)
 			} else {
+				if let Some(Latest) = Tag.last() {
+					Insert::Fn(
+						&Summary,
+						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
+						format!("🗣️ Summary from {} to last commit", Latest),
+					);
+				}
+
 				for Window in Tag.windows(2) {
 					let Start = &Window[0];
 					let End = &Window[1];
@@ -90,20 +98,6 @@ pub async fn Fn(
 						&Summary,
 						crate::Fn::Summary::Difference::Fn(&Repository, &Start, &End, Option)?,
 						format!("🗣️ Summary from {} to {}", Start, End),
-					);
-				}
-
-				if let Some(Latest) = Tag.last() {
-					Insert::Fn(
-						&Summary,
-						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?,
-						format!("🗣️ Summary from first commit to {}", Latest),
-					);
-
-					Insert::Fn(
-						&Summary,
-						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
-						format!("🗣️ Summary from {} to last commit", Latest),
 					);
 				}
 			}

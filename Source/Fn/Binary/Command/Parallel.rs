@@ -54,10 +54,10 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 			{
 				Ok(Summary) => {
 					if let Err(_Error) = Approval.send((Entry, Summary)) {
-						eprintln!("Failed to send result: {}", _Error);
+						eprintln!("Cannot Approval: {}", _Error);
 					}
 				}
-				Err(_Error) => eprintln!("Error generating summary for {}: {}", Entry, _Error),
+				Err(_Error) => eprintln!("Cannot Summary for {}: {}", Entry, _Error),
 			}
 		}));
 	}
