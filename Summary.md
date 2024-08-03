@@ -2278,16 +2278,6 @@ index b904dbd..d6728f0 100644
 - 						crate::Fn::Summary::Difference::Fn(&Repository, Start, End, Option)?,
 + 						crate::Fn::Summary::Difference::Fn(&Repository, &Start, &End, Option)?,
 + use chrono::{DateTime, FixedOffset};
-diff --git a/Source/Fn/Summary/Group.rs b/Source/Fn/Summary/Group.rs
-index 892b7ba..3794be5 100644
---- a/Source/Fn/Summary/Group.rs
-+++ b/Source/Fn/Summary/Group.rs
-- 	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(|(Message, Difference)| {
-+ 	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(
-+ 		|(Message, Difference)| {
-- 	});
-+ 		},
-+ 	);
 
 🗣️ Summary from first commit to Summary/v0.1.1 in .
 diff --git a/.cargo/Config.toml b/.cargo/Config.toml
