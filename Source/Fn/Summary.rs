@@ -46,7 +46,7 @@ pub async fn Fn(
 	let Name = Repository.tag_names(None)?;
 
 	let mut Date: Vec<(String, DateTime<FixedOffset>)> = Name
-		.iter()
+		.par_iter()
 		.filter_map(|Tag| {
 			Tag.and_then(|Tag| {
 				Repository
@@ -86,33 +86,33 @@ pub async fn Fn(
 		let OptionClone = Option.clone();
 
 		Queue.push(tokio::spawn(async move {
-			ApprovalClone.lock().await.send((
-				"🗣️ Summary from first commit to last commit".to_string(),
-				crate::Fn::Summary::Difference::Fn(&RepositoryClone, &First, &Last, OptionClone)?,
-			))?;
-
+			let Summary =
+				crate::Fn::Summary::Difference::Fn(&RepositoryClone, &First, &Last, &OptionClone)?;
+			ApprovalClone
+				.lock()
+				.await
+				.send(("🗣️ Summary from first commit to last commit".to_string(), Summary))?;
 			Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
 		}));
 	} else {
 		for Window in Tag.windows(2) {
-			let Start = Window[0];
-			let End = &Window[1];
-
+			let Start = Window[0].clone();
+			let End = Window[1].clone();
 			let RepositoryClone = Repository.clone();
 			let ApprovalClone = Approval.clone();
 			let OptionClone = Option.clone();
 
 			Queue.push(tokio::spawn(async move {
-				ApprovalClone.lock().await.send((
-					format!("🗣️ Summary from {} to {}", Start, End),
-					crate::Fn::Summary::Difference::Fn(
-						&RepositoryClone,
-						&Start,
-						&End,
-						OptionClone,
-					)?,
-				))?;
-
+				let Summary = crate::Fn::Summary::Difference::Fn(
+					&RepositoryClone,
+					&Start,
+					&End,
+					&OptionClone,
+				)?;
+				ApprovalClone
+					.lock()
+					.await
+					.send((format!("🗣️ Summary from {} to {}", Start, End), Summary))?;
 				Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
 			}));
 		}
@@ -124,16 +124,16 @@ pub async fn Fn(
 			let OptionClone = Option.clone();
 
 			Queue.push(tokio::spawn(async move {
-				ApprovalClone.lock().await.send((
-					format!("🗣️ Summary from first commit to {}", Latest),
-					crate::Fn::Summary::Difference::Fn(
-						&RepositoryClone,
-						&First,
-						&Latest,
-						OptionClone,
-					)?,
-				))?;
-
+				let Summary = crate::Fn::Summary::Difference::Fn(
+					&RepositoryClone,
+					&First,
+					&Latest,
+					&OptionClone,
+				)?;
+				ApprovalClone
+					.lock()
+					.await
+					.send((format!("🗣️ Summary from first commit to {}", Latest), Summary))?;
 				Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
 			}));
 
@@ -142,16 +142,16 @@ pub async fn Fn(
 			let OptionClone = Option.clone();
 
 			Queue.push(tokio::spawn(async move {
-				ApprovalClone.lock().await.send((
-					format!("🗣️ Summary from {} to last commit", Latest),
-					crate::Fn::Summary::Difference::Fn(
-						&RepositoryClone,
-						&Latest,
-						&Last,
-						OptionClone,
-					)?,
-				))?;
-
+				let Summary = crate::Fn::Summary::Difference::Fn(
+					&RepositoryClone,
+					&Latest,
+					&Last,
+					&OptionClone,
+				)?;
+				ApprovalClone
+					.lock()
+					.await
+					.send((format!("🗣️ Summary from {} to last commit", Latest), Summary))?;
 				Ok::<(), Box<dyn std::error::Error + Send + Sync>>(())
 			}));
 		}
@@ -160,13 +160,13 @@ pub async fn Fn(
 	drop(Approval);
 
 	while let Some(Result) = Queue.next().await {
-		if let Err(e) = Result {
-			eprintln!("Task error: {}", e);
+		if let Err(E) = Result {
+			eprintln!("Task error: {}", E);
 			continue;
 		}
 
-		if let Err(e) = Result.unwrap() {
-			eprintln!("Inner task error: {}", e);
+		if let Err(E) = Result.unwrap() {
+			eprintln!("Inner task error: {}", E);
 		}
 	}
 
