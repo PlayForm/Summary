@@ -66,14 +66,16 @@ where
 		}
 	}
 
-	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(|(Message, Difference)| {
-		println!("{}", Message);
+	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(
+		|(Message, Difference)| {
+			println!("{}", Message);
 
-		Difference
-			.into_iter()
-			.sorted_by_key(|Difference| Reverse(Difference.len()))
-			.for_each(|Difference| println!("{}", Difference));
-	});
+			Difference
+				.into_iter()
+				.sorted_by_key(|Difference| Reverse(Difference.len()))
+				.for_each(|Difference| println!("{}", Difference));
+		},
+	);
 }
 
 use dashmap::DashMap;
