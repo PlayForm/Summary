@@ -1,5 +1,10 @@
 ## 0.1.4
 
+### Changed
+
+-   Updated version number in Cargo.toml from 0.1.3 to 0.1.4
+-   Restored full CHANGELOG.md
+
 ## 0.1.3
 
 ### Changed
