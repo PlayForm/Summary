@@ -2286,4 +2286,40 @@ index b904dbd..d6728f0 100644
 + use chrono::{DateTime, FixedOffset};
 
 🗣️ Summary from Summary/v0.1.2 to last commit in .
+diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
+index bfda9a9..fe0c226 100644
+--- a/Source/Fn/Binary/Command/Parallel.rs
++++ b/Source/Fn/Binary/Command/Parallel.rs
+- 						eprintln!("Failed to send result: {}", _Error);
++ 						eprintln!("Cannot Approval: {}", _Error);
+- 				Err(_Error) => eprintln!("Error generating summary for {}: {}", Entry, _Error),
++ 				Err(_Error) => eprintln!("Cannot Summary for {}: {}", Entry, _Error),
+diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
+index d6728f0..4e45fbf 100644
+--- a/Source/Fn/Summary.rs
++++ b/Source/Fn/Summary.rs
+- 			Date.sort_by(|A, B| A.1.cmp(&B.1)); // Sort in descending order (newest first)
++ 			Date.sort_by(|A, B| A.1.cmp(&B.1));
+- 				for Window in Tag.windows(2) {
+- 					let Start = &Window[0];
+- 					let End = &Window[1];
+- 
++ 				if let Some(Latest) = Tag.last() {
+- 						crate::Fn::Summary::Difference::Fn(&Repository, &Start, &End, Option)?,
+- 						format!("🗣️ Summary from {} to {}", Start, End),
++ 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
++ 						format!("🗣️ Summary from {} to last commit", Latest),
+- 				if let Some(Latest) = Tag.last() {
+- 					Insert::Fn(
+- 						&Summary,
+- 						crate::Fn::Summary::Difference::Fn(&Repository, &First, Latest, Option)?,
+- 						format!("🗣️ Summary from first commit to {}", Latest),
+- 					);
++ 				for Window in Tag.windows(2) {
++ 					let Start = &Window[0];
++ 					let End = &Window[1];
+- 						crate::Fn::Summary::Difference::Fn(&Repository, Latest, &Last, Option)?,
+- 						format!("🗣️ Summary from {} to last commit", Latest),
++ 						crate::Fn::Summary::Difference::Fn(&Repository, &Start, &End, Option)?,
++ 						format!("🗣️ Summary from {} to {}", Start, End),
 
