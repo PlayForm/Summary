@@ -2295,7 +2295,7 @@ index bfda9a9..fe0c226 100644
 - 				Err(_Error) => eprintln!("Error generating summary for {}: {}", Entry, _Error),
 + 				Err(_Error) => eprintln!("Cannot Summary for {}: {}", Entry, _Error),
 diff --git a/Source/Fn/Summary.rs b/Source/Fn/Summary.rs
-index d6728f0..4e45fbf 100644
+index d6728f0..7900705 100644
 --- a/Source/Fn/Summary.rs
 +++ b/Source/Fn/Summary.rs
 - 			Date.sort_by(|A, B| A.1.cmp(&B.1)); // Sort in descending order (newest first)
@@ -2322,4 +2322,6 @@ index d6728f0..4e45fbf 100644
 - 						format!("🗣️ Summary from {} to last commit", Latest),
 + 						crate::Fn::Summary::Difference::Fn(&Repository, &Start, &End, Option)?,
 + 						format!("🗣️ Summary from {} to {}", Start, End),
+- 			println!("Cannot Repository: {}", _Error);
++ 			eprintln!("Cannot Repository: {}", _Error);
 
