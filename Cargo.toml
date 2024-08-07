@@ -19,6 +19,8 @@ dashmap = "6.0.1"
 itertools = "0.13.0"
 chrono = "0.4.38"
 
+pieces_os_client = { version = "1.0.0", path = "../Pieces" }
+
 [build-dependencies]
 serde = { version = "1.0.204", features = ["derive"] }
 toml = "0.8.19"
