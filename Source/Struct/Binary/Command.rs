@@ -27,27 +27,27 @@ impl Struct {
 				Box::pin(async move {
 					let Option = Entry::Struct::Fn(&Option::Struct::Fn(Struct::Fn()));
 
-					// match Option.Parallel {
-					// 	true => {
-					// 		Parallel::Fn(Option).await;
-					// 	}
-					// 	false => {
-					// 		Sequential::Fn(Option).await;
-					// 	}
-					// };
+					match Option.Parallel {
+						true => {
+							Parallel::Fn(Option).await;
+						}
+						false => {
+							Sequential::Fn(Option).await;
+						}
+					};
 
-					apis::well_known_api::get_well_known_health(
-						&apis::configuration::Configuration {
-							base_path: "http://localhost:1000".to_string(),
-							user_agent: Option {},
-							client: reqwest::Client,
-							basic_auth: Option {},
-							oauth_access_token: Option {},
-							bearer_access_token: Option {},
-							api_key: Option {},
-						},
-					)
-					.await;
+					// apis::well_known_api::get_well_known_health(
+					// 	&apis::configuration::Configuration {
+					// 		base_path: "http://localhost:1000".to_string(),
+					// 		user_agent: Option {},
+					// 		client: reqwest::Client,
+					// 		basic_auth: Option {},
+					// 		oauth_access_token: Option {},
+					// 		bearer_access_token: Option {},
+					// 		api_key: Option {},
+					// 	},
+					// )
+					// .await;
 				})
 			}),
 		}
@@ -55,11 +55,10 @@ impl Struct {
 }
 
 use futures::Future;
-use git2::opts::get_mwindow_file_limit;
 use std::pin::Pin;
 
 pub mod Entry;
 pub mod Option;
 
 use crate::Fn::Binary::Command::{Parallel, Sequential};
-use pieces_os_client::*;
+// use pieces_os_client::*;
