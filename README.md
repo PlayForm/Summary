@@ -35,13 +35,13 @@ The [Summary] CLI supports [Pieces OS], allowing it to:
 By leveraging [Pieces OS], [Summary] can tap into a broader ecosystem of development
 tools and services, significantly expanding its capabilities beyond basic file processing.
 
-## Installation
+## 🚀 Installation
 
 ```sh
 cargo install psummary
 ```
 
-## Usage
+## 🛠️ Usage
 
 The Summary tool can be used with various options:
 
