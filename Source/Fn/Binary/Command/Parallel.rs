@@ -29,7 +29,7 @@
 ///
 /// This function will log errors if it fails to generate summaries or send results.
 pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
-	let (Approval, mut Receipt) = tokio::sync::mpsc::unbounded_channel();
+	let (Allow, mut Mark) = tokio::sync::mpsc::unbounded_channel();
 	let Queue = futures::stream::FuturesUnordered::new();
 
 	for Entry in Entry
@@ -43,7 +43,8 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 		.collect::<Vec<String>>()
 	{
 		let Omit = Omit.clone();
-		let Approval = Approval.clone();
+
+		let Allow = Allow.clone();
 
 		Queue.push(tokio::spawn(async move {
 			match crate::Fn::Summary::Fn(
@@ -53,10 +54,11 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 			.await
 			{
 				Ok(Summary) => {
-					if let Err(_Error) = Approval.send((Entry, Summary)) {
-						eprintln!("Cannot Approval: {}", _Error);
+					if let Err(_Error) = Allow.send((Entry, Summary)) {
+						eprintln!("Cannot Allow: {}", _Error);
 					}
 				}
+
 				Err(_Error) => eprintln!("Cannot Summary for {}: {}", Entry, _Error),
 			}
 		}));
@@ -64,12 +66,12 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 
 	tokio::spawn(async move {
 		Queue.collect::<Vec<_>>().await;
-		drop(Approval);
+		drop(Allow);
 	});
 
 	let mut Output = Vec::new();
 
-	while let Some((Entry, Summary)) = Receipt.recv().await {
+	while let Some((Entry, Summary)) = Mark.recv().await {
 		Output.push((Entry, Summary));
 	}
 
