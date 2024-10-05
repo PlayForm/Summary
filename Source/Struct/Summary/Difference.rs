@@ -9,11 +9,10 @@
 /// # Example
 ///
 /// ```rust
-/// let omit_patterns = Struct {
-///     Omit: vec!["pattern1".to_string(), "pattern2".to_string()],
-/// };
+/// let omit_patterns =
+/// 	Struct { Omit:vec!["pattern1".to_string(), "pattern2".to_string()] };
 /// ```
 pub struct Struct {
 	/// A vector of strings representing patterns to omit.
-	pub Omit: Vec<String>,
+	pub Omit:Vec<String>,
 }

@@ -1,34 +1,43 @@
-/// Asynchronously processes entries to generate summaries and outputs the results.
+/// Asynchronously processes entries to generate summaries and outputs the
+/// results.
 ///
 /// This function performs the following steps:
-/// 1. Filters and processes the provided entries based on the given pattern and separator.
+/// 1. Filters and processes the provided entries based on the given pattern and
+///    separator.
 /// 2. Spawns asynchronous tasks to generate summaries for each entry.
 /// 3. Collects the results and outputs them.
 ///
 /// # Arguments
 ///
 /// * `Option` - A struct containing the following fields:
-///   - `Entry`: A vector of vectors, where each inner vector contains the components of a file path.
+///   - `Entry`: A vector of vectors, where each inner vector contains the
+///     components of a file path.
 ///   - `Separator`: A character used to join the components of the file path.
-///   - `Pattern`: A string pattern to match against the last element of each entry.
+///   - `Pattern`: A string pattern to match against the last element of each
+///     entry.
 ///   - `Omit`: A vector of strings representing patterns to omit.
 ///
 /// # Example
 ///
 /// ```rust
 /// let options = Option {
-///     Entry: vec![vec!["path".to_string(), "to".to_string(), "file.git".to_string()]],
-///     Separator: '/',
-///     Pattern: ".git".to_string(),
-///     Omit: vec!["target".to_string()],
+/// 	Entry:vec![vec![
+/// 		"path".to_string(),
+/// 		"to".to_string(),
+/// 		"file.git".to_string(),
+/// 	]],
+/// 	Separator:'/',
+/// 	Pattern:".git".to_string(),
+/// 	Omit:vec!["target".to_string()],
 /// };
 /// Fn(options).await;
 /// ```
 ///
 /// # Errors
 ///
-/// This function will log errors if it fails to generate summaries or send results.
-pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
+/// This function will log errors if it fails to generate summaries or send
+/// results.
+pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }:Option) {
 	let (Allow, mut Mark) = tokio::sync::mpsc::unbounded_channel();
 	let Queue = futures::stream::FuturesUnordered::new();
 
@@ -57,9 +66,11 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 					if let Err(_Error) = Allow.send((Entry, Summary)) {
 						eprintln!("Cannot Allow: {}", _Error);
 					}
-				}
+				},
 
-				Err(_Error) => eprintln!("Cannot Summary for {}: {}", Entry, _Error),
+				Err(_Error) => {
+					eprintln!("Cannot Summary for {}: {}", Entry, _Error)
+				},
 			}
 		}));
 	}

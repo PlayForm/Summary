@@ -10,8 +10,8 @@ processing capabilities, along with flexible file filtering options.
 Summary -P > Summary.diff
 ```
 
-[Summary] will now generate the following [Summary.diff](./Summary.diff) for all the
-commits and tags between the first and the last commit.
+[Summary] will now generate the following [Summary.diff](./Summary.diff) for all
+the commits and tags between the first and the last commit.
 
 ## Features
 

@@ -1,14 +1,17 @@
 /// Inserts a difference summary into the provided DashMap.
 ///
-/// This function computes the hash of the given difference string and inserts it into the DashMap
-/// along with the associated message. The hash is used as the key, and the value is a tuple
-/// containing the difference string and the message.
+/// This function computes the hash of the given difference string and inserts
+/// it into the DashMap along with the associated message. The hash is used as
+/// the key, and the value is a tuple containing the difference string and the
+/// message.
 ///
 /// # Arguments
 ///
-/// * `Summary` - A reference to a DashMap where the difference summary will be inserted.
+/// * `Summary` - A reference to a DashMap where the difference summary will be
+///   inserted.
 /// * `Difference` - A string representing the difference to be summarized.
-/// * `Message` - A string representing the message associated with the difference.
+/// * `Message` - A string representing the message associated with the
+///   difference.
 ///
 /// # Example
 ///
@@ -26,7 +29,11 @@
 /// # Errors
 ///
 /// This function does not return errors.
-pub fn Fn(Summary: &DashMap<u64, (String, String)>, Difference: String, Message: String) {
+pub fn Fn(
+	Summary:&DashMap<u64, (String, String)>,
+	Difference:String,
+	Message:String,
+) {
 	Summary.insert(Hash::Fn(&Difference), (Difference, Message));
 }
 
