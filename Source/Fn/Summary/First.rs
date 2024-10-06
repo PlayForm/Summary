@@ -23,8 +23,7 @@
 /// # Example
 ///
 /// ```rust
-/// let repo = git2::Repository::open("/path/to/repo")
-/// 	.expect("Cannot open repository.");
+/// let repo = git2::Repository::open("/path/to/repo").expect("Cannot open repository.");
 /// let first_commit_oid = Fn(&repo).expect("Cannot retrieve first commit.");
 /// println!("First commit OID: {}", first_commit_oid);
 /// ```

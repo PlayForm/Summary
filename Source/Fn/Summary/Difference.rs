@@ -26,15 +26,13 @@
 /// # Example
 ///
 /// ```rust
-/// let repo = git2::Repository::open("/path/to/repo")
-/// 	.expect("Cannot open repository.");
+/// let repo = git2::Repository::open("/path/to/repo").expect("Cannot open repository.");
 /// let start_commit = "abc123";
 /// let end_commit = "def456";
-/// let options = crate::Struct::Summary::Difference::Struct {
-/// 	Omit:vec!["(?i)\\.log$".to_string()],
-/// };
-/// let diff_summary = Fn(&repo, start_commit, end_commit, &options)
-/// 	.expect("Cannot generate diff.");
+/// let options =
+/// 	crate::Struct::Summary::Difference::Struct { Omit:vec!["(?i)\\.log$".to_string()] };
+/// let diff_summary =
+/// 	Fn(&repo, start_commit, end_commit, &options).expect("Cannot generate diff.");
 /// println!("{}", diff_summary);
 /// ```
 ///

@@ -29,11 +29,7 @@
 /// # Errors
 ///
 /// This function does not return errors.
-pub fn Fn(
-	Summary:&DashMap<u64, (String, String)>,
-	Difference:String,
-	Message:String,
-) {
+pub fn Fn(Summary:&DashMap<u64, (String, String)>, Difference:String, Message:String) {
 	Summary.insert(Hash::Fn(&Difference), (Difference, Message));
 }
 

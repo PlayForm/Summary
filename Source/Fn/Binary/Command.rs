@@ -31,8 +31,7 @@
 /// ```rust
 /// let matches = Fn();
 /// let exclude = matches.value_of("Exclude").unwrap_or("node_modules");
-/// let omit =
-/// 	matches.values_of("Omit").unwrap_or_default().collect::<Vec<_>>();
+/// let omit = matches.values_of("Omit").unwrap_or_default().collect::<Vec<_>>();
 /// let parallel = matches.is_present("Parallel");
 /// let pattern = matches.value_of("Pattern").unwrap_or(".git");
 /// let root = matches.value_of("Root").unwrap_or(".");

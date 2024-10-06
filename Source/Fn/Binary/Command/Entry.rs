@@ -40,8 +40,7 @@ pub fn Fn(Option { Exclude, Pattern, Root, Separator, .. }:&Option) -> Return {
 		.follow_links(false)
 		.into_iter()
 		.filter_map(|Entry| {
-			let Path =
-				Entry.expect("Cannot Entry.").path().display().to_string();
+			let Path = Entry.expect("Cannot Entry.").path().display().to_string();
 
 			// TODO: Separate this into Entry/Exclude.rs
 			if !Exclude
@@ -50,11 +49,7 @@ pub fn Fn(Option { Exclude, Pattern, Root, Separator, .. }:&Option) -> Return {
 				.filter(|Exclude| *Pattern != *Exclude)
 				.any(|Exclude| Path.contains(&Exclude))
 			{
-				Some(
-					Path.split(*Separator)
-						.map(|Entry| Entry.to_string())
-						.collect(),
-				)
+				Some(Path.split(*Separator).map(|Entry| Entry.to_string()).collect())
 			} else {
 				None
 			}
@@ -64,7 +59,4 @@ pub fn Fn(Option { Exclude, Pattern, Root, Separator, .. }:&Option) -> Return {
 
 use walkdir::WalkDir;
 
-use crate::Struct::Binary::Command::{
-	Entry::Type as Return,
-	Option::Struct as Option,
-};
+use crate::Struct::Binary::Command::{Entry::Type as Return, Option::Struct as Option};

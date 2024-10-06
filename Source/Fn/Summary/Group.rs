@@ -33,10 +33,7 @@
 /// let mut summary2 = DashMap::new();
 /// summary2.insert(2, ("diff2".to_string(), "message2".to_string()));
 ///
-/// let summaries = vec![
-/// 	("entry1".to_string(), summary1),
-/// 	("entry2".to_string(), summary2),
-/// ];
+/// let summaries = vec![("entry1".to_string(), summary1), ("entry2".to_string(), summary2)];
 ///
 /// Fn(summaries);
 /// ```
@@ -68,16 +65,17 @@ where
 		}
 	}
 
-	Output.into_iter().sorted_by(|(A, _), (B, _)| A.cmp(B)).for_each(
-		|(Message, Difference)| {
+	Output
+		.into_iter()
+		.sorted_by(|(A, _), (B, _)| A.cmp(B))
+		.for_each(|(Message, Difference)| {
 			println!("{}", Message);
 
 			Difference
 				.into_iter()
 				.sorted_by_key(|Difference| Reverse(Difference.len()))
 				.for_each(|Difference| println!("{}", Difference));
-		},
-	);
+		});
 }
 
 use std::{cmp::Reverse, collections::HashSet};

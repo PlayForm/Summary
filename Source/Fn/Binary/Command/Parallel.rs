@@ -21,11 +21,7 @@
 ///
 /// ```rust
 /// let options = Option {
-/// 	Entry:vec![vec![
-/// 		"path".to_string(),
-/// 		"to".to_string(),
-/// 		"file.git".to_string(),
-/// 	]],
+/// 	Entry:vec![vec!["path".to_string(), "to".to_string(), "file.git".to_string()]],
 /// 	Separator:'/',
 /// 	Pattern:".git".to_string(),
 /// 	Omit:vec!["target".to_string()],
