@@ -10,7 +10,7 @@ processing capabilities, along with flexible file filtering options.
 Summary -P > Summary.diff
 ```
 
-[Summary] will now generate the following [Summary.diff](./Summary.diff) for all
+[`Summary] will now generate the following [Summary.diff`](./Summary.diff) for all
 the commits and tags between the first and the last commit.
 
 ## Features
@@ -170,4 +170,4 @@ Summary -P -O "\.md$" -O "\.txt$"
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for a history of changes to this CLI.
+See [`CHANGELOG.md`](CHANGELOG.md) for a history of changes to this CLI.
