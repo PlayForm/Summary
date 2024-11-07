@@ -44,7 +44,7 @@
 pub fn Fn() -> ArgMatches {
 	Command::new("Summary")
 		.version(env!("CARGO_PKG_VERSION"))
-		.author("🖋️ Source — 👐🏻 Open — <Source/Open@PlayForm.Cloud>")
+		.author("🖋️ Source — 👐🏻 Open — <Source/Open@PlayForm.LTD>")
 		.about("🗣️ Summary —")
 		.arg(
 			Arg::new("Exclude")
