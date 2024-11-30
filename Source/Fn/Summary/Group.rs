@@ -59,7 +59,9 @@ where
 				})
 				.or_insert_with(|| {
 					let mut New = HashSet::new();
+
 					New.insert(Difference);
+
 					New
 				});
 		}

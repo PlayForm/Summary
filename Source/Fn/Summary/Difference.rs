@@ -108,15 +108,25 @@ pub fn Fn(
 	let mut Options = git2::DiffOptions::new();
 
 	Options.indent_heuristic(true);
+
 	Options.minimal(true);
+
 	Options.force_text(true);
+
 	Options.ignore_blank_lines(true);
+
 	Options.ignore_case(true);
+
 	Options.ignore_filemode(true);
+
 	Options.ignore_whitespace(true);
+
 	Options.ignore_whitespace_change(true);
+
 	Options.ignore_whitespace_eol(true);
+
 	Options.show_binary(false);
+
 	Options.force_binary(false);
 
 	let mut Output = String::new();

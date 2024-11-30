@@ -35,7 +35,9 @@
 /// This function does not return errors.
 pub fn Fn<T:Hash>(Input:&T) -> u64 {
 	let mut Output = DefaultHasher::new();
+
 	Input.hash(&mut Output);
+
 	Output.finish()
 }
 
