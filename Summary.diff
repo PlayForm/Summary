@@ -66,7 +66,7 @@ index fd4bfe5..018729b 100644
 + 
 + For Pieces OS integration, refer to the Pieces OS documentation for specific
 + flags and configuration options.
-+ [Pieces](HTTPS://GitHub.Com/PlayForm/Pieces.git)
++ [Pieces](https://GitHub.Com/PlayForm/Pieces.git)
 + 
 - -   `clap` - Parses command-line arguments
 - -   `rayon` - Enables parallel processing
@@ -77,7 +77,7 @@ index fd4bfe5..018729b 100644
 + -   `tokio` - For asynchronous runtime.
 + -   `walkdir` - For efficient filesystem traversal.
 + 
-+ [Pieces OS](HTTPS://Pieces.App): For extended functionality and system
++ [Pieces OS](https://Pieces.App): For extended functionality and system
 + integration.
 diff --git a/Source/Fn/Binary/Command.rs b/Source/Fn/Binary/Command.rs
 index c590122..4cfbb9f 100644
@@ -449,7 +449,7 @@ index 018729b..49bf9ea 100644
 + #### --Exclude or -E:
 - For Pieces OS integration, refer to the Pieces OS documentation for specific
 - flags and configuration options.
-- [Pieces](HTTPS://GitHub.Com/PlayForm/Pieces.git)
+- [Pieces](https://GitHub.Com/PlayForm/Pieces.git)
 + Exclude certain files or directories (defailt is `node_modules`).
 - ```sh
 - Summary
@@ -503,7 +503,7 @@ index 018729b..49bf9ea 100644
 + -   `git2` - For Git repository operations.
 + -   `num_cpus` - For determining the number of CPUs for parallel processing.
 + -   `regex` - For pattern matching and text manipulation.
-- [Pieces OS](HTTPS://Pieces.App): For extended functionality and system
+- [Pieces OS](https://Pieces.App): For extended functionality and system
 - integration.
 + [Pieces OS] For extended functionality and system integration.
 + [Pieces OS]: HTTPS://Pieces.App
