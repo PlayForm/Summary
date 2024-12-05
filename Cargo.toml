@@ -7,19 +7,19 @@ name = "Summary"
 path = "Source/Library.rs"
 
 [dependencies]
-clap = { features = ["derive"], version = "4.5.22" }
-walkdir = "2.5.0"
-futures = "0.3.31"
-rayon = "1.10.0"
-tokio = { version = "1.42.0", features = ["full"] }
-git2 = { version = "0.19.0" }
-num_cpus = "1.16.0"
-regex = "1.11.1"
-dashmap = "6.1.0"
-itertools = "0.13.0"
-chrono = "0.4.38"
-unbug = { version = "0.3.0", features = ["enable"] }
 # pieces = { version = "1.0.0", path = "../Pieces" }
+chrono = "0.4.38"
+clap = { features = ["derive"], version = "4.5.22" }
+dashmap = "6.1.0"
+futures = "0.3.31"
+git2 = { version = "0.19.0" }
+itertools = "0.13.0"
+num_cpus = "1.16.0"
+rayon = "1.10.0"
+regex = "1.11.1"
+tokio = { version = "1.42.0", features = ["full"] }
+unbug = { version = "0.3.0", features = ["enable"] }
+walkdir = "2.5.0"
 
 [build-dependencies]
 serde = { version = "1.0.215", features = ["derive"] }
@@ -37,7 +37,7 @@ autoexamples = false
 autotests = false
 default-run = "Summary"
 description = "🗣️ Summary —"
-license = "MIT"
+license-file = "LICENSE"
 name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
 version = "0.1.4"
