@@ -9,7 +9,7 @@ path = "Source/Library.rs"
 [dependencies]
 # pieces = { version = "1.0.0", path = "../Pieces" }
 chrono = { version = "0.4.39" }
-clap = { features = ["derive"], version = "4.5.26" }
+clap = { features = ["derive"], version = "4.5.27" }
 dashmap = { version = "6.1.0" }
 futures = { version = "0.3.31" }
 git2 = { version = "0.20.0" }
