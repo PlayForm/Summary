@@ -90,7 +90,7 @@ index c590122..4cfbb9f 100644
 + 				.display_order(4)
 + 				.value_name("EXCLUDE")
 + 				.required(false)
-+ 				.help("🚫 Exclude —")
++ 				.help("Exclude 🚫")
 + 				.default_value("node_modules"),
 + 		)
 + 		.arg(
@@ -100,7 +100,7 @@ index c590122..4cfbb9f 100644
 + 				.display_order(6)
 + 				.value_name("OMIT")
 + 				.required(false)
-+ 				.help("🚫 Omit —")
++ 				.help("Omit 🚫")
 + 				.action(clap::ArgAction::Append)
 + 				.default_value("Documentation"),
 + 		)
@@ -110,7 +110,7 @@ index c590122..4cfbb9f 100644
 + 				.display_order(5)
 + 				.value_name("PATTERN")
 + 				.required(false)
-+ 				.help("🔍 Pattern —")
++ 				.help("Pattern 🔍")
 + 				.default_value(".git"),
 + 		)
 - 		.arg(
@@ -120,7 +120,7 @@ index c590122..4cfbb9f 100644
 - 				.display_order(4)
 - 				.value_name("EXCLUDE")
 - 				.required(false)
-- 				.help("🚫 Exclude —")
+- 				.help("Exclude 🚫")
 - 				.default_value("node_modules"),
 - 		)
 - 		.arg(
@@ -128,7 +128,7 @@ index c590122..4cfbb9f 100644
 - 				.display_order(5)
 - 				.value_name("PATTERN")
 - 				.required(false)
-- 				.help("🔍 Pattern —")
+- 				.help("Pattern 🔍")
 - 				.default_value(".git"),
 - 		)
 diff --git a/Source/Fn/Binary/Command/Parallel.rs b/Source/Fn/Binary/Command/Parallel.rs
@@ -422,16 +422,16 @@ index 018729b..49bf9ea 100644
 + The Summary tool can be used with various options:
 + 
 + ```
-+ 🗣️ Summary —
++ Summary 🗣️
 + 
 + Usage: Summary [OPTIONS]
 + 
 + Options:
-+   -P, --Parallel           ⏩ Parallel —
-+   -R, --Root <ROOT>        📂 Root — [default: .]
-+   -E, --Exclude <EXCLUDE>  🚫 Exclude — [default: node_modules]
-+       --Pattern <PATTERN>  🔍 Pattern — [default: .git]
-+   -O, --Omit <OMIT>        🚫 Omit — [default: Documentation]
++   -P, --Parallel           Parallel ⏩
++   -R, --Root <ROOT>        Root 📂 [default: .]
++   -E, --Exclude <EXCLUDE>  Exclude 🚫 [default: node_modules]
++       --Pattern <PATTERN>  Pattern 🔍 [default: .git]
++   -O, --Omit <OMIT>        Omit 🚫 [default: Documentation]
 +   -h, --help               Print help
 +   -V, --version            Print version
 + ```

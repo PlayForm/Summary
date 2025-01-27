@@ -46,16 +46,16 @@ cargo install psummary
 The Summary tool can be used with various options:
 
 ```
-🗣️ Summary —
+Summary 🗣️
 
 Usage: Summary [OPTIONS]
 
 Options:
-  -P, --Parallel           ⏩ Parallel —
-  -R, --Root <ROOT>        📂 Root — [default: .]
-  -E, --Exclude <EXCLUDE>  🚫 Exclude — [default: node_modules]
-      --Pattern <PATTERN>  🔍 Pattern — [default: .git]
-  -O, --Omit <OMIT>        🚫 Omit — [default: Documentation]
+  -P, --Parallel           Parallel ⏩
+  -R, --Root <ROOT>        Root 📂 [default: .]
+  -E, --Exclude <EXCLUDE>  Exclude 🚫 [default: node_modules]
+      --Pattern <PATTERN>  Pattern 🔍 [default: .git]
+  -O, --Omit <OMIT>        Omit 🚫 [default: Documentation]
   -h, --help               Print help
   -V, --version            Print version
 ```
