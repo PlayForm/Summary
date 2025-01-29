@@ -1,4 +1,4 @@
-# 🗣️ [Summary] —
+# [Summary] 🗣️
 
 [Summary] is a powerful command-line tool designed for efficient `Git`
 repository analysis and summarization. It offers both sequential and parallel
@@ -35,7 +35,7 @@ The [Summary] CLI supports [Pieces OS], allowing it to:
 By leveraging [Pieces OS], [Summary] can tap into a broader ecosystem of development
 tools and services, significantly expanding its capabilities beyond basic file processing.
 
-## 🚀 Installation
+## Installation 🚀
 
 ```sh
 cargo install psummary

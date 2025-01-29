@@ -2361,7 +2361,7 @@ index 1bf06be..7167c7f 100644
 --- a/README.md
 +++ b/README.md
 - ## Installation
-+ ## 🚀 Installation
++ ## Installation 🚀
 - ## Usage
 + ## 🛠️ Usage
 diff --git a/Source/Struct/Binary/Command.rs b/Source/Struct/Binary/Command.rs
