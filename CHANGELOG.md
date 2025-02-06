@@ -1,13 +1,13 @@
 ## 0.1.4
 
-### Changed
+### Change
 
 - Updated version number in Cargo.toml from 0.1.3 to 0.1.4
 - Restored full CHANGELOG.md
 
 ## 0.1.3
 
-### Changed
+### Change
 
 - Updated version number in Cargo.toml from 0.1.2 to 0.1.3
 
@@ -22,11 +22,11 @@
 
 ## 0.1.2
 
-### Added
+### Add
 
 - Added chrono = "0.4.38" as a new dependency
 
-### Changed
+### Change
 
 - Updated version number in Cargo.toml from 0.1.1 to 0.1.2
 - Updated dependencies:
@@ -42,7 +42,7 @@
 
 ## 0.1.1
 
-### Changed
+### Change
 
 - Updated version number in Cargo.toml from 0.1.0 to 0.1.1
 
@@ -62,13 +62,13 @@
 
 ## 0.1.0
 
-### Added
+### Add
 
 - New dependency: itertools = "0.13.0"
 - New module: Source/Fn/Summary/Group.rs for processing and printing summaries
   of differences
 
-### Changed
+### Change
 
 - Updated dependencies:
     - tokio from 1.39.1 to 1.39.2
@@ -101,7 +101,7 @@
 
 ## 0.0.9
 
-### Changed
+### Change
 
 - Updated Cargo.toml to include specific files in the package:
     - Added include = [ "Source/**/*", "LICENSE", "README.md", "CHANGELOG.md",
@@ -124,11 +124,11 @@
 
 ## 0.0.8
 
-### Changed
+### Change
 
 - Updated version number in Cargo.toml from 0.0.7 to 0.0.8
 
-### Added
+### Add
 
 - Added dashmap = "6.0.1" as a new dependency
 
@@ -172,7 +172,7 @@
 
 ## 0.0.7
 
-### Changed
+### Change
 
 - Updated version number in Cargo.toml from 0.0.6 to 0.0.7
 
@@ -195,7 +195,7 @@
 
 ## 0.0.6
 
-### Dependencies
+### Dependency
 
 - Updated toml dependency from version 0.8.16 to 0.8 Changes
 - Improved error handling and messaging in repository operations
@@ -217,7 +217,7 @@
 
 ## 0.0.5
 
-### Changes
+### Change
 
 - Updated version number in Cargo.toml from 0.0.4 to 0.0.5
 - Improved README.md formatting and clarified feature descriptions
@@ -244,7 +244,7 @@
 
 ## 0.0.4
 
-### Changes
+### Change
 
 - Updated version number in Cargo.toml from 0.0.3 to 0.0.4
 - Improved README.md with more detailed information about the tool's features
@@ -271,7 +271,7 @@
 
 ## 0.0.3
 
-### Added
+### Add
 
 - New Omit parameter in Option struct for excluding specific files or
   directories
@@ -279,7 +279,7 @@
 - Enhanced error handling and logging in Summary.rs
 - New regex-based file filtering in Difference.rs
 
-### Changed
+### Change
 
 - Updated build script (build.rs) for better dependency management
 - Refactored Summary.rs for improved performance and flexibility
@@ -291,7 +291,7 @@
 
 - Removed Release.rs file, functionality likely integrated elsewhere
 
-### Dependencies
+### Dependency
 
 - Added regex = "1.10.5" to dependencies in Cargo.toml
 
@@ -305,7 +305,7 @@
 
 ## 0.0.2
 
-### Changed
+### Change
 
 - Updated version number from 0.0.1 to 0.0.2 in Cargo.toml
 
