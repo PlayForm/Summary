@@ -232,7 +232,7 @@
 - Improved error handling in diff generation process
 - Optimized diff options for better performance and readability
 
-### Bug Fixes
+### Fix
 
 - Fixed potential UTF-8 encoding issues in diff content handling
 
@@ -253,7 +253,7 @@
 - Refined description of Pieces OS integration
 - Added more detailed usage instructions and examples in README.md
 
-### Features
+### Feature
 
 - Added support for generating diff logs between Git tags
 - Improved command-line options for better flexibility

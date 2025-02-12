@@ -13,7 +13,7 @@ Summary -P > Summary.diff
 [`Summary] will now generate the following [Summary.diff`](./Summary.diff) for all
 the commits and tags between the first and the last commit.
 
-## Features
+## Feature
 
 -   Customizable file pattern matching.
 -   Diff generation between `Git` tags.
