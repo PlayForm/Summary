@@ -1,5 +1,13 @@
 /Target/*
 
+!/Target/debug
+/Target/debug/*
+
+!/Target/debug/*.deb
+!/Target/debug/*.exe
+!/Target/debug/PSummary
+!/Target/debug/Summary
+
 !/Target/release
 /Target/release/*
 

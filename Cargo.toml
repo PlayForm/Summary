@@ -6,8 +6,11 @@ path = "Source/Library.rs"
 name = "Summary"
 path = "Source/Library.rs"
 
+[build-dependencies]
+serde = { version = "1.0.217", features = ["derive"] }
+toml = { version = "0.8.19" }
+
 [dependencies]
-# pieces = { version = "1.0.0", path = "../Pieces" }
 chrono = { version = "0.4.39" }
 clap = { features = ["derive"], version = "4.5.27" }
 dashmap = { version = "6.1.0" }
@@ -21,9 +24,8 @@ tokio = { version = "1.43.0", features = ["full"] }
 unbug = { version = "0.4.0" }
 walkdir = { version = "2.5.0" }
 
-[build-dependencies]
-serde = { version = "1.0.217", features = ["derive"] }
-toml = { version = "0.8.19" }
+[features]
+default = []
 
 [lib]
 crate-type = ["staticlib", "cdylib", "rlib"]
@@ -37,10 +39,6 @@ autoexamples = false
 autotests = false
 default-run = "Summary"
 description = "Summary 🗣️"
-license-file = "LICENSE"
-name = "psummary"
-repository = "https://github.com/PlayForm/Summary.git"
-version = "0.1.4"
 edition = "2021"
 include = [
 	"Source/**/*",
@@ -50,6 +48,7 @@ include = [
 	"build.rs",
 	"Cargo.toml",
 ]
-
-[features]
-default = []
+license-file = "LICENSE"
+name = "psummary"
+repository = "https://github.com/PlayForm/Summary.git"
+version = "0.1.4"
