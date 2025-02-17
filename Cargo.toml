@@ -8,11 +8,11 @@ path = "Source/Library.rs"
 
 [build-dependencies]
 serde = { version = "1.0.217", features = ["derive"] }
-toml = { version = "0.8.19" }
+toml = { version = "0.8.20" }
 
 [dependencies]
 chrono = { version = "0.4.39" }
-clap = { features = ["derive"], version = "4.5.27" }
+clap = { features = ["derive"], version = "4.5.30" }
 dashmap = { version = "6.1.0" }
 futures = { version = "0.3.31" }
 git2 = { version = "0.20.0" }
@@ -39,7 +39,7 @@ autoexamples = false
 autotests = false
 default-run = "Summary"
 description = "Summary 🗣️"
-edition = "2021"
+edition = "2024"
 include = [
 	"Source/**/*",
 	"LICENSE",
