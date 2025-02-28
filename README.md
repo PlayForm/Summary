@@ -10,30 +10,31 @@ processing capabilities, along with flexible file filtering options.
 Summary -P > Summary.diff
 ```
 
-[`Summary] will now generate the following [Summary.diff`](./Summary.diff) for all
-the commits and tags between the first and the last commit.
+[`Summary`] will now generate the following [`Summary.diff`](./Summary.diff) for
+all the commits and tags between the first and the last commit.
 
 ## Feature
 
--   Customizable file pattern matching.
--   Diff generation between `Git` tags.
--   Directory traversal and file filtering.
--   Exclusion of specified files or directories.
--   `Git` repository analysis.
--   Integration with [Pieces OS] for enhanced functionality.
--   Parallel and sequential processing modes.
+- Customizable file pattern matching.
+- Diff generation between `Git` tags.
+- Directory traversal and file filtering.
+- Exclusion of specified files or directories.
+- `Git` repository analysis.
+- Integration with [Pieces OS] for enhanced functionality.
+- Parallel and sequential processing modes.
 
 ## [Pieces OS] Integration
 
 The [Summary] CLI supports [Pieces OS], allowing it to:
 
--   Generate comprehensive diff logs and release notes automatically.
--   Provide AI-driven code analysis and insights.
--   Offer improved context-aware processing of repository changes.
--   Seamlessly interact with other [Pieces OS]-compatible development tools.
+- Generate comprehensive diff logs and release notes automatically.
+- Provide AI-driven code analysis and insights.
+- Offer improved context-aware processing of repository changes.
+- Seamlessly interact with other [Pieces OS]-compatible development tools.
 
-By leveraging [Pieces OS], [Summary] can tap into a broader ecosystem of development
-tools and services, significantly expanding its capabilities beyond basic file processing.
+By leveraging [Pieces OS], [Summary] can tap into a broader ecosystem of
+development tools and services, significantly expanding its capabilities beyond
+basic file processing.
 
 ## Installation 🚀
 
@@ -154,14 +155,14 @@ Summary -P -O "\.md$" -O "\.txt$"
 
 [Summary] relies on several Rust crates to provide its functionality:
 
--   `clap` - For parsing command-line arguments.
--   `futures` - For asynchronous programming abstractions.
--   `git2` - For `Git` repository operations.
--   `num_cpus` - For determining the number of CPUs for parallel processing.
--   `rayon` - For parallel processing.
--   `regex` - For pattern matching and text manipulation.
--   `tokio` - For asynchronous runtime.
--   `walkdir` - For efficient filesystem traversal.
+- `clap` - For parsing command-line arguments.
+- `futures` - For asynchronous programming abstractions.
+- `git2` - For `Git` repository operations.
+- `num_cpus` - For determining the number of CPUs for parallel processing.
+- `rayon` - For parallel processing.
+- `regex` - For pattern matching and text manipulation.
+- `tokio` - For asynchronous runtime.
+- `walkdir` - For efficient filesystem traversal.
 
 [Pieces OS] For extended functionality and system integration.
 
