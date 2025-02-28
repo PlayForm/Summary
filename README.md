@@ -1,10 +1,10 @@
-# [Summary] 🗣️
+# [`Summary`] 🗣️
 
-[Summary] is a powerful command-line tool designed for efficient `Git`
+[`Summary`] is a powerful command-line tool designed for efficient `Git`
 repository analysis and summarization. It offers both sequential and parallel
 processing capabilities, along with flexible file filtering options.
 
-[Summary]: HTTPS://crates.io/crates/psummary
+[`Summary`]: HTTPS://crates.io/crates/psummary
 
 ```sh
 Summary -P > Summary.diff
@@ -25,14 +25,14 @@ all the commits and tags between the first and the last commit.
 
 ## [Pieces OS] Integration
 
-The [Summary] CLI supports [Pieces OS], allowing it to:
+The [`Summary`] CLI supports [Pieces OS], allowing it to:
 
 - Generate comprehensive diff logs and release notes automatically.
 - Provide AI-driven code analysis and insights.
 - Offer improved context-aware processing of repository changes.
 - Seamlessly interact with other [Pieces OS]-compatible development tools.
 
-By leveraging [Pieces OS], [Summary] can tap into a broader ecosystem of
+By leveraging [Pieces OS], [`Summary`] can tap into a broader ecosystem of
 development tools and services, significantly expanding its capabilities beyond
 basic file processing.
 
@@ -66,7 +66,7 @@ repository.
 
 ## Options
 
-The [Summary] tool can be used with various options:
+The [`Summary`] tool can be used with various options:
 
 #### --Exclude or -E:
 
@@ -153,7 +153,7 @@ Summary -P -O "\.md$" -O "\.txt$"
 
 ## Dependencies
 
-[Summary] relies on several Rust crates to provide its functionality:
+[`Summary`] relies on several Rust crates to provide its functionality:
 
 - `clap` - For parsing command-line arguments.
 - `futures` - For asynchronous programming abstractions.
@@ -166,7 +166,7 @@ Summary -P -O "\.md$" -O "\.txt$"
 
 [Pieces OS] For extended functionality and system integration.
 
-[Summary]: HTTPS://crates.io/crates/psummary
+[`Summary`]: HTTPS://crates.io/crates/psummary
 [Pieces OS]: HTTPS://Pieces.App
 
 ## Changelog
