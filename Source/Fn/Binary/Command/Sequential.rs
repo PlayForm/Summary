@@ -33,7 +33,7 @@
 ///
 /// This function will log errors if it fails to generate summaries or send
 /// results.
-pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }:Option) {
+pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }: Option) {
 	let Queue = futures::future::join_all(
 		Entry
 			.into_iter()
@@ -47,16 +47,9 @@ pub async fn Fn(Option { Entry, Pattern, Separator, Omit, .. }:Option) {
 				let Omit = Omit.clone();
 
 				async move {
-					match crate::Fn::Summary::Fn(
-						&Entry,
-						&crate::Struct::Summary::Difference::Struct { Omit },
-					)
-					.await
-					{
+					match crate::Fn::Summary::Fn(&Entry, &crate::Struct::Summary::Difference::Struct { Omit }).await {
 						Ok(Summary) => Ok((Entry, Summary)),
-						Err(_Error) => {
-							Err(format!("Error generating summary for {}: {}", Entry, _Error))
-						},
+						Err(_Error) => Err(format!("Error generating summary for {}: {}", Entry, _Error)),
 					}
 				}
 			}),

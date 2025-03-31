@@ -13,5 +13,5 @@
 /// ```
 pub struct Struct {
 	/// A vector of strings representing patterns to omit.
-	pub Omit:Vec<String>,
+	pub Omit: Vec<String>,
 }

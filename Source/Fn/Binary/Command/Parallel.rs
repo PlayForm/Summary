@@ -33,7 +33,7 @@
 ///
 /// This function will log errors if it fails to generate summaries or send
 /// results.
-pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }:Option) {
+pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }: Option) {
 	let (Allow, mut Mark) = tokio::sync::mpsc::unbounded_channel();
 
 	let Queue = futures::stream::FuturesUnordered::new();
@@ -53,12 +53,7 @@ pub async fn Fn(Option { Entry, Separator, Pattern, Omit, .. }:Option) {
 		let Allow = Allow.clone();
 
 		Queue.push(tokio::spawn(async move {
-			match crate::Fn::Summary::Fn(
-				&Entry,
-				&crate::Struct::Summary::Difference::Struct { Omit },
-			)
-			.await
-			{
+			match crate::Fn::Summary::Fn(&Entry, &crate::Struct::Summary::Difference::Struct { Omit }).await {
 				Ok(Summary) => {
 					if let Err(_Error) = Allow.send((Entry, Summary)) {
 						eprintln!("Cannot Allow: {}", _Error);
