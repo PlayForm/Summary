@@ -506,7 +506,7 @@ index 018729b..49bf9ea 100644
 - [Pieces OS](https://Pieces.App): For extended functionality and system
 - integration.
 + [Pieces OS] For extended functionality and system integration.
-+ [Pieces OS]: HTTPS://Pieces.App
++ [Pieces OS]: https://Pieces.App
 diff --git a/Source/Fn/Summary/Difference.rs b/Source/Fn/Summary/Difference.rs
 index 4951c08..d96794d 100644
 --- a/Source/Fn/Summary/Difference.rs

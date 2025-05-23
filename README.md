@@ -4,7 +4,7 @@
 repository analysis and summarization. It offers both sequential and parallel
 processing capabilities, along with flexible file filtering options.
 
-[`Summary`]: HTTPS://crates.io/crates/psummary
+[`Summary`]: https://crates.io/crates/psummary
 
 ```sh
 Summary -P > Summary.diff
@@ -166,8 +166,8 @@ Summary -P -O "\.md$" -O "\.txt$"
 
 [Pieces OS] For extended functionality and system integration.
 
-[`Summary`]: HTTPS://crates.io/crates/psummary
-[Pieces OS]: HTTPS://Pieces.App
+[`Summary`]: https://crates.io/crates/psummary
+[Pieces OS]: https://Pieces.App
 
 ## Changelog
 
