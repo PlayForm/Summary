@@ -1,6 +1,7 @@
 ### **1. High-Level Overview**
 
-This diagram shows the overall structure of the application, including the main entry point, command processing, and execution flow.
+This diagram shows the overall structure of the application, including the main
+entry point, command processing, and execution flow.
 
 ```mermaid
 graph LR
@@ -36,7 +37,8 @@ graph LR
 
 ### **2. Main Function Flow**
 
-This diagram shows the control flow within the `main` function, including the initialization of the command structure and the execution of the async function.
+This diagram shows the control flow within the `main` function, including the
+initialization of the command structure and the execution of the async function.
 
 ```mermaid
 graph LR
@@ -55,7 +57,8 @@ graph LR
 
 ### **3. Command Processing Flow**
 
-This diagram shows the flow of processing command-line arguments and generating entry paths.
+This diagram shows the flow of processing command-line arguments and generating
+entry paths.
 
 ```mermaid
 graph LR
@@ -75,7 +78,8 @@ graph LR
 
 ### **4. Parallel Processing Flow**
 
-This diagram shows the flow of processing entries in parallel, including task spawning and result collection.
+This diagram shows the flow of processing entries in parallel, including task
+spawning and result collection.
 
 ```mermaid
 graph LR
@@ -95,7 +99,8 @@ graph LR
 
 ### **5. Sequential Processing Flow**
 
-This diagram shows the flow of processing entries sequentially, including generating summaries and outputting results.
+This diagram shows the flow of processing entries sequentially, including
+generating summaries and outputting results.
 
 ```mermaid
 graph LR
@@ -114,7 +119,8 @@ graph LR
 
 ### **6. Summary Generation Flow**
 
-This diagram shows the flow of generating summaries, including retrieving commits, generating diffs, and inserting results into a DashMap.
+This diagram shows the flow of generating summaries, including retrieving
+commits, generating diffs, and inserting results into a DashMap.
 
 ```mermaid
 graph LR
@@ -145,7 +151,8 @@ graph LR
 
 ### **8. Concurrency Flow**
 
-This diagram shows the concurrency model used in the parallel processing of entries.
+This diagram shows the concurrency model used in the parallel processing of
+entries.
 
 ```mermaid
 graph LR
