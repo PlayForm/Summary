@@ -8,11 +8,11 @@ path = "Source/Library.rs"
 
 [build-dependencies]
 serde = { version = "1.0.219", features = ["derive"] }
-toml = { version = "0.8.23" }
+toml = { version = "0.9.1" }
 
 [dependencies]
 chrono = { version = "0.4.41" }
-clap = { features = ["derive"], version = "4.5.40" }
+clap = { features = ["derive"], version = "4.5.41" }
 dashmap = { version = "6.1.0" }
 futures = { version = "0.3.31" }
 git2 = { version = "0.20.2" }
