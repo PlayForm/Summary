@@ -1,174 +1,173 @@
-# [`Summary`] 🗣️
+# `Summary` 🗣️
 
-[`Summary`] is a powerful command-line tool designed for efficient `Git`
-repository analysis and summarization. It offers both sequential and parallel
-processing capabilities, along with flexible file filtering options.
+[![Crates.io](https://img.shields.io/crates/v/psummary.svg)](https://crates.io/crates/psummary)
 
-[`Summary`]: https://crates.io/crates/psummary
+`Summary` is a powerful command-line tool that recursively scans directories for
+Git repositories and generates concise summaries of the changes within them. It
+intelligently creates diffs between tags or, for untagged repositories, between
+the first and last commits.
+
+It's designed for developers who want a quick overview of progress across
+multiple projects, helping to generate release notes, track changes, or analyze
+development history efficiently.
 
 ```sh
-Summary -P > Summary.diff
+# Analyze all git repositories in the current directory and save the output
+psummary -P > change_summary.txt
 ```
 
-[`Summary`] will now generate the following [`Summary.diff`](./Summary.diff) for
-all the commits and tags between the first and the last commit.
+### Key Functionality
 
-## Feature
+`Summary` operates with the following logic:
 
-- Customizable file pattern matching.
-- Diff generation between `Git` tags.
-- Directory traversal and file filtering.
-- Exclusion of specified files or directories.
-- `Git` repository analysis.
-- Integration with [Pieces OS] for enhanced functionality.
-- Parallel and sequential processing modes.
+1.  **Repository Discovery:** It walks the specified directory tree (defaulting
+    to the current location) and identifies all Git repositories by looking for
+    `.git` folders.
+2.  **Tag Analysis:** For each repository, it inspects the existing tags and
+    sorts them chronologically.
+3.  **Diff Generation:**
+    - **If tags are present:** It generates a diff for each period between
+      consecutive tags (e.g., `v1.0.0` -> `v1.1.0`). It also creates a summary
+      from the latest tag to the current `HEAD`.
+    - **If no tags exist:** It generates a single, comprehensive diff from the
+      very first commit to the final commit in the repository.
+4.  **Intelligent Filtering:** It automatically excludes numerous binary file
+    types from the diffs and allows for custom exclusion of directories and file
+    patterns.
+5.  **Grouped Output:** The final output groups all changes by their respective
+    repository and commit/tag range, providing a clean, organized report.
 
-## [Pieces OS] Integration
+## ✨ Features
 
-The [`Summary`] CLI supports [Pieces OS], allowing it to:
+- **Recursive Git Repository Discovery:** Automatically find and analyze all
+  repositories within a given path.
+- **Automatic Change Summarization:** Generates diffs between consecutive tags
+  and from the last tag to `HEAD`.
+- **Parallel Processing:** Utilizes multiple CPU cores to analyze repositories
+  in parallel for maximum speed (`-P` flag).
+- **Flexible Directory Filtering:** Exclude specific directories like
+  `node_modules` or `target` from the initial scan.
+- **Regex-Based File Omission:** Use regular expressions to omit certain files
+  (e.g., `*.md`, `CHANGELOG.md`) from the diff generation.
+- **Smart Binary Exclusion:** By default, ignores common binary file extensions
+  (`.png`, `.zip`, `.exe`, etc.) to keep summaries focused on source code.
+- **Cross-Platform:** Built with Rust, it runs on Windows, macOS, and Linux.
 
-- Generate comprehensive diff logs and release notes automatically.
-- Provide AI-driven code analysis and insights.
-- Offer improved context-aware processing of repository changes.
-- Seamlessly interact with other [Pieces OS]-compatible development tools.
+## 🚀 Installation
 
-By leveraging [Pieces OS], [`Summary`] can tap into a broader ecosystem of
-development tools and services, significantly expanding its capabilities beyond
-basic file processing.
-
-## Installation 🚀
+You can install `Summary` directly from `crates.io` using `cargo`.
 
 ```sh
 cargo install psummary
 ```
 
+Make sure that your `~/.cargo/bin` directory is in your system's `PATH`.
+
 ## 🛠️ Usage
 
-The Summary tool can be used with various options:
+### Command-Line Options
+
+Here is the full set of options available for the `Summary` command:
 
 ```
-Summary 🗣️
+A tool to recursively find Git repositories and summarize changes between tags.
 
-Usage: Summary [OPTIONS]
+Usage: psummary [OPTIONS]
 
 Options:
-  -P, --Parallel           Parallel ⏩
-  -R, --Root <ROOT>        Root 📂 [default: .]
-  -E, --Exclude <EXCLUDE>  Exclude 🚫 [default: node_modules]
-      --Pattern <PATTERN>  Pattern 🔍 [default: .git]
-  -O, --Omit <OMIT>        Omit 🚫 [default: Documentation]
-  -h, --help               Print help
-  -V, --version            Print version
+  -P, --Parallel
+          Run analysis in parallel across multiple repositories for speed
+
+  -R, --Root <ROOT>
+          The root directory to start scanning from
+          [default: .]
+
+  -E, --Exclude <EXCLUDE>
+          A space-separated list of directory names to exclude from the scan
+          [default: node_modules]
+
+      --Pattern <PATTERN>
+          The pattern to look for when identifying project roots
+          [default: .git]
+
+  -O, --Omit <OMIT>
+          A regex pattern to omit files from the diff summary. Can be used multiple times
+          [default: (?i)documentation (?i)target (?i)changelog\.md$ (?i)summary\.md$]
+
+  -h, --help
+          Print help information
+
+  -V, --version
+          Print version information
 ```
 
-This command will generate summaries for all the `Git` tags inside the specified
-repository.
+### Option Details
 
-## Options
+- `--Parallel` or `-P`: Enables multi-threaded processing. This is highly
+  recommended when scanning a directory with many repositories.
+- `--Root` or `-R`: Specifies the starting directory for the scan. If not
+  provided, it defaults to the current working directory.
+- `--Exclude` or `-E`: Prevents the tool from scanning any directory whose path
+  contains one of the specified strings. The default value is `node_modules`. To
+  exclude multiple directories, wrap them in quotes:
+  `-E "node_modules target dist"`.
+- `--Omit` or `-O`: This powerful option uses regular expressions to filter out
+  files _from the diff summary_. It can be specified multiple times. For
+  example, to ignore all Markdown and text files, you would use
+  `-O "\.md$" -O "\.txt$"`.
 
-The [`Summary`] tool can be used with various options:
+## 💡 Examples
 
-#### --Exclude or -E:
+#### 1. Analyze All Repositories in the Current Directory
 
-Exclude certain files or directories.
-
-Default is:
+Run a parallel scan on the current folder and print the output to the console.
 
 ```sh
-Summary -P -E node_modules
+psummary -P
 ```
 
-#### --Omit or -O:
+#### 2. Analyze a Specific Development Folder and Save to a File
 
-Specify regex patterns to omit files from processing.
-
-Default is:
+Scan a folder named `~/dev/projects` and save the complete summary to
+`summary.diff`.
 
 ```sh
-Summary -P \
-	--Omit "(?i)documentation" \
-	--Omit "(?i)target" \
-	--Omit "(?i)changelog\.md$" \
-	--Omit "(?i)summary\.md$"
+psummary -P -R ~/dev/projects > summary.diff
 ```
 
-#### --Parallel or -P:
+#### 3. Exclude Multiple Directory Names
 
-Run processing in parallel.
-
-Default is:
+Scan the current directory but ignore any paths containing `node_modules`,
+`target`, or `vendor`.
 
 ```sh
-Summary
+psummary -P -E "node_modules target vendor"
 ```
 
-#### --Pattern:
+#### 4. Omit Specific File Patterns from Diffs
 
-Specify a custom pattern for matching.
-
-Default is:
-
-```sh
-Summary -P --Pattern .git
-```
-
-#### --Root or -R:
-
-Set the current working directory to a different folder.
-
-Default is:
+Analyze all repositories but exclude any changes to lock files (`*.lock`),
+Markdown files (`*.md`), and build artifacts in a `dist` directory from the
+summaries.
 
 ```sh
-Summary -P --Root .
-```
-
-For [Pieces OS] integration, refer to the [Pieces OS] documentation for specific
-flags and configuration options. [Pieces OS]
-
-## Examples
-
-Analyze the current directory:
-
-```sh
-Summary
-```
-
-Analyze a specific directory in parallel:
-
-```sh
-Summary -P -R D:\Developer
-```
-
-Exclude additional directories:
-
-```sh
-Summary -P -E "node_modules target dist vendor"
-```
-
-Omit specific file patterns:
-
-```sh
-Summary -P -O "\.md$" -O "\.txt$"
+psummary -P -O ".*\.lock$" -O "\.md$" -O "/dist/"
 ```
 
 ## Dependencies
 
-[`Summary`] relies on several Rust crates to provide its functionality:
+`Summary` is built in Rust and stands on the shoulders of these excellent
+crates:
 
-- `clap` - For parsing command-line arguments.
-- `futures` - For asynchronous programming abstractions.
-- `git2` - For `Git` repository operations.
-- `num_cpus` - For determining the number of CPUs for parallel processing.
-- `rayon` - For parallel processing.
-- `regex` - For pattern matching and text manipulation.
-- `tokio` - For asynchronous runtime.
-- `walkdir` - For efficient filesystem traversal.
-
-[Pieces OS] For extended functionality and system integration.
-
-[`Summary`]: https://crates.io/crates/psummary
-[Pieces OS]: https://Pieces.App
+- `clap` - For robust command-line argument parsing.
+- `git2` - For all Git repository operations.
+- `rayon` & `tokio` - For parallel and asynchronous execution.
+- `walkdir` - For efficient directory traversal.
+- `regex` - For pattern matching in the `--Omit` filter.
+- `futures` - For managing asynchronous tasks.
+- `num_cpus` - For determining the number of available CPU cores.
 
 ## Changelog
 
-See [`CHANGELOG.md`](CHANGELOG.md) for a history of changes to this CLI.
+For a detailed history of changes, please see the [`CHANGELOG.md`](CHANGELOG.md)
+file.
