@@ -8,14 +8,14 @@ path = "Source/Library.rs"
 
 [build-dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
-toml = { version = "0.9.10" }
+toml = { version = "0.9.11" }
 
 [dependencies]
-chrono = { version = "0.4.42" }
-clap = { features = ["derive"], version = "4.5.54" }
+chrono = { version = "0.4.43" }
+clap = { features = ["derive"], version = "4.5.56" }
 dashmap = { version = "6.1.0" }
 futures = { version = "0.3.31" }
-git2 = { version = "0.20.3" }
+git2 = { version = "0.20.4" }
 itertools = { version = "0.14.0" }
 num_cpus = { version = "1.17.0" }
 rayon = { version = "1.11.0" }
@@ -51,4 +51,4 @@ include = [
 license-file = "LICENSE"
 name = "psummary"
 repository = "https://github.com/PlayForm/Summary.git"
-version = "0.1.4"
+version = "0.1.5"
