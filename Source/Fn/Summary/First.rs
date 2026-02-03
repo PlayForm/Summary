@@ -31,7 +31,7 @@
 /// # Panics
 ///
 /// This function does not panic.
-pub fn Fn(Repository: &Repository) -> Result<Oid, git2::Error> {
+pub fn Fn(Repository:&Repository) -> Result<Oid, git2::Error> {
 	let mut Walk = Repository.revwalk()?;
 
 	Walk.push_head()?;

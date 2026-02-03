@@ -40,10 +40,10 @@
 ///
 /// This function will panic if the regex set cannot be created.
 pub fn Fn(
-	Repository: &git2::Repository,
-	Start: &str,
-	End: &str,
-	Option: &crate::Struct::Summary::Difference::Struct,
+	Repository:&git2::Repository,
+	Start:&str,
+	End:&str,
+	Option:&crate::Struct::Summary::Difference::Struct,
 ) -> Result<String, git2::Error> {
 	let mut Common = vec![
 		r"(?i)\.7z$",

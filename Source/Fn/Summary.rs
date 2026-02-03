@@ -40,8 +40,8 @@
 ///
 /// This function does not panic.
 pub async fn Fn(
-	Entry: &str,
-	Option: &crate::Struct::Summary::Difference::Struct,
+	Entry:&str,
+	Option:&crate::Struct::Summary::Difference::Struct,
 ) -> Result<DashMap<u64, (String, String)>, Box<dyn std::error::Error>> {
 	let Summary = DashMap::new();
 
@@ -49,7 +49,7 @@ pub async fn Fn(
 		Ok(Repository) => {
 			let Name = Repository.tag_names(None)?;
 
-			let mut Date: Vec<(String, DateTime<FixedOffset>)> = Name
+			let mut Date:Vec<(String, DateTime<FixedOffset>)> = Name
 				.iter()
 				.filter_map(|Tag| {
 					Tag.and_then(|Tag| {
@@ -69,7 +69,7 @@ pub async fn Fn(
 
 			Date.sort_by(|A, B| A.1.cmp(&B.1));
 
-			let Tag: Vec<String> = Date.into_iter().map(|(Tag, _)| Tag).collect();
+			let Tag:Vec<String> = Date.into_iter().map(|(Tag, _)| Tag).collect();
 
 			let Head = Repository.head()?;
 

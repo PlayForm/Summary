@@ -45,17 +45,16 @@
 /// # Errors
 ///
 /// This function does not return errors.
-pub fn Fn<I>(Summary: I)
+pub fn Fn<I>(Summary:I)
 where
-	I: IntoIterator<Item = (String, DashMap<u64, (String, String)>)>,
-{
-	let Output: DashMap<String, HashSet<String>> = DashMap::new();
+	I: IntoIterator<Item = (String, DashMap<u64, (String, String)>)>, {
+	let Output:DashMap<String, HashSet<String>> = DashMap::new();
 
 	for (Entry, Summary) in Summary {
 		for (_, (Difference, Message)) in Summary.into_iter() {
 			Output
 				.entry(Message + " in " + &Entry)
-				.and_modify(|Existing: &mut HashSet<String>| {
+				.and_modify(|Existing:&mut HashSet<String>| {
 					Existing.insert(Difference.clone());
 				})
 				.or_insert_with(|| {
