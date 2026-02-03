@@ -1,5 +1,54 @@
 ## 0.1.5
 
+### Add
+
+- Added `unbug = { version = "0.4.0" }` as a dependency.
+- Added `Graph.md` containing Mermaid diagrams detailing the application's
+  architecture, control flow, and concurrency model.
+- Added `Knowledge.dot` containing a Graphviz visualization of the project
+  structure and dependencies.
+- Added `Summary.diff` as a historical record of changes from `v0.0.1` to
+  `v0.1.4`.
+
+### Change
+
+- Updated Rust edition from "2021" to "2024" in `Cargo.toml`.
+- Updated license configuration in `Cargo.toml` to use
+  `license-file = "LICENSE"`.
+- Updated description in `Cargo.toml` to "Summary 🗣️".
+- Updated dependencies:
+    - `chrono` from 0.4.38 to 0.4.43
+    - `clap` from 4.5.13 to 4.5.56
+    - `dashmap` from 6.0.1 to 6.1.0
+    - `futures` from 0.3.30 to 0.3.31
+    - `git2` from 0.19.0 to 0.20.4
+    - `itertools` from 0.13.0 to 0.14.0
+    - `num_cpus` from 1.16.0 to 1.17.0
+    - `rayon` from 1.10.0 to 1.11.0
+    - `regex` from 1.10.6 to 1.12.2
+    - `tokio` from 1.39.2 to 1.49.0
+
+### Improved
+
+- Enabled binary stripping in release builds by setting `strip = true` in
+  `.cargo/Config.toml`.
+- Configured Git LFS in `.gitattributes` to track compiled executables (`*.exe`,
+  `Summary`, `PSummary`) in `Target/` directories.
+- Updated `.gitignore` to unignore specific build artifacts (`.exe`, `.deb`,
+  `Summary`, `PSummary`) while keeping the rest of the `Target/` directory
+  ignored.
+
+### Internal
+
+- Refactored `Source/Fn/Binary/Command/Parallel.rs`:
+    - Renamed channel variables `Approval` to `Allow` and `Receipt` to `Mark`
+      for clarity.
+- Applied extensive formatting and line wrapping adjustments across multiple
+  source files to improve readability.
+- Removed `#![allow(non_snake_case)]` attribute from `build.rs`.
+- Updated CLI strings in `Source/Fn/Binary/Command.rs` (author, about, and help
+  messages) for consistency.
+
 ## 0.1.4
 
 ### Change
