@@ -1,0 +1,6 @@
+Target/debug/*.exe filter=lfs diff=lfs merge=lfs -text
+Target/release/*.exe filter=lfs diff=lfs merge=lfs -text
+Target/debug/Summary filter=lfs diff=lfs merge=lfs -text
+Target/release/Summary filter=lfs diff=lfs merge=lfs -text
+Target/debug/PSummary filter=lfs diff=lfs merge=lfs -text
+Target/release/PSummary filter=lfs diff=lfs merge=lfs -text
