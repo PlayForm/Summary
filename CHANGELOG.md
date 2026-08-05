@@ -1,3 +1,26 @@
+## 0.1.6
+
+### Change
+
+- Bumped package version from 0.1.5 to 0.1.6.
+- Updated `Source/Fn/Summary.rs` to handle the changed `tag_names()` iterator
+  type in `git2` 0.21 (`StringArray::iter()` now yields
+  `Result<Option<&str>, Error>`); tag names are unwrapped with
+  `t.ok().flatten()` before resolving their commit timestamps.
+- Updated dependencies:
+    - `git2` from 0.20.4 to 0.21.0
+    - `chrono` from 0.4.43 to 0.4.45
+    - `clap` from 4.5.56 to 4.6.5
+    - `dashmap` from 6.1.0 to 6.2.1
+    - `futures` from 0.3.31 to 0.3.33
+    - `itertools` from 0.14.0 to 0.15.0
+    - `rayon` from 1.11.0 to 1.12.0
+    - `regex` from 1.12.2 to 1.13.1
+    - `tokio` from 1.49.0 to 1.53.1
+    - `unbug` from 0.4.0 to 0.5.0
+    - `serde` from 1.0.228 to 1.0.229
+    - `toml` from 0.9.11 to 1.1.4
+
 ## 0.1.5
 
 ### Add
