@@ -51,19 +51,14 @@ pub async fn Fn(
 
 			let mut Date:Vec<(String, DateTime<FixedOffset>)> = Name
 				.iter()
+				.filter_map(|t| t.ok().flatten())
 				.filter_map(|Tag| {
-					Tag.and_then(|Tag| {
-						Repository
-							.revparse_single(&Tag)
-							.ok()
-							.and_then(|Commit| Commit.peel_to_commit().ok())
-							.map(|Commit| {
-								(
-									Tag.to_string(),
-									DateTime::from_timestamp(Commit.time().seconds(), 0).unwrap().fixed_offset(),
-								)
-							})
-					})
+					let Commit = Repository.revparse_single(Tag).ok()?.peel_to_commit().ok()?;
+
+					Some((
+						Tag.to_string(),
+						DateTime::from_timestamp(Commit.time().seconds(), 0).unwrap().fixed_offset(),
+					))
 				})
 				.collect();
 
