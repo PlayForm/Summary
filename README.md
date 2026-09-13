@@ -15,7 +15,7 @@
 > repositories summarised in seconds. _One binary. Zero configuration. Read your
 > whole fleet's history at a glance._
 
-[![release](https://img.shields.io/static/v1?label=release&message=v0.1.6&color=blue)](https://github.com/PlayForm/Summary/releases)
+[![release](https://img.shields.io/static/v1?label=release&message=v0.1.7&color=blue)](https://github.com/PlayForm/Summary/releases)
 [![crates.io](https://img.shields.io/static/v1?label=crates.io&message=psummary&color=orange)](https://crates.io/crates/psummary)
 [![rust](https://img.shields.io/static/v1?label=rust&message=1.85%2B&color=orange)](https://www.rust-lang.org)
 [![license](https://img.shields.io/static/v1?label=license&message=CC0-1.0&color=lightgrey)](LICENSE)
@@ -255,8 +255,8 @@ index 73ccc94..1f0de60 100644
 +++ b/build.rs
 - use serde::Deserialize;
 - use std::fs;
-- 
-+ 
+-
++
 + use serde::Deserialize;
 + use std::fs;
 diff --git a/Cargo.toml b/Cargo.toml
