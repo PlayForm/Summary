@@ -76,7 +76,11 @@ jobs:
                   restore-keys: cargo-publish-test-${{ runner.os }}-
 
             - name: cargo test
-              run: cargo test --release
+              # No [[test]] targets exist (autotests=false); run lib+bins test
+              # harnesses only. Doctests are skipped: the generated /// examples
+              # use `crate::` paths and bare `Fn`/`Option`, which do not compile
+              # as standalone doctests.
+              run: cargo test --release --tests --bins
 
     Publish:
         name: Publish psummary
