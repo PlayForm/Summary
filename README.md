@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="Knowledge.svg" alt="Summary pipeline diagram" width="720">
+</p>
+
+---
+
 # [Summary] 🗣️
 
 > [!NOTE]
