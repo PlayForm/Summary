@@ -1,51 +1,319 @@
-# [Summary] 🗣️ (`psummary`)
+# [Summary] 🗣️
 
-[![Crates.io](https://img.shields.io/crates/v/psummary.svg)](https://crates.io/crates/psummary)
+> [!NOTE]
+>
+> **Concurrent Git change-summary engine.** Discovers every repository under a
+> root directory, sorts its tags chronologically, and emits clean, deduplicated
+> diffs for each release window - consecutive tags, latest tag to HEAD, or the
+> entire history when a repository has no tags. Parallel by design: hundreds of
+> repositories summarised in seconds. _One binary. Zero configuration. Read your
+> whole fleet's history at a glance._
 
-`Summary` is a blazingly fast, concurrent tool for generating comprehensive
-change summaries across multiple Git repositories. It performs intelligent Git
-repository discovery and produces clean diffs between tags or specific commits
-using tag-based chronological analysis.
-
-Built for developers who need to understand project evolution at scale,
-`Summary` leverages Rust's async runtime and parallel processing to scan
-hundreds of repositories in seconds.
-
-[Summary]: https://crates.io/crates/psummary
-
-## Key Features 🔐
-
-- **Blazing Fast**: Parallel repository scanning (rayon) + async diff generation
-  (tokio) delivers order-of-magnitude speedups over manual git operations
-- **Intelligent Tag Analysis**: Automatically sorts tags chronologically and
-  generates diffs between consecutive releases, plus latest tag to HEAD
-- **Hash-Based Deduplication**: Identical diffs are detected and grouped by
-  content hash to eliminate redundancy in output
-- **Smart Exclusion Logic**: Pattern never excluded—`.git` directories are
-  always traversed, even inside excluded paths like `node_modules`
-- **Local Tag Discovery**: Discovers all local tags in each repository (run
-  `git fetch --tags` first to include remote tags)
-- **62 Built-in Extensions**: Automatically filters binary files from diffs
-  using 62 case-insensitive extension patterns
-- **Concurrent Pipeline**: Rayon parallelizes path scanning; tokio handles
-  concurrent repository processing with `FuturesUnordered`
-- **Intelligent Diff Filtering**: Only shows context lines (`F`), additions
-  (`+`), and deletions (`-`); git metadata is stripped for clean output
+[![release](https://img.shields.io/static/v1?label=release&message=v0.1.6&color=blue)](https://github.com/PlayForm/Summary/releases)
+[![crates.io](https://img.shields.io/static/v1?label=crates.io&message=psummary&color=orange)](https://crates.io/crates/psummary)
+[![rust](https://img.shields.io/static/v1?label=rust&message=1.85%2B&color=orange)](https://www.rust-lang.org)
+[![license](https://img.shields.io/static/v1?label=license&message=CC0-1.0&color=lightgrey)](LICENSE)
 
 ---
 
-## Performance Benchmarks 🚤
+## Install ⚡
 
-`Summary` processes multiple repositories concurrently, making it dramatically
-faster than running sequential git commands manually. The parallel architecture
-divides work efficiently:
+**`Terminal`**
 
-- **Rayon** handles parallel path scanning across all filesystem entries
-- **Tokio** spawns async tasks per repository with `FuturesUnordered` for
-  concurrent diff generation
-- **DashMap** provides sharded concurrent aggregation without lock contention
+```sh
+cargo install psummary
+```
 
-In typical scenarios scanning 100+ repositories:
+The crate is published as `psummary` and installs **two** binaries with
+identical functionality:
+
+- `Summary` - the primary binary
+- `PSummary` - capitalized alias for case-insensitive filesystems
+
+> [!IMPORTANT]
+>
+> The installed binaries are named `Summary` and `PSummary` - only the crate
+> itself is called `psummary`.
+
+### From source
+
+**`Terminal`**
+
+```sh
+git clone https://github.com/PlayForm/Summary.git
+cd Summary
+cargo build --release
+```
+
+---
+
+## The Problem 🔥
+
+Summarising what changed across many repositories is a chore: open each repo,
+list its tags, figure out which release pair matters, run `git diff`, and
+repeat - then repeat again for the next tag, and again for the next repo.
+
+`git diff` output itself is noisy: binary files, whitespace churn, lockfiles,
+and changelogs drown out the changes that matter, and every repository repeats
+the same manual ceremony.
+
+`Summary` collapses the whole loop into one command. It walks a root directory,
+finds every repository, builds the release timeline from tag timestamps, and
+prints only the semantic changes - additions and deletions - grouped by release
+window, deduplicated, and ordered longest-first.
+
+---
+
+## How It Works 🔄
+
+**`Pipeline`**
+
+```text
+ ANY ROOT ───────► Summary ───────► stdout (grouped, deduplicated)
+                      │
+                      ├─ discover   → walkdir over --Root, skipping --Exclude
+                      ├─ identify   → path whose last component matches --Pattern (.git)
+                      ├─ window     → tags sorted by commit timestamp
+                      │                • tag₁ → tag₂, tag₂ → tag₃, …
+                      │                • latest tag → HEAD
+                      │                • first commit → last commit (untagged repos)
+                      ├─ diff       → git2 diff, 53 binary extensions + --Omit regex
+                      └─ aggregate  → DashMap + DefaultHasher, dedupe, sorted print
+```
+
+Six steps, all in Rust:
+
+1. **Discover** - `walkdir` traverses the filesystem from `--Root`, filtering
+   entries against `--Exclude`; a segment whose name equals `--Pattern` is never
+   excluded, so `.git` is always found - even inside `node_modules`.
+2. **Identify** - repositories are paths whose last component matches
+   `--Pattern` (default `.git`).
+3. **Window** - each repository's tags are resolved to commit timestamps and
+   sorted chronologically; diffs are generated between every consecutive tag
+   pair, plus the latest tag to HEAD. Untagged repositories collapse to a single
+   first-commit-to-last-commit window.
+4. **Diff** - `git2::DiffOptions` with `indent_heuristic`, `minimal`,
+   `force_text`, `ignore_filemode`, `ignore_case`, and the full
+   `ignore_whitespace*` family; a `regex::RegexSet` of 53 built-in binary
+   extensions plus user `--Omit` patterns drops unwanted files before output.
+5. **Deduplicate** - each diff is hashed with
+   `std::collections::hash_map::DefaultHasher` into a `DashMap`; identical diffs
+   inside a window collapse to a single entry.
+6. **Aggregate** - windows are grouped by their `🗣️ Summary from … in …` header,
+   sorted alphabetically, and printed with the longest diffs first.
+
+---
+
+## Architecture 🏗️
+
+**`Layout`**
+
+```text
+Source/
+├── Library.rs                     ← #[tokio::main] entry point
+├── Struct/
+│   ├── Binary/
+│   │   └── Command.rs             ← wiring: path separator, parallel/sequential dispatch
+│   └── Summary/
+│       └── Difference.rs          ← --Omit pattern holder
+└── Fn/
+    ├── Binary/
+    │   ├── Command.rs             ← clap CLI definition (builder API)
+    │   └── Command/
+    │       ├── Entry.rs           ← walkdir discovery + --Exclude filtering
+    │       ├── Parallel.rs        ← rayon scan + tokio tasks (FuturesUnordered)
+    │       └── Sequential.rs      ← join_all fallback
+    └── Summary.rs                 ← per-repo tag chronology + diff windows
+        └── Summary/
+            ├── Difference.rs      ← git2 diff options + regex omit + binary filter
+            ├── Insert.rs          ← DashMap insertion, hashed key
+            │   └── Hash.rs        ← std DefaultHasher
+            ├── First.rs           ← first-commit revwalk (topological, reversed)
+            └── Group.rs           ← dedupe, sort, print
+```
+
+| Mode                 | Discovery               | Per-repo work                               | Failure handling               |
+| :------------------- | :---------------------- | :------------------------------------------ | :----------------------------- |
+| Parallel (`-P`)      | rayon `into_par_iter()` | tokio `spawn()` + `FuturesUnordered` → mpsc | logged to stderr, continues    |
+| Sequential (default) | plain iteration         | `futures::join_all` of async per-repo tasks | errors collected, repo skipped |
+
+All diffing is done in-process via `git2` - no shelling out to `git`.
+
+```mermaid
+graph LR
+    subgraph main
+        A[Start] --> B[Parse command-line arguments]
+        B --> C[Generate entry paths]
+        C --> D[Process entries]
+        D --> E[Generate summaries]
+        E --> F[Output results]
+        F --> G[End]
+    end
+
+    subgraph Process entries
+        subgraph Entry processing
+            H[Filter and process entries] --> I[Generate file paths]
+        end
+        subgraph Parallel processing
+            J[Spawn tasks] --> K[Generate summaries]
+            K --> L[Collect results]
+        end
+        subgraph Sequential processing
+            M[Process entries one by one] --> N[Generate summaries]
+        end
+    end
+
+    subgraph Generate summaries
+        O[Retrieve commits] --> P[Generate diffs]
+        P --> Q[Insert into DashMap]
+    end
+```
+
+---
+
+## Usage ⚙️
+
+**`Terminal`**
+
+```text
+Summary 🗣️
+
+Usage: Summary [OPTIONS]
+
+Options:
+  -P, --Parallel           Parallel ⏩
+  -R, --Root <ROOT>        Root 📂 [default: .]
+  -E, --Exclude <EXCLUDE>  Exclude 🚫 [default: node_modules]
+      --Pattern <PATTERN>  Pattern 🔍 [default: .git]
+  -O, --Omit <OMIT>        Omit 🚫 [default: (?i)documentation (?i)target (?i)changelog\.md$ (?i)summary\.md$]
+  -h, --help               Print help
+  -V, --version            Print version
+```
+
+### Examples
+
+**1. Summarise every repository under the current directory**
+
+**`Terminal`**
+
+```sh
+Summary -P
+```
+
+**2. Scan a projects folder and save the report**
+
+**`Terminal`**
+
+```sh
+Summary -P -R ~/Developer > changes.diff
+```
+
+**3. Skip common build directories**
+
+**`Terminal`**
+
+```sh
+Summary -P -E "node_modules target dist"
+```
+
+### What it produces
+
+Run against this repository itself, `Summary` emits one block per release
+window - each headed by `🗣️ Summary from <start> to <end> in <repo>`, where
+`<repo>` is the path relative to `--Root`:
+
+**`Output`**
+
+```diff
+🗣️ Summary from Summary/v0.0.1 to Summary/v0.0.2 in .
+diff --git a/Cargo.toml b/Cargo.toml
+index 745ad03..c769c35 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+- version = "0.0.1"
++ version = "0.0.2"
+```
+
+A single window can span many files at once - this one between v0.0.2 and v0.0.3
+captures a build-script reformat, a dependency addition, and a version bump in
+one pass (the full window also touches `README.md` and
+`Source/Fn/Binary/Command.rs`):
+
+**`Output`**
+
+```diff
+🗣️ Summary from Summary/v0.0.2 to Summary/v0.0.3 in .
+diff --git a/build.rs b/build.rs
+index 73ccc94..1f0de60 100644
+--- a/build.rs
++++ b/build.rs
+- use serde::Deserialize;
+- use std::fs;
+- 
++ 
++ use serde::Deserialize;
++ use std::fs;
+diff --git a/Cargo.toml b/Cargo.toml
+index c769c35..c10016a 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
++ regex = "1.10.5"
+- version = "0.0.2"
++ version = "0.0.3"
+```
+
+The newest window of a tagged repository reads
+`Summary from <latest> to last commit`; an untagged repository collapses to
+`Summary from first commit to last commit`.
+
+> [!WARNING]
+>
+> The output is a lossy summary, not a patch: hunk headers, context lines, and
+> binary content are stripped, so it cannot be fed to `git apply`. It is a
+> reading aid, not a replay mechanism.
+
+---
+
+## Configuration 🎛️
+
+Everything lives on the command line - no config file, no environment setup.
+
+| Option                    | Meaning                                                      | Default                                                            |
+| :------------------------ | :----------------------------------------------------------- | :----------------------------------------------------------------- |
+| `-P, --Parallel`          | enable parallel mode                                         | off (sequential)                                                   |
+| `-R, --Root <ROOT>`       | directory to start scanning from                             | `.`                                                                |
+| `-E, --Exclude <EXCLUDE>` | space-separated directory names to skip                      | `node_modules`                                                     |
+| `--Pattern <PATTERN>`     | last path component that marks a repository                  | `.git`                                                             |
+| `-O, --Omit <OMIT>`       | repeatable regex; matching files are dropped from every diff | `(?i)documentation (?i)target (?i)changelog\.md$ (?i)summary\.md$` |
+
+> [!IMPORTANT]
+>
+> `--Exclude` splits on spaces and matches as a substring of any path segment
+>
+> - but a segment whose name equals `--Pattern` is never excluded, so `.git` is
+>   always discovered, even inside `node_modules`. `--Pattern` matches the
+>   **last path component only**, which is what makes `.git` work.
+
+> [!TIP]
+>
+> Only **local** tags are analysed. Run `git fetch --tags` first to include
+> remote tags. `--Omit` patterns are case-sensitive by default; prefix with
+> `(?i)` for case-insensitive matching (the built-in defaults already do).
+
+**`Terminal`**
+
+```sh
+# Skip lockfiles, markdown files, and dist folders entirely
+Summary -P -O ".*\.lock$" -O "(?i)\.md$" -O "/dist/"
+```
+
+---
+
+## Performance 📊
+
+`Summary` processes repositories concurrently, making it dramatically faster
+than running sequential git commands manually. In typical scenarios scanning
+100+ repositories:
 
 | Operation                  | Parallel Time | Sequential Time | Speedup  |
 | :------------------------- | :-----------: | :-------------: | :------: |
@@ -54,144 +322,9 @@ In typical scenarios scanning 100+ repositories:
 
 _(Actual performance depends on repository count, sizes, and I/O speed)_
 
----
-
-## Installation 🚀
-
-Install directly from [Crates.io](https://crates.io/crates/psummary):
-
-```sh
-cargo install psummary
-```
-
-This installs **two** binaries with identical functionality:
-
-- `psummary` (lowercase, recommended)
-- `Summary` (capitalized, for case-insensitive filesystems)
-
----
-
-## Usage ⚙️
-
-The core workflow: **discover** Git repositories → **identify** tags →
-**analyze** diffs → **aggregate** grouped summaries.
-
-```
-A tool to recursively find Git repositories and summarize changes between tags.
-
-Usage: psummary [OPTIONS]
-
-Options:
-  -P, --Parallel           Run analysis in parallel across multiple repositories
-  -R, --Root <ROOT>        The root directory to start scanning from [default: .]
-  -E, --Exclude <EXCLUDE>  A space-separated list of directory names to exclude
-                           [default: node_modules]
-      --Pattern <PATTERN>  The pattern to look for when identifying project roots
-                           [default: .git]
-  -O, --Omit <OMIT>        A regex pattern to omit files from the diff summary.
-                           Can be used multiple times [default: (?i)documentation (?i)target (?i)changelog\.md$ (?i)summary\.md$]
-  -h, --help               Print help information
-  -V, --version            Print version information
-```
-
-### Basic Examples
-
-**1. Summarize all repositories in current directory**
-
-Finds every `.git` folder recursively and prints diffs between tags and HEAD.
-
-```sh
-psummary -P
-```
-
-**2. Scan a specific projects folder and save output**
-
-```sh
-psummary -P -R ~/dev/projects > all_changes.diff
-```
-
-**3. Exclude common build directories**
-
-```sh
-psummary -P -E "node_modules target dist vendor"
-```
-
-### Advanced Options
-
-- **`-O, --Omit <PATTERN>`**: Exclude files matching regex from diffs. Specify
-  multiple times for complex filters.
-
-    ```sh
-    # Skip lock files, docs, and build artifacts
-    psummary -P -O ".*\.lock$" -O "\.md$" -O "/dist/"
-    ```
-
-    **Note:** Regex patterns are case-sensitive by default. Use the `(?i)`
-    prefix for case-insensitive matching. The default patterns already use
-    `(?i)`.
-
-- **`--Pattern <PATTERN>`**: Match different repository markers (e.g., looking
-  for `.hg` or custom markers). **Matches the last path component only**—so
-  `.git` finds repositories by `.git` folder. Useful for other VCS markers.
-
-- **`-P` vs sequential**: Omit `-P` for deterministic sequential execution
-  (useful for debugging or low-memory environments).
-
----
-
-## How It Works 🔄
-
-1. **Discovery**: `walkdir` traverses the filesystem from `--Root`, filtering
-   entries that match `--Pattern` in the last path component
-2. **Filtering**: Directories in `--Exclude` are skipped **unless** they contain
-   the `--Pattern` itself (e.g., `.git` is never excluded)
-3. **Processing**: Each repository path spawns an async task that:
-    - Opens the Git repository with `git2`
-    - Collects and sorts tags chronologically
-    - Generates diffs between consecutive tags + HEAD
-4. **Diff Generation**: `git2::DiffOptions` with:
-    - `force_text(true)` and `ignore_filemode(true)` for clean output
-    - `ignore_whitespace*` options to focus on semantic changes
-    - **62 built-in binary extensions** + user `--Omit` patterns in a
-      `regex::RegexSet`
-    - Line filter: only `F` (filename), `+` (addition), `-` (deletion) lines
-      kept
-5. **Deduplication**: Each diff is hashed
-   (`std::collections::hash_map::DefaultHasher`) to detect identical changes
-   across repositories
-6. **Aggregation**: `DashMap` collects diffs by unique hash; final output groups
-   by error message/reason with differences sorted by length (longest first)
-
----
-
-## Implementation Details ⚙️
-
-### Architecture
-
-- **Parallelism**: Rayon's `into_par_iter()` for CPU-bound path scanning; tokio
-  `spawn()` + `FuturesUnordered` for I/O-bound repository operations
-- **Concurrency**: `DashMap` provides lock-free sharded hash maps for
-  thread-safe aggregation without contention
-- **Error Handling**:
-    - Parallel mode (`-P`): Errors are logged to stderr but processing continues
-    - Sequential mode: Failed repositories are collected and skipped; processing
-      continues with remaining repos
-- **Binary Detection**: Path-based filter of 62 file extensions (see below).
-  Content is **not** inspected—the filter operates on file paths only.
-
-### Important Notes ⚠️
-
-- **Local tags only**: Only discovers **local** Git tags. Run `git fetch --tags`
-  in repositories first to include remote tags in the analysis.
-- **Pattern exclusion**: Directories listed in `--Exclude` are skipped
-  **unless** the directory name matches `--Pattern` (e.g., `.git`). This ensures
-  Git repositories are always found even inside `node_modules` or other excluded
-  paths.
-- **Regex validation**: Invalid regex patterns cause a panic at startup. Test
-  your patterns with `regex` crate documentation before using.
-- **Diff output format**: Only context lines (`F`), additions (`+`), and
-  deletions (`-`) are included. All other git diff metadata (hunks, binary
-  indicators, etc.) is filtered out for clean, readable summaries.
+The parallelism splits naturally: rayon handles the CPU-bound path scan, tokio
+spawns one async task per repository, and `DashMap` aggregates without lock
+contention.
 
 ---
 
@@ -199,58 +332,77 @@ psummary -P -E "node_modules target dist vendor"
 
 `Summary` is built with these excellent Rust crates:
 
-- **[`clap`](https://crates.io/crates/clap)**: Ergonomic command-line argument
-  parsing withderive macros
-- **[`git2`](https://crates.io/crates/git2)**: Full-featured Git library for all
-  repository operations (libgit2 bindings)
-- **[`rayon`](https://crates.io/crates/rayon)**: Data-parallelism for concurrent
-  repository path scanning
-- **[`tokio`](https://crates.io/crates/tokio)**: Async runtime with `full`
-  features for non-blocking diff generation
-- **[`walkdir`](https://crates.io/crates/walkdir)**: Efficient cross-platform
-  directory traversal with built-in filtering
-- **[`regex`](https://crates.io/crates/regex)**: High-performance `RegexSet` for
-  matching omit patterns and binary extensions
-- **[`dashmap`](https://crates.io/crates/dashmap)**: Sharded concurrent hash map
-  for lock-free summary aggregation
-- **[`futures`](https://crates.io/crates/futures)**: `FuturesUnordered` for
-  concurrent task orchestration and stream combinators
-- **[`chrono`](https://crates.io/crates/chrono)**: Date/time handling for tag
-  chronology and sorting
-- **[`itertools`](https://crates.io/crates/itertools)**: Extended iterator
-  utilities (`sorted_by`, `sorted_by_key`) for result ordering
-- **[`num_cpus`](https://crates.io/crates/num_cpus)**: CPU count detection for
-  optimal thread pool sizing
-- **[`unbug`](https://crates.io/crates/unbug)**: Error handling utilities
+- **[`clap`](https://crates.io/crates/clap)** - ergonomic command-line parsing
+  (builder API)
+- **[`git2`](https://crates.io/crates/git2)** - libgit2 bindings: repositories,
+  tags, trees, diffs
+- **[`rayon`](https://crates.io/crates/rayon)** - data-parallel path scanning
+- **[`tokio`](https://crates.io/crates/tokio)** - async runtime (`full`) for
+  concurrent diff generation
+- **[`walkdir`](https://crates.io/crates/walkdir)** - efficient cross-platform
+  directory traversal
+- **[`regex`](https://crates.io/crates/regex)** - `RegexSet` for omit patterns
+  and binary extensions
+- **[`dashmap`](https://crates.io/crates/dashmap)** - sharded concurrent hash
+  map for lock-free aggregation
+- **[`futures`](https://crates.io/crates/futures)** - `FuturesUnordered` and
+  `join_all` task orchestration
+- **[`chrono`](https://crates.io/crates/chrono)** - tag timestamp resolution and
+  chronology
+- **[`itertools`](https://crates.io/crates/itertools)** - `sorted_by`,
+  `sorted_by_key` result ordering
 
----
+Build-time: [`serde`](https://crates.io/crates/serde) (derive) and
+[`toml`](https://crates.io/crates/toml) stamp the package version into the
+binary via `build.rs`.
 
-## License ⚖️
-
-This project is released into the public domain under the **Creative Commons CC0
-Universal** license. You are free to use, modify, distribute, and build upon
-this work for any purpose. See the [`LICENSE`](LICENSE) file for full details.
-
----
-
-## Changelog 📜
-
-Stay updated with the latest improvements. See [`CHANGELOG.md`](CHANGELOG.md)
-for a complete history of changes.
+> [!NOTE]
+>
+> `num_cpus` and `unbug` are declared in `Cargo.toml` but not referenced by the
+> source - they are listed for completeness only.
 
 ---
 
 ## Binary Extensions 📦
 
-`Summary` automatically excludes 62 binary file types from diffs using these
+`Summary` automatically excludes these **53** binary file types from diffs using
 case-insensitive patterns:
 
-```
+```text
 .7z .accdb .avi .bak .bin .bmp .class .dat .db .dll .dll.lib .dll.exp
 .doc .docx .dylib .exe .flac .gif .gz .heic .ico .img .iso .jpeg .jpg
 .m4a .mdb .mkv .mov .mp3 .mp4 .o .obj .ogg .pdb .pdf .png .ppt .pptx
 .pyc .pyo .rar .so .sqlite .svg .tar .tiff .wav .webp .wmv .xls .xlsx .zip
 ```
 
-_(See [`Fn/Summary/Difference.rs:48-102`](Source/Fn/Summary/Difference.rs:48)
-for the complete list in source)_
+The filter operates on file paths only - content is never inspected. The full
+list lives in
+[`Source/Fn/Summary/Difference.rs`](Source/Fn/Summary/Difference.rs).
+
+---
+
+## Contributing 🤝
+
+| Want to…          | Start here                                                                               |
+| ----------------- | ---------------------------------------------------------------------------------------- |
+| Report a bug      | [Open an issue](https://github.com/PlayForm/Summary/issues/new)                          |
+| Suggest a feature | [Start a discussion](https://github.com/PlayForm/Summary/discussions/new?category=ideas) |
+| Submit a PR       | [Fork & open a PR](https://github.com/PlayForm/Summary/pulls)                            |
+| Ask a question    | [Discussions Q&A](https://github.com/PlayForm/Summary/discussions/new?category=q-a)      |
+
+Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) and
+[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) first. No contribution is too small -
+first-time contributors are especially welcome.
+
+---
+
+## License 📜
+
+Released under [CC0-1.0](LICENSE) - public domain. Use, modify, distribute, and
+build upon it freely.
+
+---
+
+_Built with ❤️ by PlayForm._
+
+[Summary]: https://github.com/PlayForm/Summary
